@@ -1,33 +1,53 @@
-body {
-    font-family: 'Arial', sans-serif;
-    background-color: #0d1117;
-    color: white;
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+body { background: #0f172a; color: white; display: flex; justify-content: center; padding: 20px; }
+
+.container { width: 100%; max-width: 600px; text-align: center; }
+
+/* Wallet Card Styling */
+.wallet-card {
+    background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+    padding: 25px;
+    border-radius: 20px;
     display: flex;
-    justify-content: center;
-    padding: 50px;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    color: #0f172a;
+    box-shadow: 0 10px 20px rgba(56, 189, 248, 0.2);
 }
-.container {
-    width: 100%;
-    max-width: 500px;
-    text-align: center;
-}
-.goal-card {
-    background: #161b22;
-    padding: 20px;
-    margin: 15px 0;
+.balance-info h2 { font-size: 36px; }
+
+.withdraw-btn {
+    background: #0f172a;
+    color: white;
+    border: none;
+    padding: 12px 20px;
     border-radius: 10px;
-    border: 1px solid #30363d;
+    font-weight: bold;
+    cursor: pointer;
 }
-.progress-bar {
-    background: #30363d;
-    border-radius: 20px;
-    margin-top: 10px;
+
+/* 3-Column Grid */
+.task-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-top: 20px;
 }
-.progress {
-    background: #238636;
-    height: 20px;
-    border-radius: 20px;
-    text-align: center;
-    font-size: 12px;
-    line-height: 20px;
+
+.task-card {
+    background: #1e293b;
+    padding: 20px;
+    border-radius: 15px;
+    border: 1px solid #334155;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+.task-card:hover { border-color: #38bdf8; transform: translateY(-5px); }
+.task-card h3 { color: #38bdf8; font-size: 18px; margin-bottom: 5px; }
+.task-card p { font-size: 12px; opacity: 0.7; }
+
+/* Mobile View: 2 items per line if screen is too small */
+@media (max-width: 480px) {
+    .task-grid { grid-template-columns: repeat(2, 1fr); }
 }
