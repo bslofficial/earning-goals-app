@@ -2,42 +2,73 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Admin Panel</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProEarn - Admin Dashboard</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <div class="admin-login" id="loginBox">
-        <h2>Admin Login</h2>
-        <input type="password" id="passInput" placeholder="Enter Admin Password">
-        <button onclick="checkPass()">Login</button>
+    <div id="adminLogin" class="container" style="margin-top: 100px;">
+        <div class="task-card" style="cursor: default;">
+            <i class="fas fa-lock ad-icon"></i>
+            <h3>Admin Login</h3>
+            <input type="password" id="adminPass" placeholder="Enter Password" style="width: 100%; padding: 12px; margin: 15px 0; border-radius: 8px; border: 1px solid #334155; background: #0f172a; color: white;">
+            <button class="withdraw-main-btn" onclick="checkLogin()" style="margin-bottom: 0;">Login</button>
+        </div>
     </div>
 
-    <div class="container" id="adminContent" style="display:none;">
-        <h1>Admin Dashboard</h1>
-        <div class="wallet-card" style="background:#1e293b; margin-top:20px;">
-            <div>
-                <h3>Platform Stats</h3>
-                <p>Total Tasks Configured: 9</p>
-                <p>Ad Network: Adsgram</p>
+    <div id="adminDashboard" class="container" style="display: none;">
+        <div class="wallet-card">
+            <div class="user-info">
+                <i class="fas fa-user-shield avatar"></i>
+                <div>
+                    <span>Admin Panel</span>
+                    <p>Status: Active</p>
+                </div>
             </div>
         </div>
-        <button onclick="resetData()" style="padding:10px; background:red; color:white; border-radius:5px; margin-top:20px;">Reset My Balance (Test Mode)</button>
+
+        <div class="task-grid">
+            <div class="task-card" style="text-align: left;">
+                <h3 style="color: #38bdf8;">App Stats</h3>
+                <p>Tasks: 6 Active</p>
+                <p>Ad Network: Adsgram</p>
+                <p>Unit ID: 23742</p>
+            </div>
+            <div class="task-card" style="text-align: left;">
+                <h3 style="color: #facc15;">Settings</h3>
+                <p>Min Withdraw: $10</p>
+                <p>Reward/Task: $0.50</p>
+            </div>
+        </div>
+
+        <div class="task-card" style="margin-top: 20px; border-color: #ef4444;">
+            <h3 style="color: #ef4444;">Danger Zone</h3>
+            <p style="margin-bottom: 10px;">Delete all local balance and data?</p>
+            <button class="submit-btn" style="background: #ef4444;" onclick="resetAppData()">Reset All Data</button>
+        </div>
+
+        <button class="withdraw-main-btn" style="margin-top: 20px; border-color: #94a3b8; color: #94a3b8;" onclick="location.href='index.html'">Back to Home</button>
     </div>
 
     <script>
-        function checkPass() {
-            const pass = document.getElementById('passInput').value;
+        function checkLogin() {
+            const pass = document.getElementById('adminPass').value;
+            // ডিফল্ট পাসওয়ার্ড: admin123
             if(pass === "admin123") {
-                document.getElementById('loginBox').style.display = "none";
-                document.getElementById('adminContent').style.display = "block";
+                document.getElementById('adminLogin').style.display = 'none';
+                document.getElementById('adminDashboard').style.display = 'block';
             } else {
                 alert("Wrong Password!");
             }
         }
-        function resetData() {
-            localStorage.clear();
-            alert("All local data reset!");
-            location.reload();
+
+        function resetAppData() {
+            if(confirm("Are you sure you want to reset all data?")) {
+                localStorage.clear();
+                alert("Data Reset Successful!");
+                location.href = 'index.html';
+            }
         }
     </script>
 </body>
