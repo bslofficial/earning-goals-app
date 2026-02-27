@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ProEarn - Tasks</title>
+    <title>ProEarn - Watch & Earn</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://adsgram.ai/sdk/v1/adsgram.js"></script>
@@ -19,49 +19,49 @@
                 </div>
             </div>
             <div class="balance-info">
-                <span>Balance</span>
+                <span>Total Balance</span>
                 <h2 id="balance">0.00</h2>
             </div>
         </div>
 
         <div class="task-grid">
-            <div class="task-card" onclick="startVideoTask(1)">
+            <div class="task-card" id="task-1" onclick="startVideoTask(1)">
                 <i class="fas fa-play-circle ad-icon"></i>
                 <h3>Task 1</h3>
-                <p>Watch to Earn</p>
+                <p>Click to Watch</p>
             </div>
-            <div class="task-card" onclick="startVideoTask(2)">
+            <div class="task-card" id="task-2" onclick="startVideoTask(2)">
                 <i class="fas fa-play-circle ad-icon"></i>
                 <h3>Task 2</h3>
-                <p>Watch to Earn</p>
+                <p>Click to Watch</p>
             </div>
-            <div class="task-card" onclick="startVideoTask(3)">
+            <div class="task-card" id="task-3" onclick="startVideoTask(3)">
                 <i class="fas fa-play-circle ad-icon"></i>
                 <h3>Task 3</h3>
-                <p>Watch to Earn</p>
+                <p>Click to Watch</p>
             </div>
-            <div class="task-card" onclick="startVideoTask(4)">
+            <div class="task-card" id="task-4" onclick="startVideoTask(4)">
                 <i class="fas fa-play-circle ad-icon"></i>
                 <h3>Task 4</h3>
-                <p>Watch to Earn</p>
+                <p>Click to Watch</p>
             </div>
-            <div class="task-card" onclick="startVideoTask(5)">
+            <div class="task-card" id="task-5" onclick="startVideoTask(5)">
                 <i class="fas fa-play-circle ad-icon"></i>
                 <h3>Task 5</h3>
-                <p>Watch to Earn</p>
+                <p>Click to Watch</p>
             </div>
-            <div class="task-card" onclick="startVideoTask(6)">
+            <div class="task-card" id="task-6" onclick="startVideoTask(6)">
                 <i class="fas fa-play-circle ad-icon"></i>
                 <h3>Task 6</h3>
-                <p>Watch to Earn</p>
+                <p>Click to Watch</p>
             </div>
         </div>
     </div>
 
     <div id="videoOverlay" class="video-overlay">
         <div class="video-content">
-            <h2 id="timerText">Please Wait... <br><span id="seconds">15</span>s</h2>
-            <p>Video ad is loading in full screen</p>
+            <h2 id="seconds">15</h2>
+            <p>Don't Close! Video is Playing...</p>
         </div>
     </div>
 
