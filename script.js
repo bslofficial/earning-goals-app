@@ -1,75 +1,38 @@
-const taskInput = document.getElementById('taskInput');
-const addBtn = document.getElementById('addBtn');
-const taskList = document.getElementById('taskList');
+// Adsgram Initialization with your ID
+const AdController = window.Adsgram.init({ blockId: "23742" });
+const balanceDisplay = document.getElementById('balance');
 
-// ১. পেজ লোড হওয়ার সময় আগের টাস্কগুলো মেমোরি থেকে নিয়ে আসা
-document.addEventListener('DOMContentLoaded', getTasks);
-document.getElementById('date-display').innerText = new Date().toDateString();
+// Load balance from LocalStorage
+let currentBalance = parseFloat(localStorage.getItem('userBalance')) || 0;
+balanceDisplay.innerText = currentBalance.toFixed(2);
 
-// ২. টাস্ক অ্যাড করার ফাংশন
-addBtn.onclick = () => {
-    if (taskInput.value.trim() !== "") {
-        const taskText = taskInput.value;
-        createTaskElement(taskText);
-        
-        // লোকাল স্টোরেজে সেভ করা
-        saveLocalTasks(taskText);
-        
-        taskInput.value = "";
-    } else {
-        alert("Please write a task first!");
-    }
-};
+function showAd(taskNumber) {
+    console.log(`Loading Ad for Task ${taskNumber}...`);
 
-// ৩. টাস্ক এলিমেন্ট তৈরি করার ফাংশন
-function createTaskElement(taskText) {
-    const li = document.createElement('li');
-    li.innerHTML = `
-        <span>${taskText}</span>
-        <div class="actions">
-            <i class="fas fa-check" onclick="markComplete(this)"></i>
-            <i class="fas fa-trash" onclick="removeTaskFromLocal(this)"></i>
-        </div>
-    `;
-    taskList.appendChild(li);
-}
-
-// ৪. টাস্ক কমপ্লিট করার ফাংশন
-function markComplete(element) {
-    element.parentElement.parentElement.classList.toggle('completed');
-}
-
-// ৫. লোকাল স্টোরেজে ডাটা সেভ রাখা
-function saveLocalTasks(task) {
-    let tasks;
-    if (localStorage.getItem('tasks') === null) {
-        tasks = [];
-    } else {
-        tasks = JSON.parse(localStorage.getItem('tasks'));
-    }
-    tasks.push(task);
-    localStorage.setItem('tasks', JSON.stringify(tasks));
-}
-
-// ৬. সেভ করা ডাটা পেজে দেখানো
-function getTasks() {
-    let tasks;
-    if (localStorage.getItem('tasks') === null) {
-        tasks = [];
-    } else {
-        tasks = JSON.parse(localStorage.getItem('tasks'));
-    }
-    tasks.forEach(function(task) {
-        createTaskElement(task);
+    AdController.show().then((result) => {
+        // Success: Ad watched fully
+        addReward(0.50); // প্রতি টাস্কে ০.৫০ রিওয়ার্ড
+        markTaskComplete(taskNumber);
+        alert(`Success! Task ${taskNumber} completed. 0.50 added to wallet.`);
+    }).catch((result) => {
+        // Error or Skip
+        alert("You must watch the full video to get the reward.");
+        console.error("Adsgram error:", result);
     });
 }
 
-// ৭. ডিলিট করলে মেমোরি থেকেও মুছে ফেলা
-function removeTaskFromLocal(element) {
-    const li = element.parentElement.parentElement;
-    const taskText = li.children[0].innerText;
-    let tasks = JSON.parse(localStorage.getItem('tasks'));
-    tasks.splice(tasks.indexOf(taskText), 1);
-    localStorage.setItem('tasks', JSON.stringify(tasks));
-    li.remove();
+function addReward(amount) {
+    currentBalance += amount;
+    balanceDisplay.innerText = currentBalance.toFixed(2);
+    localStorage.setItem('userBalance', currentBalance);
+}
+
+function markTaskComplete(num) {
+    const cards = document.querySelectorAll('.task-card');
+    const targetCard = cards[num - 1];
+    
+    targetCard.style.background = "#064e3b";
+    targetCard.style.borderColor = "#10b981";
+    targetCard.innerHTML = `<h3>Task ${num}</h3><p style="color:#10b981"><i class="fas fa-check-circle"></i> Done</p>`;
+    targetCard.onclick = null; // Disable clicking again
 }
