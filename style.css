@@ -1,44 +1,79 @@
-* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-body { background: #0b1120; color: white; display: flex; justify-content: center; min-height: 100vh; padding: 15px; }
-.container { width: 100%; max-width: 450px; }
+const unityGameId = "6055095"; 
+const unityPlacement = "Rewarded_Android";
+const myWA = "8801917044596"; 
+const directLink = "Https://www.effectivegatecpm.com/uy4hgpbq7?key=4367993c6e478e8144fda5a6e5969fbb";
 
-/* Profile Card */
-.header-card { 
-    background: linear-gradient(135deg, #1d4ed8, #3b82f6); 
-    padding: 20px; border-radius: 20px; display: flex; 
-    justify-content: space-between; align-items: center; margin-bottom: 20px;
-    box-shadow: 0 10px 20px rgba(29, 78, 216, 0.3);
-}
-.user-meta { display: flex; align-items: center; gap: 12px; }
-.avatar { font-size: 40px; }
-.text-left { text-align: left; }
-.balance-meta h2 { font-size: 32px; }
+if (typeof unityads !== 'undefined') { unityads.initialize(unityGameId, false); }
 
-/* Banner & Button */
-.banner-box { margin: 15px 0; border-radius: 10px; overflow: hidden; background: #1e293b; }
-.withdraw-trigger { 
-    width: 100%; padding: 16px; border: none; border-radius: 12px; 
-    background: #1e293b; color: #38bdf8; font-weight: bold; 
-    cursor: pointer; margin-bottom: 20px; border: 1px solid #334155;
+let currentBalance = parseFloat(localStorage.getItem('userBalance')) || 0;
+document.getElementById('balance').innerText = currentBalance.toFixed(2);
+
+function startVideoTask(num) {
+    if (typeof unityads !== 'undefined' && unityads.isReady(unityPlacement)) {
+        unityads.show(unityPlacement);
+        showTimer(num);
+    } else {
+        alert("Loading High Reward Ad...");
+        window.open(directLink, '_blank');
+        setTimeout(() => showTimer(num), 2000);
+    }
 }
 
-/* Tasks Grid */
-.task-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
-.task-box { 
-    background: #1e293b; padding: 25px; border-radius: 15px; 
-    text-align: center; cursor: pointer; border: 1px solid #334155;
+function showTimer(num) {
+    const overlay = document.getElementById('videoOverlay');
+    const secondsSpan = document.getElementById('seconds');
+    overlay.style.display = "flex";
+    let timeLeft = 20;
+    secondsSpan.innerText = timeLeft;
+
+    const countdown = setInterval(() => {
+        timeLeft--;
+        secondsSpan.innerText = timeLeft;
+        if (timeLeft <= 0) {
+            clearInterval(countdown);
+            overlay.style.display = "none";
+            updateBalance(0.70);
+            markDone(num);
+        }
+    }, 1000);
 }
-.task-box i { font-size: 30px; color: #3b82f6; margin-bottom: 10px; }
 
-/* Modal */
-.modal-overlay { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.9); z-index:999; }
-.modal-card { background: #1e293b; width: 90%; margin: 20% auto; padding: 25px; border-radius: 20px; position: relative; }
-.form-group { text-align: left; margin-bottom: 15px; }
-.form-group label { display: block; font-size: 13px; color: #94a3b8; margin-bottom: 5px; }
-.form-group input, .form-group select { width: 100%; padding: 12px; background: #0f172a; border: 1px solid #334155; color: white; border-radius: 8px; }
-.submit-btn { width: 100%; padding: 14px; background: #3b82f6; border: none; color: white; border-radius: 10px; font-weight: bold; }
-.close-btn { position: absolute; right: 15px; top: 10px; font-size: 28px; cursor: pointer; }
+function updateBalance(amount) {
+    currentBalance += amount;
+    document.getElementById('balance').innerText = currentBalance.toFixed(2);
+    localStorage.setItem('userBalance', currentBalance);
+}
 
-/* Timer Overlay */
-.video-waiter { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.95); z-index:1000; justify-content: center; align-items: center; }
-.wait-box h2 { font-size: 70px; color: #3b82f6; }
+function markDone(num) {
+    const card = document.getElementById(`task-${num}`);
+    if(card) {
+        card.style.opacity = "0.4";
+        card.style.pointerEvents = "none";
+        card.querySelector('p').innerText = "Earned ✅";
+    }
+}
+
+// Withdrawal Logic (Auto Balance Deduction)
+function openWithdraw() { document.getElementById('withdrawModal').style.display = "block"; }
+function closeWithdraw() { document.getElementById('withdrawModal').style.display = "none"; }
+
+function sendWithdrawRequest() {
+    const method = document.getElementById('method').value;
+    const account = document.getElementById('accountNo').value;
+    const amount = parseFloat(document.getElementById('withdrawAmount').value);
+
+    if (!account || account.length < 11) return alert("Enter valid number!");
+    if (isNaN(amount) || amount < 10) return alert("Min withdraw $10.00");
+    if (amount > currentBalance) return alert("Insufficient balance!");
+
+    // অটোমেটিক ব্যালেন্স কাটা
+    currentBalance -= amount;
+    localStorage.setItem('userBalance', currentBalance.toFixed(2));
+    document.getElementById('balance').innerText = currentBalance.toFixed(2);
+
+    const msg = `*NEW WITHDRAW REQUEST*%0AMethod: ${method}%0ANumber: ${account}%0AAmount: $${amount}%0ARemaining: $${currentBalance.toFixed(2)}`;
+    window.open(`https://wa.me/${myWA}?text=${msg}`, '_blank');
+    
+    closeWithdraw();
+    alert("Request Sent! $" + amount + " has been deducted from your balance.");
+}
