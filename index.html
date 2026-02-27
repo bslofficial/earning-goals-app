@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pro Tasks & Earn</title>
+    <title>ProEarn - Watch & Earn</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://adsgram.ai/sdk/v1/adsgram.js"></script>
@@ -11,12 +11,7 @@
 <body>
     <nav class="navbar">
         <div class="logo">ProEarn</div>
-        <div class="nav-links">
-            <a href="index.html">Home</a>
-            <a href="about.html">About</a>
-            <a href="admin.html" class="admin-link">Admin</a>
-        </div>
-    </nav>
+        </nav>
 
     <div class="container">
         <div class="wallet-card">
@@ -33,28 +28,47 @@
             </div>
         </div>
 
-        <div class="task-grid" id="taskGrid">
-            <script>
-                for(let i=1; i<=9; i++){
-                    document.write(`<div class="task-card" id="task-${i}" onclick="showAd(${i})">
-                        <i class="fas fa-play-circle"></i>
-                        <h3>Task ${i}</h3>
-                        <p>Watch to Earn</p>
-                    </div>`);
-                }
-            </script>
-        </div>
-
-        <div class="leaderboard-card">
-            <h3><i class="fas fa-trophy"></i> Global Leaderboard</h3>
-            <ul id="leaderboard-list">
-                <li><span>1. User_999</span> <span>$145.50</span></li>
-                <li><span>2. BSL_Official</span> <span>$138.20</span></li>
-                <li><span>3. Dev_Hunter</span> <span>$120.00</span></li>
-                <li><span>4. You</span> <span id="user-rank-balance">0.00</span></li>
-            </ul>
+        <div class="task-grid">
+            <div class="task-card" onclick="startVideoTask(1)">
+                <i class="fas fa-play-circle"></i>
+                <h3>Task 1</h3>
+                <p>Watch to Earn</p>
+            </div>
+            <div class="task-card" onclick="startVideoTask(2)">
+                <i class="fas fa-play-circle"></i>
+                <h3>Task 2</h3>
+                <p>Watch to Earn</p>
+            </div>
+            <div class="task-card" onclick="startVideoTask(3)">
+                <i class="fas fa-play-circle"></i>
+                <h3>Task 3</h3>
+                <p>Watch to Earn</p>
+            </div>
+            <div class="task-card" onclick="startVideoTask(4)">
+                <i class="fas fa-play-circle"></i>
+                <h3>Task 4</h3>
+                <p>Watch to Earn</p>
+            </div>
+            <div class="task-card" onclick="startVideoTask(5)">
+                <i class="fas fa-play-circle"></i>
+                <h3>Task 5</h3>
+                <p>Watch to Earn</p>
+            </div>
+            <div class="task-card" onclick="startVideoTask(6)">
+                <i class="fas fa-play-circle"></i>
+                <h3>Task 6</h3>
+                <p>Watch to Earn</p>
+            </div>
         </div>
     </div>
+
+    <div id="videoOverlay" class="video-overlay">
+        <div class="video-content">
+            <h2 id="timerText">Wait <span id="seconds">15</span>s</h2>
+            <p>Video is playing in full screen...</p>
+        </div>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>
