@@ -3,24 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Earning Goals Tracker</title>
+    <title>Pro Task & Earn - Adsgram</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://adsgram.ai/sdk/v1/adsgram.js"></script>
 </head>
 <body>
     <div class="container">
-        <h1>💰 My Earning Goals 2026</h1>
-        <div id="goals-list">
-            <div class="goal-card">
-                <h3>Freelancing (Fiverr/Upwork)</h3>
-                <p>Target: $500/month</p>
-                <div class="progress-bar"><div class="progress" style="width: 30%;">30%</div></div>
+        <div class="wallet-card">
+            <div class="balance-info">
+                <span>My Earnings</span>
+                <h2 id="balance">0.00</h2>
             </div>
-            <div class="goal-card">
-                <h3>App Monetization (AdMob)</h3>
-                <p>Target: $200/month</p>
-                <div class="progress-bar"><div class="progress" style="width: 10%;">10%</div></div>
-            </div>
+            <button class="withdraw-btn" onclick="alert('Minimum withdraw 10.00')">Withdraw</button>
+        </div>
+
+        <header>
+            <h1><i class="fas fa-tasks"></i> Task Dashboard</h1>
+            <p>Complete 9 tasks to grow your balance</p>
+        </header>
+
+        <div class="task-grid" id="taskGrid">
+            <div class="task-card" onclick="showAd(1)"><h3>Task 1</h3><p>Click to Watch</p></div>
+            <div class="task-card" onclick="showAd(2)"><h3>Task 2</h3><p>Click to Watch</p></div>
+            <div class="task-card" onclick="showAd(3)"><h3>Task 3</h3><p>Click to Watch</p></div>
+            <div class="task-card" onclick="showAd(4)"><h3>Task 4</h3><p>Click to Watch</p></div>
+            <div class="task-card" onclick="showAd(5)"><h3>Task 5</h3><p>Click to Watch</p></div>
+            <div class="task-card" onclick="showAd(6)"><h3>Task 6</h3><p>Click to Watch</p></div>
+            <div class="task-card" onclick="showAd(7)"><h3>Task 7</h3><p>Click to Watch</p></div>
+            <div class="task-card" onclick="showAd(8)"><h3>Task 8</h3><p>Click to Watch</p></div>
+            <div class="task-card" onclick="showAd(9)"><h3>Task 9</h3><p>Click to Watch</p></div>
         </div>
     </div>
+    <script src="script.js"></script>
 </body>
 </html>
