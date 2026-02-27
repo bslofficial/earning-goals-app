@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Panel</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="admin-login" id="loginBox">
+        <h2>Admin Login</h2>
+        <input type="password" id="passInput" placeholder="Enter Admin Password">
+        <button onclick="checkPass()">Login</button>
+    </div>
+
+    <div class="container" id="adminContent" style="display:none;">
+        <h1>Admin Dashboard</h1>
+        <div class="wallet-card" style="background:#1e293b; margin-top:20px;">
+            <div>
+                <h3>Platform Stats</h3>
+                <p>Total Tasks Configured: 9</p>
+                <p>Ad Network: Adsgram</p>
+            </div>
+        </div>
+        <button onclick="resetData()" style="padding:10px; background:red; color:white; border-radius:5px; margin-top:20px;">Reset My Balance (Test Mode)</button>
+    </div>
+
+    <script>
+        function checkPass() {
+            const pass = document.getElementById('passInput').value;
+            if(pass === "admin123") {
+                document.getElementById('loginBox').style.display = "none";
+                document.getElementById('adminContent').style.display = "block";
+            } else {
+                alert("Wrong Password!");
+            }
+        }
+        function resetData() {
+            localStorage.clear();
+            alert("All local data reset!");
+            location.reload();
+        }
+    </script>
+</body>
+</html>
