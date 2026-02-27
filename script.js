@@ -2,12 +2,12 @@
 const unityGameId = "6055095"; 
 const unityPlacement = "Rewarded_Android";
 const myWA = "8801917044596"; 
+// আপনার Adsterra Direct Link
+const directLink = "Https://www.effectivegatecpm.com/uy4hgpbq7?key=4367993c6e478e8144fda5a6e5969fbb";
 
 // Initialize Unity Ads
 if (typeof unityads !== 'undefined') {
-    unityads.initialize(unityGameId, false); // false = Live Mode
-} else {
-    console.error("Unity SDK not loaded");
+    unityads.initialize(unityGameId, false);
 }
 
 // Balance Display
@@ -15,13 +15,20 @@ let currentBalance = parseFloat(localStorage.getItem('userBalance')) || 0;
 document.getElementById('balance').innerText = currentBalance.toFixed(2);
 
 function startVideoTask(num) {
-    // Unity Ads চেক করা হচ্ছে
+    // ১. প্রথমে Unity Ads ট্রাই করো
     if (typeof unityads !== 'undefined' && unityads.isReady(unityPlacement)) {
         unityads.show(unityPlacement);
         showTimer(num);
-    } else {
-        alert("Unity Video is loading... Please wait 5-10 seconds and try again.");
-        // এখানে আপনি চাইলে Adsterra Direct Link ওপেন করতে পারেন
+    } 
+    // ২. ইউনিটি রেডি না থাকলে Adsterra Direct Link ওপেন হবে
+    else {
+        alert("Loading High Reward Task...");
+        window.open(directLink, '_blank'); // নতুন ট্যাবে অ্যাড ওপেন হবে
+        
+        // অ্যাড ওপেন করার পর ইউজারকে রিওয়ার্ড দেওয়ার জন্য টাইমার শুরু
+        setTimeout(() => {
+            showTimer(num);
+        }, 2000); 
     }
 }
 
@@ -29,7 +36,7 @@ function showTimer(num) {
     const overlay = document.getElementById('videoOverlay');
     const secondsSpan = document.getElementById('seconds');
     overlay.style.display = "flex";
-    let timeLeft = 20; // ইউনিটি অ্যাডের জন্য ২০ সেকেন্ড ভালো
+    let timeLeft = 20; 
     secondsSpan.innerText = timeLeft;
 
     const countdown = setInterval(() => {
@@ -38,7 +45,7 @@ function showTimer(num) {
         if (timeLeft <= 0) {
             clearInterval(countdown);
             overlay.style.display = "none";
-            updateBalance(0.70); // ইউনিটি বেশি টাকা দেয়, তাই রিওয়ার্ড বাড়িয়ে দিলাম
+            updateBalance(0.70); // Reward
             markDone(num);
         }
     }, 1000);
