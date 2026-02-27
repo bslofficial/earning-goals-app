@@ -1,4 +1,4 @@
-* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
 body { background: #0f172a; color: white; display: flex; justify-content: center; padding: 20px; min-height: 100vh; }
 
 .container { width: 100%; max-width: 500px; text-align: center; }
@@ -15,11 +15,12 @@ body { background: #0f172a; color: white; display: flex; justify-content: center
     box-shadow: 0 10px 25px rgba(29, 78, 216, 0.3);
 }
 .user-info { display: flex; align-items: center; gap: 15px; text-align: left; }
-.avatar { font-size: 45px; color: white; }
+.avatar { font-size: 45px; }
 .balance-info h2 { font-size: 32px; }
 
-/* Task Grid */
+/* Grid for 6 Tasks */
 .task-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
+
 .task-card {
     background: #1e293b;
     padding: 25px;
@@ -31,15 +32,17 @@ body { background: #0f172a; color: white; display: flex; justify-content: center
 .task-card:hover { border-color: #38bdf8; transform: translateY(-5px); }
 .ad-icon { font-size: 30px; color: #38bdf8; margin-bottom: 10px; }
 
-/* Video Overlay */
+/* Video Overlay (Transparent) */
 .video-overlay {
     display: none;
     position: fixed;
     top: 0; left: 0; width: 100%; height: 100%;
-    background: #000;
+    background: rgba(0, 0, 0, 0.8); /* বিজ্ঞাপন দেখার জন্য হালকা স্বচ্ছ */
     z-index: 9999;
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    pointer-events: none; /* বিজ্ঞাপনে ক্লিক আটকাতে এটি ব্যবহার হয় */
 }
-.video-content h2 { color: #38bdf8; font-size: 35px; }
+.video-content h2 { color: #38bdf8; font-size: 60px; text-shadow: 0 0 20px rgba(56, 189, 248, 0.5); }
+.video-content p { color: white; margin-top: 10px; font-weight: bold; }
