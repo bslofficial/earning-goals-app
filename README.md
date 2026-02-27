@@ -23,3 +23,8 @@ This dashboard helps me visualize my progress toward different income streams. I
 ├── index.html   # Main layout
 ├── style.css    # Styling and UI design
 └── README.md    # Project documentation
+
+### ✨ Key Features:
+- **Local Storage Persistence:** Your tasks won't disappear after a page refresh.
+- **Dynamic UI:** Smooth animations for adding and deleting tasks.
+- **Mobile Responsive:** Works perfectly on phones and desktops.
