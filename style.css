@@ -1,0 +1,33 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #0d1117;
+    color: white;
+    display: flex;
+    justify-content: center;
+    padding: 50px;
+}
+.container {
+    width: 100%;
+    max-width: 500px;
+    text-align: center;
+}
+.goal-card {
+    background: #161b22;
+    padding: 20px;
+    margin: 15px 0;
+    border-radius: 10px;
+    border: 1px solid #30363d;
+}
+.progress-bar {
+    background: #30363d;
+    border-radius: 20px;
+    margin-top: 10px;
+}
+.progress {
+    background: #238636;
+    height: 20px;
+    border-radius: 20px;
+    text-align: center;
+    font-size: 12px;
+    line-height: 20px;
+}
