@@ -24,37 +24,39 @@
             </div>
         </div>
 
+        <button class="withdraw-main-btn" onclick="openWithdraw()">
+            <i class="fas fa-wallet"></i> Withdraw Money
+        </button>
+
         <div class="task-grid">
-            <div class="task-card" id="task-1" onclick="startVideoTask(1)">
-                <i class="fas fa-play-circle ad-icon"></i>
-                <h3>Task 1</h3>
-                <p>Click to Watch</p>
-            </div>
-            <div class="task-card" id="task-2" onclick="startVideoTask(2)">
-                <i class="fas fa-play-circle ad-icon"></i>
-                <h3>Task 2</h3>
-                <p>Click to Watch</p>
-            </div>
-            <div class="task-card" id="task-3" onclick="startVideoTask(3)">
-                <i class="fas fa-play-circle ad-icon"></i>
-                <h3>Task 3</h3>
-                <p>Click to Watch</p>
-            </div>
-            <div class="task-card" id="task-4" onclick="startVideoTask(4)">
-                <i class="fas fa-play-circle ad-icon"></i>
-                <h3>Task 4</h3>
-                <p>Click to Watch</p>
-            </div>
-            <div class="task-card" id="task-5" onclick="startVideoTask(5)">
-                <i class="fas fa-play-circle ad-icon"></i>
-                <h3>Task 5</h3>
-                <p>Click to Watch</p>
-            </div>
-            <div class="task-card" id="task-6" onclick="startVideoTask(6)">
-                <i class="fas fa-play-circle ad-icon"></i>
-                <h3>Task 6</h3>
-                <p>Click to Watch</p>
-            </div>
+            <script>
+                for(let i=1; i<=6; i++) {
+                    document.write(`
+                        <div class="task-card" id="task-${i}" onclick="startVideoTask(${i})">
+                            <i class="fas fa-play-circle ad-icon"></i>
+                            <h3>Task ${i}</h3>
+                            <p>Click to Watch</p>
+                        </div>
+                    `);
+                }
+            </script>
+        </div>
+    </div>
+
+    <div id="withdrawModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeWithdraw()">&times;</span>
+            <h3>Withdraw Funds</h3>
+            <p style="font-size: 12px; color: #94a3b8; margin-bottom: 15px;">Minimum Withdraw: $10.00</p>
+            
+            <select id="method">
+                <option value="Bkash">Bkash</option>
+                <option value="Nagad">Nagad</option>
+            </select>
+            <input type="text" id="accountNo" placeholder="Enter Bkash/Nagad No">
+            <input type="number" id="withdrawAmount" placeholder="Enter Amount ($)">
+            
+            <button class="submit-btn" onclick="sendWithdrawRequest()">Submit Request</button>
         </div>
     </div>
 
