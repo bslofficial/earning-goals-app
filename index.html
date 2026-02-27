@@ -1,32 +1,90 @@
-<div class="withdraw-section">
-    <button class="withdraw-main-btn" onclick="openWithdraw()">
-        <i class="fas fa-money-check-alt"></i> Withdraw My Earnings
-    </button>
-</div>
-
-<div id="withdrawModal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeWithdraw()">&times;</span>
-        <div class="modal-header">
-            <i class="fas fa-university"></i>
-            <h3>Withdraw Money</h3>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProEarn - Premium Earn</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://unityads.unity3d.com/sdk/3.4/unityads.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="header-card">
+            <div class="user-meta">
+                <i class="fas fa-user-circle avatar"></i>
+                <div class="text-left">
+                    <span class="user-name">Guest User</span>
+                    <p class="status">Verified Member</p>
+                </div>
+            </div>
+            <div class="balance-meta">
+                <p>Balance</p>
+                <h2 id="balance">0.00</h2>
+            </div>
         </div>
-        <p class="min-limit">Minimum Payout: $10.00</p>
-        
-        <label>Select Method:</label>
-        <select id="method">
-            <option value="Bkash">Bkash (Personal)</option>
-            <option value="Nagad">Nagad (Personal)</option>
-        </select>
 
-        <label>Account Number:</label>
-        <input type="text" id="accountNo" placeholder="017xxxxxxxx">
+        <div class="banner-box">
+            <script type="text/javascript">
+                atOptions = { 'key' : '61a6dd9464e05093404bdc74b6f80ff1', 'format' : 'iframe', 'height' : 60, 'width' : 468, 'params' : {} };
+            </script>
+            <script type="text/javascript" src="https://www.highperformanceformat.com/61a6dd9464e05093404bdc74b6f80ff1/invoke.js"></script>
+        </div>
 
-        <label>Amount (USD):</label>
-        <input type="number" id="withdrawAmount" placeholder="Min 10.00">
-
-        <button class="submit-btn" onclick="sendWithdrawRequest()">
-            Submit Withdrawal <i class="fas fa-paper-plane"></i>
+        <button class="withdraw-trigger" onclick="openWithdraw()">
+            <i class="fas fa-wallet"></i> Withdraw My Earnings
         </button>
+
+        <div class="task-grid">
+            <script>
+                for(let i=1; i<=6; i++) {
+                    document.write(`
+                        <div class="task-box" id="task-${i}" onclick="startVideoTask(${i})">
+                            <i class="fas fa-play-circle"></i>
+                            <h3>Task ${i}</h3>
+                            <p>Watch to Earn</p>
+                        </div>
+                    `);
+                }
+            </script>
+        </div>
     </div>
-</div>
+
+    <div id="withdrawModal" class="modal-overlay">
+        <div class="modal-card">
+            <span class="close-btn" onclick="closeWithdraw()">&times;</span>
+            <h3>Withdraw Money</h3>
+            <p class="limit-info">Minimum Payout: $10.00</p>
+            
+            <div class="form-group">
+                <label>Select Method:</label>
+                <select id="method">
+                    <option value="Bkash">Bkash (Personal)</option>
+                    <option value="Nagad">Nagad (Personal)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Account Number:</label>
+                <input type="text" id="accountNo" placeholder="017XXXXXXXX">
+            </div>
+
+            <div class="form-group">
+                <label>Amount (USD):</label>
+                <input type="number" id="withdrawAmount" placeholder="10.00">
+            </div>
+
+            <button class="submit-btn" onclick="sendWithdrawRequest()">Submit Withdrawal</button>
+        </div>
+    </div>
+
+    <div id="videoOverlay" class="video-waiter">
+        <div class="wait-box">
+            <h2 id="seconds">20</h2>
+            <p>Video is playing... Stay here!</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
