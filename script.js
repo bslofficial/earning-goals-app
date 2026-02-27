@@ -1,30 +1,40 @@
 const AdController = window.Adsgram.init({ blockId: "23742" });
 const balanceDisplay = document.getElementById('balance');
-const userRankBalance = document.getElementById('user-rank-balance');
+const overlay = document.getElementById('videoOverlay');
+const secondsSpan = document.getElementById('seconds');
 
 let currentBalance = parseFloat(localStorage.getItem('userBalance')) || 0;
 balanceDisplay.innerText = currentBalance.toFixed(2);
-if(userRankBalance) userRankBalance.innerText = currentBalance.toFixed(2);
 
-function showAd(num) {
+function startVideoTask(num) {
+    // ১. ভিডিও ওভারলে দেখানো (Full Screen vibe)
+    overlay.style.display = "flex";
+    let timeLeft = 15; // ১৫ সেকেন্ডের কাউন্টার
+    secondsSpan.innerText = timeLeft;
+
+    const countdown = setInterval(() => {
+        timeLeft--;
+        secondsSpan.innerText = timeLeft;
+        if (timeLeft <= 0) {
+            clearInterval(countdown);
+            loadAdsgram(num);
+        }
+    }, 1000);
+}
+
+function loadAdsgram(num) {
     AdController.show().then((result) => {
+        overlay.style.display = "none";
         updateBalance(0.50);
-        markDone(num);
+        alert(`Task ${num} Success! $0.50 added.`);
     }).catch(() => {
-        alert("Watch full video to earn!");
+        overlay.style.display = "none";
+        alert("You must watch the full video.");
     });
 }
 
 function updateBalance(amount) {
     currentBalance += amount;
     balanceDisplay.innerText = currentBalance.toFixed(2);
-    if(userRankBalance) userRankBalance.innerText = currentBalance.toFixed(2);
     localStorage.setItem('userBalance', currentBalance);
-}
-
-function markDone(num) {
-    const card = document.getElementById(`task-${num}`);
-    card.style.opacity = "0.5";
-    card.onclick = null;
-    card.querySelector('p').innerText = "Completed ✅";
 }
