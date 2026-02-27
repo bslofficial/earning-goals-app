@@ -1,53 +1,27 @@
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
-body { background: #0f172a; color: white; display: flex; justify-content: center; padding: 20px; }
+body { background: #0f172a; color: white; line-height: 1.6; }
 
-.container { width: 100%; max-width: 600px; text-align: center; }
+.navbar { display: flex; justify-content: space-between; padding: 15px 5%; background: #1e293b; border-bottom: 1px solid #334155; }
+.nav-links a { color: #94a3b8; text-decoration: none; margin-left: 20px; font-size: 14px; }
+.nav-links a:hover { color: #38bdf8; }
 
-/* Wallet Card Styling */
-.wallet-card {
-    background: linear-gradient(135deg, #38bdf8, #0ea5e9);
-    padding: 25px;
-    border-radius: 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 30px;
-    color: #0f172a;
-    box-shadow: 0 10px 20px rgba(56, 189, 248, 0.2);
-}
-.balance-info h2 { font-size: 36px; }
+.container { max-width: 600px; margin: 30px auto; padding: 0 15px; }
 
-.withdraw-btn {
-    background: #0f172a;
-    color: white;
-    border: none;
-    padding: 12px 20px;
-    border-radius: 10px;
-    font-weight: bold;
-    cursor: pointer;
-}
+.wallet-card { background: linear-gradient(135deg, #38bdf8, #1d4ed8); padding: 25px; border-radius: 20px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+.user-info { display: flex; align-items: center; gap: 15px; }
+.avatar { font-size: 40px; }
 
-/* 3-Column Grid */
-.task-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 15px;
-    margin-top: 20px;
-}
-
-.task-card {
-    background: #1e293b;
-    padding: 20px;
-    border-radius: 15px;
-    border: 1px solid #334155;
-    cursor: pointer;
-    transition: 0.3s ease;
-}
+.task-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.task-card { background: #1e293b; padding: 20px; border-radius: 12px; text-align: center; cursor: pointer; border: 1px solid #334155; transition: 0.3s; }
 .task-card:hover { border-color: #38bdf8; transform: translateY(-5px); }
-.task-card h3 { color: #38bdf8; font-size: 18px; margin-bottom: 5px; }
-.task-card p { font-size: 12px; opacity: 0.7; }
+.task-card i { font-size: 24px; color: #38bdf8; margin-bottom: 10px; }
 
-/* Mobile View: 2 items per line if screen is too small */
-@media (max-width: 480px) {
-    .task-grid { grid-template-columns: repeat(2, 1fr); }
-}
+.leaderboard-card { background: #1e293b; margin-top: 30px; padding: 20px; border-radius: 15px; }
+.leaderboard-card li { display: flex; justify-content: space-between; padding: 12px; border-bottom: 1px solid #334155; }
+
+/* Admin Login Page Style */
+.admin-login { max-width: 350px; margin: 100px auto; background: #1e293b; padding: 30px; border-radius: 12px; text-align: center; }
+.admin-login input { width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid #334155; background: #0f172a; color: white; }
+.admin-login button { width: 100%; padding: 12px; background: #38bdf8; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
+
+@media (max-width: 480px) { .task-grid { grid-template-columns: repeat(2, 1fr); } }
