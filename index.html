@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ProEarn - Premium Earn</title>
+    <title>ProEarn - Digital Rewards</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://unityads.unity3d.com/sdk/3.4/unityads.js"></script>
@@ -11,38 +11,38 @@
 <body>
     <div class="container">
         <div class="header-card">
-            <div class="user-meta">
+            <div class="profile-info">
                 <i class="fas fa-user-circle avatar"></i>
-                <div class="text-left">
-                    <span class="user-name">Guest User</span>
-                    <p class="status">Verified Member</p>
+                <div class="user-details">
+                    <span id="username">Guest User</span>
+                    <p class="badge">Verified Member</p>
                 </div>
             </div>
-            <div class="balance-meta">
-                <p>Balance</p>
-                <h2 id="balance">0.00</h2>
+            <div class="balance-card">
+                <p>Total Balance</p>
+                <h2>৳<span id="balance">0.00</span></h2>
             </div>
         </div>
 
-        <div class="banner-box">
+        <div class="ad-box">
             <script type="text/javascript">
                 atOptions = { 'key' : '61a6dd9464e05093404bdc74b6f80ff1', 'format' : 'iframe', 'height' : 60, 'width' : 468, 'params' : {} };
             </script>
             <script type="text/javascript" src="https://www.highperformanceformat.com/61a6dd9464e05093404bdc74b6f80ff1/invoke.js"></script>
         </div>
 
-        <button class="withdraw-trigger" onclick="openWithdraw()">
-            <i class="fas fa-wallet"></i> Withdraw My Earnings
+        <button class="withdraw-btn" onclick="openWithdraw()">
+            <i class="fas fa-wallet"></i> Withdraw Balance
         </button>
 
         <div class="task-grid">
             <script>
                 for(let i=1; i<=6; i++) {
                     document.write(`
-                        <div class="task-box" id="task-${i}" onclick="startVideoTask(${i})">
+                        <div class="task-item" id="task-${i}" onclick="startVideoTask(${i})">
                             <i class="fas fa-play-circle"></i>
-                            <h3>Task ${i}</h3>
-                            <p>Watch to Earn</p>
+                            <h3>Video Task ${i}</h3>
+                            <p>Click to Start</p>
                         </div>
                     `);
                 }
@@ -50,38 +50,38 @@
         </div>
     </div>
 
-    <div id="withdrawModal" class="modal-overlay">
-        <div class="modal-card">
-            <span class="close-btn" onclick="closeWithdraw()">&times;</span>
+    <div id="withdrawModal" class="modal-bg">
+        <div class="modal-box">
+            <span class="close-x" onclick="closeWithdraw()">&times;</span>
             <h3>Withdraw Money</h3>
-            <p class="limit-info">Minimum Payout: $10.00</p>
+            <p class="info-text" style="color: #fbbf24;">Minimum Payout: ৳৫০০ (BDT)</p>
             
-            <div class="form-group">
-                <label>Select Method:</label>
+            <div class="input-group">
+                <label>Method</label>
                 <select id="method">
                     <option value="Bkash">Bkash (Personal)</option>
                     <option value="Nagad">Nagad (Personal)</option>
                 </select>
             </div>
 
-            <div class="form-group">
-                <label>Account Number:</label>
-                <input type="text" id="accountNo" placeholder="017XXXXXXXX">
+            <div class="input-group">
+                <label>Personal Number</label>
+                <input type="text" id="accountNo" placeholder="01XXXXXXXXX">
             </div>
 
-            <div class="form-group">
-                <label>Amount (USD):</label>
-                <input type="number" id="withdrawAmount" placeholder="10.00">
+            <div class="input-group">
+                <label>Amount (BDT)</label>
+                <input type="number" id="withdrawAmount" placeholder="500">
             </div>
 
-            <button class="submit-btn" onclick="sendWithdrawRequest()">Submit Withdrawal</button>
+            <button class="confirm-btn" onclick="sendWithdrawRequest()">Confirm Withdrawal</button>
         </div>
     </div>
 
-    <div id="videoOverlay" class="video-waiter">
-        <div class="wait-box">
+    <div id="videoOverlay" class="timer-overlay">
+        <div class="timer-box">
             <h2 id="seconds">20</h2>
-            <p>Video is playing... Stay here!</p>
+            <p>Wait! Ad is Processing...</p>
         </div>
     </div>
 
