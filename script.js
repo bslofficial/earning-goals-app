@@ -1,11 +1,11 @@
-// পেমেন্ট রিকোয়েস্ট পাঠানোর ফাংশন
+// à¦ªà§‡à¦®à§‡à¦¨à§à¦Ÿ à¦°à¦¿à¦•à§‹à§Ÿà§‡à¦¸à§à¦Ÿ à¦ªà¦¾à¦ à¦¾à¦¨à§‹à¦° à¦«à¦¾à¦‚à¦¶à¦¨
 function sendWithdrawRequest() {
     const method = document.getElementById('method').value;
     const account = document.getElementById('accountNo').value;
     const amount = document.getElementById('withdrawAmount').value;
     const userBalance = parseFloat(localStorage.getItem('userBalance')) || 0;
 
-    // ভ্যালিডেশন চেক
+    // à¦­à§à¦¯à¦¾à¦²à¦¿à¦¡à§‡à¦¶à¦¨ à¦šà§‡à¦•
     if (account.length < 11) {
         alert("Please enter a valid Bkash/Nagad number!");
         return;
@@ -19,7 +19,7 @@ function sendWithdrawRequest() {
         return;
     }
 
-    // হোয়াটসঅ্যাপ মেসেজ ফরম্যাট
+    // à¦¹à§‹à§Ÿà¦¾à¦Ÿà¦¸à¦…à§à¦¯à¦¾à¦ª à¦®à§‡à¦¸à§‡à¦œ à¦«à¦°à¦®à§à¦¯à¦¾à¦Ÿ
     const message = `*NEW WITHDRAW REQUEST*%0A` +
                     `--------------------------%0A` +
                     `Method: ${method}%0A` +
@@ -29,10 +29,10 @@ function sendWithdrawRequest() {
                     `--------------------------%0A` +
                     `Please check and pay!`;
 
-    // হোয়াটসঅ্যাপে পাঠিয়ে দেওয়া
+    // à¦¹à§‹à§Ÿà¦¾à¦Ÿà¦¸à¦…à§à¦¯à¦¾à¦ªà§‡ à¦ªà¦¾à¦ à¦¿à§Ÿà§‡ à¦¦à§‡à¦“à§Ÿà¦¾
     window.open(`https://wa.me/8801917044596?text=${message}`, '_blank');
     
-    // ব্যালেন্স থেকে টাকা কেটে নেওয়া (ঐচ্ছিক)
+    // à¦¬à§à¦¯à¦¾à¦²à§‡à¦¨à§à¦¸ à¦¥à§‡à¦•à§‡ à¦Ÿà¦¾à¦•à¦¾ à¦•à§‡à¦Ÿà§‡ à¦¨à§‡à¦“à§Ÿà¦¾ (à¦à¦šà§à¦›à¦¿à¦•)
     // updateBalance(-amount); 
     
     closeWithdraw();
