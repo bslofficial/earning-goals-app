@@ -24,7 +24,6 @@ onAuthStateChanged(auth, async (user) => {
         document.getElementById('main-app').style.display = 'block';
         document.getElementById('display-name').innerText = user.email.split('@')[0];
 
-        // রেফার লিংক জেনারেশন
         const myReferLink = `${window.location.origin}${window.location.pathname}?ref=${user.uid}`;
         document.getElementById('refer-url').value = myReferLink;
 
@@ -45,7 +44,6 @@ function updateUI() {
     document.getElementById('balance').innerText = (parseFloat(currentData.balance) || 0).toFixed(2);
 }
 
-// ২৪ ঘণ্টা কাউন্টডাউন টাইমার ফাংশন
 function startTimers() {
     setInterval(() => {
         const now = new Date().getTime();
@@ -78,13 +76,10 @@ function formatTime(ms) {
     return `${h.toString().padStart(2,'0')}h ${m.toString().padStart(2,'0')}m ${s.toString().padStart(2,'0')}s`;
 }
 
-// শেয়ার ফাংশন
 window.shareReferLink = async () => {
     const url = document.getElementById("refer-url").value;
     if (navigator.share) {
-        try {
-            await navigator.share({ title: 'ProEarn', text: 'Join and Earn!', url: url });
-        } catch (e) { console.log(e); }
+        try { await navigator.share({ title: 'ProEarn', text: 'Join and Earn!', url: url }); } catch (e) {}
     } else {
         navigator.clipboard.writeText(url);
         alert("Link Copied!");
@@ -125,7 +120,6 @@ window.startVideoTask = async () => {
     }, 20000);
 };
 
-// অন্যান্য ফাংশন (Login, Logout, Profile)
 document.getElementById('login-btn').addEventListener('click', async () => {
     const e = document.getElementById('email').value;
     const p = document.getElementById('password').value;
