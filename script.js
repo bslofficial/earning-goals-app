@@ -16,17 +16,15 @@ const auth = getAuth(app);
 const db = getDatabase(app);
 
 let userRef;
-let currentData = { balance: 0, lastLimit: 0, doneToday: 0, lastBonus: 0, profilePic: "" };
+let currentData = { balance: 0, lastLimit: 0, doneToday: 0, lastBonus: 0 };
 
 onAuthStateChanged(auth, async (user) => {
     if (user) {
         document.getElementById('auth-screen').style.display = 'none';
         document.getElementById('main-app').style.display = 'block';
         document.getElementById('display-name').innerText = user.email.split('@')[0];
-
-        const myReferLink = `${window.location.origin}${window.location.pathname}?ref=${user.uid}`;
-        document.getElementById('refer-url').value = myReferLink;
-
+        document.getElementById('refer-url').value = `${window.location.origin}${window.location.pathname}?ref=${user.uid}`;
+        
         userRef = ref(db, 'users/' + user.uid);
         const snap = await get(userRef);
         if (snap.exists()) {
@@ -43,19 +41,16 @@ function updateUI() {
     document.getElementById('balance').innerText = (parseFloat(currentData.balance) || 0).toFixed(2);
 }
 
-// ২৪ ঘণ্টা টাইমার লজিক
 function startTimers() {
     setInterval(() => {
         const now = new Date().getTime();
-
         // টাস্ক লিমিট ২৪ ঘণ্টা
         if (currentData.lastLimit && now < currentData.lastLimit) {
-            document.getElementById('limit-box').style.display = 'block';
+            document.getElementById('limit-box').style.display = 'flex';
             document.getElementById('timer-display').innerText = formatTime(currentData.lastLimit - now);
         } else {
             document.getElementById('limit-box').style.display = 'none';
         }
-
         // বোনাস লিমিট ২৪ ঘণ্টা
         if (currentData.lastBonus && now < currentData.lastBonus) {
             document.getElementById('bonus-btn').disabled = true;
@@ -74,28 +69,16 @@ function formatTime(ms) {
     return `${h.toString().padStart(2,'0')}h ${m.toString().padStart(2,'0')}m ${s.toString().padStart(2,'0')}s`;
 }
 
-window.shareReferLink = async () => {
-    const url = document.getElementById("refer-url").value;
-    if (navigator.share) {
-        try { await navigator.share({ title: 'ProEarn', text: 'Join and Earn!', url: url }); } catch (e) {}
-    } else {
-        navigator.clipboard.writeText(url);
-        alert("Link Copied!");
-    }
-};
-
 window.startVideoTask = async () => {
     if (currentData.lastLimit && new Date().getTime() < currentData.lastLimit) return;
     window.open("https://www.effectivegatecpm.com/uy4hgpbq7?key=4367993c6e478e8144fda5a6e5969fbb", '_blank');
     document.getElementById('videoOverlay').style.display = 'flex';
-    
     setTimeout(async () => {
         document.getElementById('videoOverlay').style.display = 'none';
         currentData.balance += 10;
         currentData.doneToday = (currentData.doneToday || 0) + 1;
         if (currentData.doneToday >= 4) {
-            // ৪টি টাস্কের পর ২৪ ঘণ্টা লিমিট সেট
-            currentData.lastLimit = new Date().getTime() + (24 * 60 * 60 * 1000);
+            currentData.lastLimit = new Date().getTime() + (24 * 60 * 60 * 1000); // ২৪ ঘণ্টা ফিক্সড
             currentData.doneToday = 0;
         }
         await update(userRef, currentData);
@@ -104,4 +87,31 @@ window.startVideoTask = async () => {
     }, 20000);
 };
 
-// ... Withdraw & Login Functions (Same as before) ...
+window.claimDailyBonus = async () => {
+    window.open("https://google.com", '_blank');
+    currentData.balance += 20;
+    currentData.lastBonus = new Date().getTime() + (24 * 60 * 60 * 1000); // ২৪ ঘণ্টা ফিক্সড
+    await update(userRef, currentData);
+    updateUI();
+};
+
+window.shareReferLink = async () => {
+    const url = document.getElementById("refer-url").value;
+    if (navigator.share) {
+        navigator.share({ title: 'ProEarn', text: 'Earn ৳৩০ on Referral!', url: url });
+    } else {
+        navigator.clipboard.writeText(url);
+        alert("Link Copied!");
+    }
+};
+
+window.openWithdraw = () => document.getElementById('withdrawModal').style.display = 'flex';
+window.closeWithdraw = () => document.getElementById('withdrawModal').style.display = 'none';
+window.handleLogout = () => signOut(auth).then(() => location.reload());
+
+document.getElementById('login-btn').addEventListener('click', async () => {
+    const e = document.getElementById('email').value;
+    const p = document.getElementById('password').value;
+    try { await signInWithEmailAndPassword(auth, e, p); } 
+    catch { try { await createUserWithEmailAndPassword(auth, e, p); } catch (err) { alert(err.message); } }
+});
