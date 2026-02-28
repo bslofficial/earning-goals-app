@@ -22,7 +22,7 @@
                 <input type="password" id="password" placeholder="Password">
             </div>
             <button id="login-btn" class="main-btn">Login</button>
-            <p id="auth-error"></p>
+            <p id="auth-error" style="color: red; margin-top: 10px;"></p>
         </div>
     </div>
 
@@ -40,7 +40,7 @@
                 </div>
             </div>
             <div class="balance-display">
-                <p>Wallet</p>
+                <p>Wallet Balance</p>
                 <h2>৳<span id="balance">0.00</span></h2>
             </div>
         </div>
@@ -74,12 +74,12 @@
         </div>
 
         <div id="limit-box" class="timer-card" style="display: none;">
-            Daily Limit Reached! Back in: <span id="timer-display">00:00:00</span>
+            Daily Limit! Back in: <span id="timer-display">00:00:00</span>
         </div>
 
         <div class="footer-banner">
             <p class="ad-label">Sponsored Ad</p>
-            <div id="ad-container">
+            <div id="ad-slot">
                 <script type="text/javascript">
                     atOptions = { 'key' : '61a6dd9464e05093404bdc74b6f80ff1', 'format' : 'iframe', 'height' : 50, 'width' : 320, 'params' : {} };
                 </script>
@@ -92,7 +92,10 @@
         <div class="modal-content">
             <span class="close-modal" onclick="closeWithdraw()">&times;</span>
             <h3>Withdraw Money</h3>
-            <select id="method"><option value="Bkash">Bkash</option><option value="Nagad">Nagad</option></select>
+            <select id="method">
+                <option value="Bkash">Bkash</option>
+                <option value="Nagad">Nagad</option>
+            </select>
             <input type="text" id="accountNo" placeholder="Personal Number">
             <input type="number" id="withdrawAmount" placeholder="Min ৳500">
             <button class="confirm-btn" onclick="sendWithdrawRequest()">Send Request</button>
