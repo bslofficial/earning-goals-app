@@ -1,8 +1,8 @@
-* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
 body { background: #0b0f1a; color: white; display: flex; justify-content: center; min-height: 100vh; }
-.app-container, .auth-wrapper { width: 100%; max-width: 420px; padding: 15px; }
+.app-container, .auth-wrapper { width: 100%; max-width: 400px; padding: 20px; }
 
-/* Auth Styling */
+/* লগইন ডিজাইন */
 .auth-card { background: #1a1f2e; padding: 30px; border-radius: 20px; text-align: center; margin-top: 50px; border: 1px solid #2d3748; }
 .logo { font-size: 40px; background: #3b82f6; width: 70px; height: 70px; line-height: 70px; border-radius: 50%; margin: 0 auto 20px; font-weight: bold; }
 .input-field { background: #0b0f1a; display: flex; align-items: center; padding: 12px; margin: 15px 0; border-radius: 10px; border: 1px solid #2d3748; }
@@ -10,39 +10,32 @@ body { background: #0b0f1a; color: white; display: flex; justify-content: center
 .input-field input { background: none; border: none; color: white; outline: none; width: 100%; }
 .main-btn { width: 100%; padding: 12px; background: #3b82f6; color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; }
 
-/* Dashboard Header */
+/* ড্যাশবোর্ড হেডার */
 .top-nav { display: flex; justify-content: space-between; align-items: center; background: #1a1f2e; padding: 15px; border-radius: 15px; margin-bottom: 20px; border: 1px solid #2d3748; }
 .user-info { display: flex; align-items: center; gap: 12px; }
 .profile-upload { position: relative; width: 55px; height: 55px; cursor: pointer; }
 .profile-upload img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 2px solid #3b82f6; }
 .camera-badge { position: absolute; bottom: 0; right: 0; background: #3b82f6; font-size: 10px; padding: 3px; border-radius: 50%; }
 .logout-link { background: none; border: none; color: #f87171; font-size: 12px; cursor: pointer; text-decoration: underline; margin-top: 5px; display: block; }
-
 .balance-display { text-align: right; }
-.balance-display p { font-size: 12px; color: #94a3b8; }
 .balance-display h2 { color: #4ade80; }
 
-/* Actions & Grid */
-.action-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+/* বাটন ও টাস্ক গ্রিড */
+.action-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
 .action-row button { padding: 12px; border-radius: 10px; border: none; color: white; font-weight: bold; cursor: pointer; }
 .bonus-btn { background: #f59e0b; }
 .payout-btn { background: #10b981; }
 
-.tasks-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.task-box { background: #1a1f2e; padding: 20px 10px; border-radius: 15px; text-align: center; border: 1px solid #2d3748; cursor: pointer; transition: 0.2s; }
-.task-box:active { transform: scale(0.95); }
-.icon-wrap { background: #2d3748; width: 45px; height: 45px; line-height: 45px; border-radius: 50%; margin: 0 auto 10px; color: #3b82f6; }
+.tasks-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.task-box { background: #1a1f2e; padding: 20px; border-radius: 15px; text-align: center; border: 1px solid #2d3748; cursor: pointer; }
+.icon-wrap { background: #2d3748; width: 40px; height: 40px; line-height: 40px; border-radius: 50%; margin: 0 auto 10px; color: #3b82f6; }
 
-/* Timer & Footer */
-.timer-card { background: #ef4444; padding: 12px; border-radius: 10px; text-align: center; margin-top: 20px; }
-.footer-banner { margin-top: 30px; text-align: center; padding: 15px; background: #1a1f2e; border-radius: 15px; }
-.ad-label { font-size: 10px; color: #64748b; margin-bottom: 8px; }
-
-/* Modals */
+/* পপ-আপ ও ওভারলে */
 .ad-timer-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 1000; justify-content: center; align-items: center; }
 .timer-content h1 { font-size: 70px; color: #3b82f6; }
 .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 999; justify-content: center; align-items: center; }
-.modal-content { background: #1a1f2e; width: 90%; max-width: 350px; padding: 25px; border-radius: 20px; position: relative; }
-.modal-content select, .modal-content input { width: 100%; padding: 10px; margin: 10px 0; border-radius: 8px; border: 1px solid #2d3748; background: #0b0f1a; color: white; }
-.confirm-btn { width: 100%; padding: 12px; background: #3b82f6; color: white; border: none; border-radius: 8px; font-weight: bold; }
-.close-modal { position: absolute; right: 15px; top: 10px; font-size: 25px; cursor: pointer; color: #64748b; }
+.modal-content { background: #1a1f2e; width: 90%; padding: 25px; border-radius: 20px; position: relative; }
+.modal-content input, select { width: 100%; padding: 10px; margin: 10px 0; border-radius: 8px; border: 1px solid #2d3748; background: #0b0f1a; color: white; }
+.confirm-btn { width: 100%; padding: 12px; background: #3b82f6; border: none; border-radius: 8px; color: white; font-weight: bold; }
+.close-modal { position: absolute; right: 15px; top: 10px; font-size: 25px; cursor: pointer; }
+.footer-banner { margin-top: 30px; text-align: center; padding: 10px; background: #1a1f2e; border-radius: 15px; }
