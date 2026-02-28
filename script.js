@@ -18,11 +18,16 @@ const db = getDatabase(app);
 // Unity Ads Config
 const gameId = '6055094';
 const placementId = 'Rewarded_Android';
-const testMode = true; // রিয়েল অ্যাডসের জন্য false করে দিন
+const testMode = true; // Set to false for real ads
 
 if (window.unityAds) {
     window.unityAds.initialize(gameId, testMode);
 }
+
+// Sidebar Function
+window.toggleMenu = () => {
+    document.getElementById('side-menu').classList.toggle('active');
+};
 
 let userRef;
 let currentData = { balance: 0, lastLimit: 0, doneToday: 0, lastBonus: 0, referCount: 0, totalTaskCount: 0 };
@@ -132,29 +137,14 @@ window.startVideoTask = async () => {
                     alert("Task Completed! Tk.10 Added.");
                     location.reload();
                 } else {
-                    alert("Ad not completed!");
+                    alert("Ad not finished!");
                 }
             }
         });
     } else {
-        alert("Ads are loading... please try again in 5 seconds.");
+        alert("Ads are loading... please try again.");
     }
 };
-
-document.addEventListener('click', async (e) => {
-    if (e.target.closest('#share-btn-action')) {
-        const shareUrl = document.getElementById("refer-url").value;
-        if (navigator.share) {
-            await navigator.share({ title: 'ProEarn', url: shareUrl });
-        } else {
-            navigator.clipboard.writeText(shareUrl);
-            alert("Referral Link Copied!");
-        }
-    }
-});
-
-window.openWithdraw = () => document.getElementById('withdrawModal').style.display = 'flex';
-window.closeWithdraw = () => document.getElementById('withdrawModal').style.display = 'none';
 
 window.sendWithdrawRequest = async () => {
     const amount = parseFloat(document.getElementById('withdrawAmount').value);
@@ -167,6 +157,8 @@ window.sendWithdrawRequest = async () => {
     closeWithdraw();
 };
 
+window.openWithdraw = () => document.getElementById('withdrawModal').style.display = 'flex';
+window.closeWithdraw = () => document.getElementById('withdrawModal').style.display = 'none';
 window.handleLogout = () => signOut(auth).then(() => location.reload());
 
 document.getElementById('login-btn').addEventListener('click', async () => {
@@ -175,4 +167,12 @@ document.getElementById('login-btn').addEventListener('click', async () => {
     if(!e || !p) return alert("Fill all fields");
     try { await signInWithEmailAndPassword(auth, e, p); } 
     catch { try { await createUserWithEmailAndPassword(auth, e, p); } catch (err) { alert(err.message); } }
+});
+
+document.addEventListener('click', (e) => {
+    const menu = document.getElementById('side-menu');
+    const trigger = document.querySelector('.menu-trigger');
+    if (menu.classList.contains('active') && !menu.contains(e.target) && !trigger.contains(e.target)) {
+        menu.classList.remove('active');
+    }
 });
