@@ -21,7 +21,7 @@
                 <i class="fas fa-lock"></i>
                 <input type="password" id="password" placeholder="Password">
             </div>
-            <button id="login-btn" class="main-btn">Login</button>
+            <button id="login-btn" class="main-btn">Login / Sign Up</button>
         </div>
     </div>
 
@@ -54,7 +54,11 @@
             </div>
 
             <div class="refer-info">
-                <i class="fas fa-user-plus"></i> Refer Friend & Earn <b>৳৩০.০০</b>
+                <p><i class="fas fa-user-plus"></i> Refer & Earn <b>৳৩০.০০</b></p>
+                <div class="refer-link-box">
+                    <input type="text" id="refer-url" readonly value="Generating...">
+                    <button onclick="copyReferLink()"><i class="fas fa-copy"></i></button>
+                </div>
             </div>
 
             <div class="tasks-container">
@@ -81,7 +85,7 @@
             </div>
 
             <div id="limit-box" class="cooldown-card" style="display: none;">
-                <i class="fas fa-clock"></i> Next Task: <span id="timer-display">00:00:00</span>
+                <i class="fas fa-clock"></i> Next Task in: <span id="timer-display">00:00:00</span>
             </div>
         </div>
     </div>
@@ -97,7 +101,7 @@
                     <option value="Bkash">Bkash</option>
                     <option value="Nagad">Nagad</option>
                 </select>
-                <input type="text" id="accountNo" placeholder="Personal Number">
+                <input type="text" id="accountNo" placeholder="Account Number">
                 <input type="number" id="withdrawAmount" placeholder="Min ৳৫০০">
                 <button class="submit-btn" onclick="sendWithdrawRequest()">Send Request</button>
             </div>
