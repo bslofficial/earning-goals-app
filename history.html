@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Payment History - ProEarn Rewards</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .history-container { background: #1a1f2e; border-radius: 20px; padding: 15px; margin-top: 10px; border: 1px solid rgba(59, 130, 246, 0.2); }
+        .history-item { 
+            display: flex; align-items: center; justify-content: space-between; 
+            padding: 15px; background: #0b0e14; border-radius: 12px; margin-bottom: 12px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .hist-info b { display: block; font-size: 15px; color: #fff; margin-bottom: 2px; }
+        .hist-info small { color: #94a3b8; font-size: 11px; }
+        .hist-status { text-align: right; }
+        .status-badge { 
+            padding: 4px 10px; border-radius: 6px; font-size: 10px; font-weight: bold; text-transform: uppercase;
+        }
+        .pending { background: rgba(245, 158, 11, 0.2); color: #f59e0b; border: 1px solid #f59e0b; }
+        .paid { background: rgba(16, 185, 129, 0.2); color: #10b981; border: 1px solid #10b981; }
+        .amount-text { display: block; font-weight: 800; color: #fff; margin-bottom: 5px; }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        <div class="top-nav-blue">
+            <h1 class="app-title-header"><i class="fas fa-history"></i> WITHDRAW HISTORY</h1>
+            <p style="font-size: 12px; opacity: 0.8;">Track your payment requests</p>
+        </div>
+
+        <div class="main-content">
+            <div id="history-list" class="history-container">
+                <p style="text-align: center; color: #64748b; padding: 20px;">Loading history...</p>
+            </div>
+
+            <a href="index.html" style="display: block; text-align: center; margin-top: 20px; color: #3b82f6; text-decoration: none; font-weight: bold;">
+                <i class="fas fa-arrow-left"></i> Back to Home
+            </a>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
+        import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDuLLapNwRk2Fl5rN6F0ezZb9KsMBKhvqA",
+            authDomain: "earning-goals-app.firebaseapp.com",
+            projectId: "earning-goals-app",
+            storageBucket: "earning-goals-app.firebasestorage.app",
+            messagingSenderId: "999611133128",
+            appId: "1:999611133128:web:f8bd2cb60ac5a07b1249fd"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getDatabase(app);
+
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                const historyRef = ref(db, `withdrawals/${user.uid}`);
+                const snapshot = await get(historyRef);
+                const listContainer = document.getElementById('history-list');
+                listContainer.innerHTML = '';
+
+                if (snapshot.exists()) {
+                    snapshot.forEach((child) => {
+                        const data = child.val();
+                        const html = `
+                            <div class="history-item">
+                                <div class="hist-info">
+                                    <b>${data.method} Withdrawal</b>
+                                    <small>Acc: ${data.accountNo}</small><br>
+                                    <small>${data.date || 'Recently'}</small>
+                                </div>
+                                <div class="hist-status">
+                                    <span class="amount-text">Tk.${data.amount}</span>
+                                    <span class="status-badge ${data.status.toLowerCase()}">${data.status}</span>
+                                </div>
+                            </div>
+                        `;
+                        listContainer.innerHTML += html;
+                    });
+                } else {
+                    listContainer.innerHTML = '<p style="text-align: center; color: #64748b; padding: 20px;">No withdrawal records found.</p>';
+                }
+            } else {
+                window.location.href = "index.html";
+            }
+        });
+    </script>
+</body>
+</html>
