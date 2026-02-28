@@ -57,7 +57,9 @@
                 <p><i class="fas fa-user-plus"></i> Refer & Earn <b>৳৩০.০০</b></p>
                 <div class="refer-link-box">
                     <input type="text" id="refer-url" readonly value="Generating...">
-                    <button onclick="copyReferLink()"><i class="fas fa-copy"></i></button>
+                    <button onclick="shareReferLink()" class="share-btn">
+                        <i class="fas fa-share-alt"></i> Share
+                    </button>
                 </div>
             </div>
 
@@ -103,7 +105,7 @@
                 </select>
                 <input type="text" id="accountNo" placeholder="Account Number">
                 <input type="number" id="withdrawAmount" placeholder="Min ৳৫০০">
-                <button class="submit-btn" onclick="sendWithdrawRequest()">Send Request</button>
+                <button class="submit-btn" onclick="sendWithdrawRequest()">Confirm Request</button>
             </div>
         </div>
     </div>
@@ -111,7 +113,7 @@
     <div id="videoOverlay" class="timer-overlay">
         <div class="timer-circle">
             <h1 id="seconds">২০</h1>
-            <p>Processing Reward...</p>
+            <p>Wait for Reward...</p>
         </div>
     </div>
 
