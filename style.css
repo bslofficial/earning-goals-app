@@ -1,27 +1,36 @@
-* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-body { background: #0b0e14; color: white; display: flex; justify-content: center; min-height: 100vh; }
-.container, .auth-container { width: 100%; max-width: 420px; padding: 20px; }
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+body { background: #080a0f; color: white; display: flex; justify-content: center; min-height: 100vh; }
+.app-container, .auth-wrapper { width: 100%; max-width: 420px; padding: 20px; }
 
-/* Auth Box */
-.auth-box { background: #1a1f29; padding: 30px; border-radius: 25px; margin-top: 50px; text-align: center; }
-.auth-box input { width: 100%; padding: 15px; margin: 10px 0; background: #0b0e14; border: 1px solid #334155; color: white; border-radius: 12px; }
-.auth-box button { width: 100%; padding: 15px; background: #3b82f6; border: none; color: white; border-radius: 12px; font-weight: bold; cursor: pointer; }
+/* Auth Styling */
+.auth-card { background: #121620; padding: 40px 25px; border-radius: 30px; text-align: center; margin-top: 60px; border: 1px solid #1e293b; }
+.logo { font-size: 50px; background: #3b82f6; width: 80px; height: 80px; line-height: 80px; border-radius: 50%; margin: 0 auto 20px; color: white; font-weight: bold; }
+.input-field { background: #080a0f; display: flex; align-items: center; padding: 12px; margin: 15px 0; border-radius: 12px; border: 1px solid #1e293b; }
+.input-field i { color: #3b82f6; margin-right: 12px; }
+.input-field input { background: none; border: none; color: white; outline: none; width: 100%; }
+.main-btn { width: 100%; padding: 15px; background: #3b82f6; color: white; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; margin-top: 10px; }
 
-/* Dashboard */
-.header-card { background: linear-gradient(135deg, #3b82f6, #8b5cf6); padding: 25px; border-radius: 20px; display: flex; justify-content: space-between; margin-bottom: 20px; }
-.action-bar { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
-.action-bar button { padding: 15px; border-radius: 15px; border: none; color: white; font-weight: bold; cursor: pointer; }
+/* Dashboard Styling */
+.top-nav { background: linear-gradient(135deg, #2563eb, #7c3aed); padding: 25px; border-radius: 25px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
+.balance-display h2 { font-size: 32px; font-weight: 800; }
+
+.action-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; }
+.action-row button { padding: 15px; border-radius: 15px; border: none; color: white; font-weight: 700; cursor: pointer; font-size: 14px; }
 .bonus-btn { background: #f59e0b; }
-.withdraw-nav { background: #10b981; }
+.payout-btn { background: #10b981; }
 
-/* Task Grid - ৪টি বাটন সুন্দরভাবে সাজানো */
-.task-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-.task-card { background: #1a1f29; padding: 30px 15px; border-radius: 20px; text-align: center; border: 1px solid #334155; cursor: pointer; }
-.task-card i { font-size: 35px; color: #3b82f6; margin-bottom: 10px; }
+/* 4 Tasks Grid */
+.tasks-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+.task-box { background: #121620; padding: 25px 15px; border-radius: 22px; text-align: center; border: 1px solid #1e293b; cursor: pointer; }
+.icon-wrap { background: #1e293b; width: 50px; height: 50px; line-height: 50px; border-radius: 50%; margin: 0 auto 10px; color: #3b82f6; font-size: 20px; }
 
-.limit-notice { background: #ef4444; padding: 15px; border-radius: 15px; text-align: center; margin-top: 20px; font-weight: bold; }
+.timer-card { background: #ef4444; padding: 15px; border-radius: 15px; text-align: center; margin-top: 20px; font-weight: bold; }
 
-/* Modals & Overlays */
-.modal-bg { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 100; justify-content: center; align-items: center; display: none; }
-.modal-box { background: #1a1f29; width: 90%; max-width: 350px; padding: 30px; border-radius: 25px; position: relative; }
-.timer-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0b0e14; z-index: 200; justify-content: center; align-items: center; }
+/* Modals */
+.modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 1000; justify-content: center; align-items: center; }
+.modal-content { background: #121620; width: 90%; max-width: 360px; padding: 30px; border-radius: 25px; border: 1px solid #1e293b; position: relative; }
+.modal-content input, select { width: 100%; padding: 12px; margin: 10px 0; background: #080a0f; border: 1px solid #1e293b; color: white; border-radius: 10px; }
+.confirm-btn { width: 100%; padding: 14px; background: #3b82f6; border: none; color: white; border-radius: 10px; font-weight: bold; margin-top: 10px; }
+.close-modal { position: absolute; right: 20px; top: 15px; font-size: 28px; cursor: pointer; color: #64748b; }
+
+.ad-timer-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #080a0f; z-index: 2000; justify-content: center; align-items: center; }
