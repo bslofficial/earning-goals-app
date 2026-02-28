@@ -1,28 +1,51 @@
-/* অ্যাপ নাম স্টাইল */
-.app-header { text-align: center; width: 100%; margin-bottom: 10px; }
-.app-name { font-size: 18px; color: #fff; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; }
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+body { background: #0b0e14; color: white; overflow-x: hidden; }
 
-/* টাস্ক কার্ড ডিজাইন (গ্রেডিয়েন্ট) */
+.app-container { width: 100%; max-width: 450px; margin: 0 auto; min-height: 100vh; }
+
+/* Top Nav with App Name */
+.top-nav-blue {
+    background: linear-gradient(135deg, #1e40af, #3b82f6);
+    padding: 25px 20px;
+    border-bottom-left-radius: 25px;
+    border-bottom-right-radius: 25px;
+    text-align: center;
+}
+.app-title { font-size: 20px; font-weight: 800; margin-bottom: 15px; letter-spacing: 1px; text-transform: uppercase; }
+.user-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.profile-box img { width: 50px; height: 50px; border-radius: 50%; border: 2px solid white; }
+.balance-box h2 { font-size: 22px; font-weight: bold; }
+
+.main-content { padding: 15px; }
+.action-buttons { display: flex; gap: 10px; margin-bottom: 15px; }
+.action-buttons button { flex: 1; padding: 12px; border: none; border-radius: 10px; color: white; font-weight: bold; cursor: pointer; }
+.btn-bonus { background: #f59e0b; }
+.btn-withdraw { background: #10b981; }
+
+/* Refer & Share */
+.refer-info { background: #1a1f2e; padding: 12px; border-radius: 12px; border: 1px dashed #3b82f6; text-align: center; margin-bottom: 15px; }
+.refer-link-box { display: flex; background: #0b0e14; border-radius: 8px; padding: 4px; border: 1px solid #2d3748; }
+.refer-link-box input { flex: 1; background: transparent; border: none; color: #3b82f6; padding: 8px; font-size: 11px; outline: none; }
+.share-btn { background: #25d366; border: none; color: white; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-weight: bold; }
+
+/* Small Gradient Task Cards */
+.tasks-container { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .task-card { 
-    background: linear-gradient(135deg, #2c3e50, #000000); 
-    padding: 12px; 
+    background: linear-gradient(135deg, #1e293b, #0f172a); 
+    padding: 15px 10px; 
     border-radius: 15px; 
     text-align: center; 
-    border: 1px solid rgba(255,255,255,0.1);
+    border: 1px solid rgba(59, 130, 246, 0.2); 
+    cursor: pointer;
 }
-.task-card p { color: #10b981; font-weight: bold; font-size: 14px; }
+.task-icon { color: #3b82f6; font-size: 18px; margin-bottom: 5px; }
+.task-card h3 { font-size: 14px; margin-bottom: 5px; }
+.task-card p { font-size: 13px; color: #10b981; font-weight: bold; }
 
-/* টাইমার বক্স (স্ক্রিনশটের মতো লাল) */
-.cooldown-card { 
-    background: #e11d48; 
-    color: white; 
-    padding: 15px; 
-    border-radius: 12px; 
-    text-align: center; 
-    margin-top: 20px; 
-    font-weight: bold;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-}
+/* 24h Timer Card */
+.cooldown-card { background: #e11d48; padding: 15px; border-radius: 12px; text-align: center; margin-top: 20px; font-weight: bold; }
+
+/* Modal & Overlay (Rest of CSS) */
+.modal-backdrop { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 9999; justify-content: center; align-items: center; }
+.modal-box { background: #1a1f2e; width: 85%; max-width: 320px; padding: 20px; border-radius: 15px; border: 1px solid #3b82f6; }
+.timer-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 10000; justify-content: center; align-items: center; }
