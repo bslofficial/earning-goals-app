@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ProEarn Rewards</title>
+    <script src="https://cdn.jsdelivr.net/npm/@unityadssdk/unity-ads-sdk@latest/dist/unity-ads.min.js"></script>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -62,35 +63,39 @@
                 </div>
             </div>
 
-            <div class="stats-row">
-                <div class="stat-card">
+            <div class="grid-container">
+                <div class="custom-card">
                     <i class="fas fa-users"></i>
                     <p>Total Refer</p>
                     <h3 id="refer-count">0</h3>
                 </div>
-                <div class="stat-card">
+                <div class="custom-card">
                     <i class="fas fa-check-circle"></i>
                     <p>Tasks Done</p>
                     <h3 id="tasks-done">0</h3>
                 </div>
             </div>
 
-            <div class="tasks-container">
-                <div class="task-card" onclick="startVideoTask()">
-                    <div class="task-icon"><i class="fas fa-play"></i></div>
-                    <h3>Task 01</h3><p>Tk.10.00</p>
+            <div class="grid-container">
+                <div class="custom-card task-card" onclick="startVideoTask()">
+                    <i class="fas fa-play"></i>
+                    <p>Task 01</p>
+                    <h3>Tk.10.00</h3>
                 </div>
-                <div class="task-card" onclick="startVideoTask()">
-                    <div class="task-icon"><i class="fas fa-play"></i></div>
-                    <h3>Task 02</h3><p>Tk.10.00</p>
+                <div class="custom-card task-card" onclick="startVideoTask()">
+                    <i class="fas fa-play"></i>
+                    <p>Task 02</p>
+                    <h3>Tk.10.00</h3>
                 </div>
-                <div class="task-card" onclick="startVideoTask()">
-                    <div class="task-icon"><i class="fas fa-play"></i></div>
-                    <h3>Task 03</h3><p>Tk.10.00</p>
+                <div class="custom-card task-card" onclick="startVideoTask()">
+                    <i class="fas fa-play"></i>
+                    <p>Task 03</p>
+                    <h3>Tk.10.00</h3>
                 </div>
-                <div class="task-card" onclick="startVideoTask()">
-                    <div class="task-icon"><i class="fas fa-play"></i></div>
-                    <h3>Task 04</h3><p>Tk.10.00</p>
+                <div class="custom-card task-card" onclick="startVideoTask()">
+                    <i class="fas fa-play"></i>
+                    <p>Task 04</p>
+                    <h3>Tk.10.00</h3>
                 </div>
             </div>
 
@@ -104,8 +109,8 @@
         <div class="modal-box">
             <h3>Withdraw Funds</h3>
             <select id="method"><option value="Bkash">Bkash</option><option value="Nagad">Nagad</option></select>
-            <input type="text" id="accountNo" placeholder="Personal Account Number">
-            <input type="number" id="withdrawAmount" placeholder="Min Amount Tk.500">
+            <input type="text" id="accountNo" placeholder="Account Number">
+            <input type="number" id="withdrawAmount" placeholder="Min Tk.500">
             <button class="submit-btn" onclick="sendWithdrawRequest()">Confirm Withdraw</button>
             <p onclick="closeWithdraw()" style="margin-top:15px; cursor:pointer; color:#999;">Close</p>
         </div>
@@ -113,4 +118,4 @@
 
     <script type="module" src="script.js"></script>
 </body>
-</html>
+                                                                                                   </html>
