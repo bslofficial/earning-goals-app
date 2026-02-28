@@ -18,14 +18,13 @@ const db = getDatabase(app);
 let userRef;
 let currentData = { balance: 0, lastLimit: 0, doneToday: 0, lastBonus: 0 };
 
+// Prevent UI flicker by checking auth state first
 onAuthStateChanged(auth, async (user) => {
-    document.getElementById('loading-screen').style.display = 'none'; // লোডিং হাইড করা
+    const loadingScreen = document.getElementById('loading-screen');
+    const authScreen = document.getElementById('auth-screen');
+    const mainApp = document.getElementById('main-app');
+
     if (user) {
-        document.getElementById('auth-screen').style.display = 'none';
-        document.getElementById('main-app').style.display = 'block';
-        document.getElementById('display-name').innerText = user.email.split('@')[0];
-        document.getElementById('refer-url').value = `${window.location.origin}${window.location.pathname}?ref=${user.uid}`;
-        
         userRef = ref(db, 'users/' + user.uid);
         const snap = await get(userRef);
         if (snap.exists()) {
@@ -33,11 +32,20 @@ onAuthStateChanged(auth, async (user) => {
         } else {
             await set(userRef, currentData);
         }
+        
+        document.getElementById('display-name').innerText = user.email.split('@')[0];
+        document.getElementById('refer-url').value = `${window.location.origin}${window.location.pathname}?ref=${user.uid}`;
+        
         updateUI();
         startTimers();
+        
+        loadingScreen.style.display = 'none';
+        authScreen.style.display = 'none';
+        mainApp.style.display = 'block';
     } else {
-        document.getElementById('auth-screen').style.display = 'flex';
-        document.getElementById('main-app').style.display = 'none';
+        loadingScreen.style.display = 'none';
+        authScreen.style.display = 'flex';
+        mainApp.style.display = 'none';
     }
 });
 
@@ -48,7 +56,7 @@ function updateUI() {
 function startTimers() {
     setInterval(() => {
         const now = new Date().getTime();
-        // ২৪ ঘণ্টা টাইমার ফিক্স
+        // Fixed 24h Countdown
         if (currentData.lastLimit && now < currentData.lastLimit) {
             document.getElementById('limit-box').style.display = 'block';
             document.getElementById('timer-display').innerText = formatTime(currentData.lastLimit - now);
@@ -73,7 +81,7 @@ function formatTime(ms) {
     return `${h.toString().padStart(2,'0')}h ${m.toString().padStart(2,'0')}m ${s.toString().padStart(2,'0')}s`;
 }
 
-// উইথড্র বাটন ফিক্স
+// Fixed Withdraw Buttons
 window.openWithdraw = () => document.getElementById('withdrawModal').style.display = 'flex';
 window.closeWithdraw = () => document.getElementById('withdrawModal').style.display = 'none';
 
@@ -89,7 +97,7 @@ window.sendWithdrawRequest = async () => {
     currentData.balance -= amount;
     await update(userRef, currentData);
     updateUI();
-    alert("Withdrawal request sent!");
+    alert("Withdrawal request sent successfully!");
     window.closeWithdraw();
 };
 
@@ -101,7 +109,7 @@ window.startVideoTask = async () => {
         currentData.balance += 10;
         currentData.doneToday = (currentData.doneToday || 0) + 1;
         if (currentData.doneToday >= 4) {
-            currentData.lastLimit = new Date().getTime() + (24 * 60 * 60 * 1000); // ২৪ ঘণ্টা বিরতি
+            currentData.lastLimit = new Date().getTime() + (24 * 60 * 60 * 1000); // Strict 24h
             currentData.doneToday = 0;
         }
         await update(userRef, currentData);
@@ -110,11 +118,20 @@ window.startVideoTask = async () => {
     }, 5000);
 };
 
+window.claimDailyBonus = async () => {
+    window.open("https://google.com", '_blank');
+    currentData.balance += 20;
+    currentData.lastBonus = new Date().getTime() + (24 * 60 * 60 * 1000); 
+    await update(userRef, currentData);
+    updateUI();
+};
+
 window.handleLogout = () => signOut(auth).then(() => location.reload());
 
 document.getElementById('login-btn').addEventListener('click', async () => {
     const e = document.getElementById('email').value;
     const p = document.getElementById('password').value;
+    if(!e || !p) return alert("Fill all fields");
     try { await signInWithEmailAndPassword(auth, e, p); } 
     catch { try { await createUserWithEmailAndPassword(auth, e, p); } catch (err) { alert(err.message); } }
 });
