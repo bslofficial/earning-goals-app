@@ -19,6 +19,7 @@ let userRef;
 let currentData = { balance: 0, lastLimit: 0, doneToday: 0, lastBonus: 0 };
 
 onAuthStateChanged(auth, async (user) => {
+    document.getElementById('loading-screen').style.display = 'none'; // লোডিং হাইড করা
     if (user) {
         document.getElementById('auth-screen').style.display = 'none';
         document.getElementById('main-app').style.display = 'block';
@@ -34,6 +35,9 @@ onAuthStateChanged(auth, async (user) => {
         }
         updateUI();
         startTimers();
+    } else {
+        document.getElementById('auth-screen').style.display = 'flex';
+        document.getElementById('main-app').style.display = 'none';
     }
 });
 
@@ -44,14 +48,14 @@ function updateUI() {
 function startTimers() {
     setInterval(() => {
         const now = new Date().getTime();
-        // টাস্ক লিমিট ২৪ ঘণ্টা (24h Countdown)
+        // ২৪ ঘণ্টা টাইমার ফিক্স
         if (currentData.lastLimit && now < currentData.lastLimit) {
             document.getElementById('limit-box').style.display = 'block';
             document.getElementById('timer-display').innerText = formatTime(currentData.lastLimit - now);
         } else {
             document.getElementById('limit-box').style.display = 'none';
         }
-        // বোনাস লিমিট ২৪ ঘণ্টা
+        
         if (currentData.lastBonus && now < currentData.lastBonus) {
             document.getElementById('bonus-btn').disabled = true;
             document.getElementById('bonus-text').innerText = formatTime(currentData.lastBonus - now);
@@ -69,12 +73,31 @@ function formatTime(ms) {
     return `${h.toString().padStart(2,'0')}h ${m.toString().padStart(2,'0')}m ${s.toString().padStart(2,'0')}s`;
 }
 
+// উইথড্র বাটন ফিক্স
+window.openWithdraw = () => document.getElementById('withdrawModal').style.display = 'flex';
+window.closeWithdraw = () => document.getElementById('withdrawModal').style.display = 'none';
+
+window.sendWithdrawRequest = async () => {
+    const amount = parseFloat(document.getElementById('withdrawAmount').value);
+    const account = document.getElementById('accountNo').value;
+    const method = document.getElementById('method').value;
+
+    if (amount < 500) return alert("Minimum ৳৫০০ needed!");
+    if (!account) return alert("Enter account number!");
+    if (currentData.balance < amount) return alert("Not enough balance!");
+
+    currentData.balance -= amount;
+    await update(userRef, currentData);
+    updateUI();
+    alert("Withdrawal request sent!");
+    window.closeWithdraw();
+};
+
 window.startVideoTask = async () => {
     if (currentData.lastLimit && new Date().getTime() < currentData.lastLimit) return;
-    window.open("https://www.effectivegatecpm.com/uy4hgpbq7?key=4367993c6e478e8144fda5a6e5969fbb", '_blank');
-    document.getElementById('videoOverlay').style.display = 'flex';
+    window.open("https://www.google.com", '_blank');
+    
     setTimeout(async () => {
-        document.getElementById('videoOverlay').style.display = 'none';
         currentData.balance += 10;
         currentData.doneToday = (currentData.doneToday || 0) + 1;
         if (currentData.doneToday >= 4) {
@@ -84,29 +107,9 @@ window.startVideoTask = async () => {
         await update(userRef, currentData);
         updateUI();
         location.reload();
-    }, 20000);
+    }, 5000);
 };
 
-window.claimDailyBonus = async () => {
-    window.open("https://google.com", '_blank');
-    currentData.balance += 20;
-    currentData.lastBonus = new Date().getTime() + (24 * 60 * 60 * 1000); // ২৪ ঘণ্টা
-    await update(userRef, currentData);
-    updateUI();
-};
-
-window.shareReferLink = async () => {
-    const url = document.getElementById("refer-url").value;
-    if (navigator.share) {
-        navigator.share({ title: 'ProEarn', text: 'Earn ৳৩০ on Referral!', url: url });
-    } else {
-        navigator.clipboard.writeText(url);
-        alert("Link Copied!");
-    }
-};
-
-window.openWithdraw = () => document.getElementById('withdrawModal').style.display = 'flex';
-window.closeWithdraw = () => document.getElementById('withdrawModal').style.display = 'none';
 window.handleLogout = () => signOut(auth).then(() => location.reload());
 
 document.getElementById('login-btn').addEventListener('click', async () => {
