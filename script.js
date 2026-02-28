@@ -30,23 +30,20 @@ onAuthStateChanged(auth, async (user) => {
         if (snap.exists()) {
             currentData = snap.val();
         } else {
-            // New User Registration
             const urlParams = new URLSearchParams(window.location.search);
             const referrerId = urlParams.get('ref');
             
-            // Handle Referral Bonus
             if (referrerId) {
                 const refUserRef = ref(db, 'users/' + referrerId);
                 const refSnap = await get(refUserRef);
                 if (refSnap.exists()) {
-                    const refData = refSnap.val();
+                    const rData = refSnap.val();
                     await update(refUserRef, {
-                        balance: (parseFloat(refData.balance) || 0) + 30,
-                        referCount: (parseInt(refData.referCount) || 0) + 1
+                        balance: (parseFloat(rData.balance) || 0) + 30,
+                        referCount: (parseInt(rData.referCount) || 0) + 1
                     });
                 }
             }
-            
             await set(userRef, currentData);
         }
         
@@ -83,14 +80,14 @@ function startTimers() {
             document.getElementById('limit-box').style.display = 'none';
         }
 
-        const bonusBtn = document.getElementById('bonus-btn');
-        const bonusText = document.getElementById('bonus-text');
+        const bBtn = document.getElementById('bonus-btn');
+        const bTxt = document.getElementById('bonus-text');
         if (currentData.lastBonus && now < currentData.lastBonus) {
-            bonusBtn.disabled = true;
-            bonusText.innerText = formatTime(currentData.lastBonus - now);
+            bBtn.disabled = true;
+            bTxt.innerText = formatTime(currentData.lastBonus - now);
         } else {
-            bonusBtn.disabled = false;
-            bonusText.innerText = "Daily Bonus";
+            bBtn.disabled = false;
+            bTxt.innerText = "Daily Bonus";
         }
     }, 1000);
 }
@@ -112,7 +109,7 @@ window.claimDailyBonus = async () => {
 
     await update(userRef, currentData);
     updateUI();
-    alert("৳১০ বোনাস সফল হয়েছে!");
+    alert("Tk.10 Bonus Claimed Successfully!");
 };
 
 document.addEventListener('click', async (e) => {
@@ -151,12 +148,12 @@ window.closeWithdraw = () => document.getElementById('withdrawModal').style.disp
 
 window.sendWithdrawRequest = async () => {
     const amount = parseFloat(document.getElementById('withdrawAmount').value);
-    if (amount < 500) return alert("Min ৳৫০০");
+    if (amount < 500) return alert("Minimum Withdraw Tk.500");
     if (currentData.balance < amount) return alert("Insufficient Balance");
     currentData.balance -= amount;
     await update(userRef, currentData);
     updateUI();
-    alert("Withdrawal Requested!");
+    alert("Withdrawal Request Sent!");
     closeWithdraw();
 };
 
@@ -165,7 +162,7 @@ window.handleLogout = () => signOut(auth).then(() => location.reload());
 document.getElementById('login-btn').addEventListener('click', async () => {
     const e = document.getElementById('email').value;
     const p = document.getElementById('password').value;
-    if(!e || !p) return alert("Fill all fields");
+    if(!e || !p) return alert("Please fill all fields");
     try { await signInWithEmailAndPassword(auth, e, p); } 
     catch { try { await createUserWithEmailAndPassword(auth, e, p); } catch (err) { alert(err.message); } }
 });
