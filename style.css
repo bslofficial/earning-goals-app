@@ -3,49 +3,62 @@ body { background: #0b0e14; color: white; overflow-x: hidden; }
 
 .app-container { width: 100%; max-width: 450px; margin: 0 auto; position: relative; min-height: 100vh; }
 
-/* Auth Styling */
-.auth-wrapper { padding: 40px 20px; text-align: center; }
-.auth-card { background: #1a1f2e; padding: 30px; border-radius: 20px; border: 1px solid #2d3748; }
-.logo { background: #3b82f6; width: 60px; height: 60px; line-height: 60px; border-radius: 50%; margin: 0 auto 20px; font-size: 30px; font-weight: bold; }
-.input-field { background: #0b0e14; display: flex; align-items: center; padding: 12px; margin: 15px 0; border-radius: 10px; border: 1px solid #2d3748; }
-.input-field i { margin-right: 10px; color: #3b82f6; }
-.input-field input { background: transparent; border: none; color: white; outline: none; width: 100%; }
-.main-btn { width: 100%; padding: 12px; background: #3b82f6; border: none; border-radius: 10px; color: white; font-weight: bold; cursor: pointer; }
-
-/* Top Navigation */
+/* টপ বার ডিজাইন */
 .top-nav-blue {
     background: linear-gradient(135deg, #2563eb, #3b82f6);
-    padding: 35px 20px;
-    border-bottom-left-radius: 30px;
-    border-bottom-right-radius: 30px;
+    padding: 30px 20px;
+    border-bottom-left-radius: 25px;
+    border-bottom-right-radius: 25px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 10px 30px rgba(37, 99, 235, 0.3);
 }
-.profile-box img { width: 60px; height: 60px; border-radius: 50%; border: 3px solid rgba(255,255,255,0.5); object-fit: cover; }
-.logout-btn { background: rgba(255,255,255,0.2); border: none; color: white; padding: 4px 10px; border-radius: 5px; font-size: 11px; cursor: pointer; }
-.balance-box h2 { font-size: 28px; font-weight: 800; }
+.profile-box img { width: 55px; height: 55px; border-radius: 50%; border: 2px solid white; object-fit: cover; }
+.balance-box h2 { font-size: 24px; font-weight: 800; }
 
-.main-content { padding: 20px; }
-.action-buttons { display: flex; gap: 12px; margin-bottom: 20px; }
-.action-buttons button { flex: 1; padding: 15px; border: none; border-radius: 12px; color: white; font-weight: bold; font-size: 14px; cursor: pointer; }
+.main-content { padding: 15px; }
+
+/* অ্যাকশন বাটন */
+.action-buttons { display: flex; gap: 10px; margin-bottom: 15px; }
+.action-buttons button { flex: 1; padding: 12px; border: none; border-radius: 10px; color: white; font-weight: bold; font-size: 13px; cursor: pointer; }
 .btn-bonus { background: #f59e0b; }
 .btn-withdraw { background: #10b981; }
 
-/* Refer & Share Box */
-.refer-info { background: #1a1f2e; padding: 15px; border-radius: 15px; border: 1px dashed #3b82f6; text-align: center; margin-bottom: 20px; }
-.refer-link-box { display: flex; background: #0b0e14; border-radius: 8px; padding: 5px; margin-top: 10px; border: 1px solid #2d3748; }
-.refer-link-box input { flex: 1; background: transparent; border: none; color: #3b82f6; padding: 8px; font-size: 11px; outline: none; }
-.share-btn { background: #25d366; border: none; color: white; padding: 8px 15px; border-radius: 6px; cursor: pointer; font-weight: bold; display: flex; align-items: center; gap: 5px; }
+/* রেফার সেকশন */
+.refer-info { background: #1a1f2e; padding: 12px; border-radius: 12px; border: 1px dashed #3b82f6; text-align: center; margin-bottom: 15px; }
+.refer-link-box { display: flex; background: #0b0e14; border-radius: 8px; padding: 4px; margin-top: 8px; border: 1px solid #2d3748; }
+.refer-link-box input { flex: 1; background: transparent; border: none; color: #3b82f6; padding: 6px; font-size: 10px; outline: none; }
+.share-btn { background: #25d366; border: none; color: white; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: bold; display: flex; align-items: center; gap: 4px; }
 
-.tasks-container { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-.task-card { background: #161b26; padding: 25px 15px; border-radius: 20px; text-align: center; border: 1px solid #2d3748; cursor: pointer; }
-.task-icon { background: #1e293b; width: 45px; height: 45px; line-height: 45px; border-radius: 50%; margin: 0 auto 12px; color: #3b82f6; }
+/* টাস্ক কার্ড ছোট এবং গ্রেডিয়েন্ট */
+.tasks-container { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.task-card { 
+    background: linear-gradient(135deg, #1e293b, #334155); /* গ্রেডিয়েন্ট ব্যাকগ্রাউন্ড */
+    padding: 15px 10px; /* সাইজ ছোট করা হয়েছে */
+    border-radius: 15px; 
+    text-align: center; 
+    border: 1px solid rgba(59, 130, 246, 0.3); 
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+.task-card:active { transform: scale(0.95); }
+.task-icon { 
+    background: rgba(59, 130, 246, 0.2); 
+    width: 35px; height: 35px; 
+    line-height: 35px; 
+    border-radius: 50%; 
+    margin: 0 auto 8px; 
+    color: #3b82f6; 
+    font-size: 14px;
+}
+.task-card h3 { font-size: 14px; margin-bottom: 4px; }
+.task-card p { font-size: 12px; color: #10b981; font-weight: bold; }
 
-/* Modal & Timer */
+/* টাইমার কার্ড */
+.cooldown-card { background: #dc2626; padding: 12px; border-radius: 10px; text-align: center; margin-top: 15px; font-weight: bold; font-size: 14px; }
+
+/* পপ-আপ ও ওভারলে */
 .modal-backdrop { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 9999; justify-content: center; align-items: center; }
-.modal-box { background: #1a1f2e; width: 90%; max-width: 340px; border-radius: 20px; padding: 25px; border: 1px solid #3b82f6; }
-.cooldown-card { background: #dc2626; padding: 15px; border-radius: 12px; text-align: center; margin-top: 20px; font-weight: bold; }
+.modal-box { background: #1a1f2e; width: 85%; max-width: 320px; border-radius: 15px; padding: 20px; border: 1px solid #3b82f6; }
 .timer-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 10000; justify-content: center; align-items: center; }
-.timer-circle h1 { font-size: 70px; color: #3b82f6; }
+.timer-circle h1 { font-size: 60px; color: #3b82f6; }
