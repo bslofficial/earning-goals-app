@@ -15,6 +15,15 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getDatabase(app);
 
+// Unity Ads Config
+const gameId = '6055094';
+const placementId = 'Rewarded_Android';
+const testMode = true; // রিয়েল অ্যাডসের জন্য false করে দিন
+
+if (window.unityAds) {
+    window.unityAds.initialize(gameId, testMode);
+}
+
 let userRef;
 let currentData = { balance: 0, lastLimit: 0, doneToday: 0, lastBonus: 0, referCount: 0, totalTaskCount: 0 };
 
@@ -32,7 +41,6 @@ onAuthStateChanged(auth, async (user) => {
         } else {
             const urlParams = new URLSearchParams(window.location.search);
             const referrerId = urlParams.get('ref');
-            
             if (referrerId) {
                 const refUserRef = ref(db, 'users/' + referrerId);
                 const refSnap = await get(refUserRef);
@@ -46,13 +54,10 @@ onAuthStateChanged(auth, async (user) => {
             }
             await set(userRef, currentData);
         }
-        
         document.getElementById('display-name').innerText = user.email.split('@')[0];
         document.getElementById('refer-url').value = `${window.location.origin}${window.location.pathname}?ref=${user.uid}`;
-        
         updateUI();
         startTimers();
-        
         loadingScreen.style.display = 'none';
         authScreen.style.display = 'none';
         mainApp.style.display = 'block';
@@ -72,14 +77,12 @@ function updateUI() {
 function startTimers() {
     setInterval(() => {
         const now = new Date().getTime();
-        
         if (currentData.lastLimit && now < currentData.lastLimit) {
             document.getElementById('limit-box').style.display = 'block';
             document.getElementById('timer-display').innerText = formatTime(currentData.lastLimit - now);
         } else {
             document.getElementById('limit-box').style.display = 'none';
         }
-
         const bBtn = document.getElementById('bonus-btn');
         const bTxt = document.getElementById('bonus-text');
         if (currentData.lastBonus && now < currentData.lastBonus) {
@@ -102,21 +105,47 @@ function formatTime(ms) {
 window.claimDailyBonus = async () => {
     const now = new Date().getTime();
     if (currentData.lastBonus && now < currentData.lastBonus) return;
-
     window.open("https://www.google.com", '_blank');
     currentData.balance = (parseFloat(currentData.balance) || 0) + 10;
     currentData.lastBonus = now + (3 * 60 * 60 * 1000); 
-
     await update(userRef, currentData);
     updateUI();
-    alert("Tk.10 Bonus Claimed Successfully!");
+    alert("Tk.10 Bonus Claimed!");
+};
+
+window.startVideoTask = async () => {
+    if (currentData.lastLimit && new Date().getTime() < currentData.lastLimit) return;
+
+    if (window.unityAds && window.unityAds.isReady(placementId)) {
+        window.unityAds.show(placementId, {
+            result: async (status) => {
+                if (status === 'COMPLETED') {
+                    currentData.balance += 10;
+                    currentData.doneToday = (currentData.doneToday || 0) + 1;
+                    currentData.totalTaskCount = (currentData.totalTaskCount || 0) + 1;
+                    if (currentData.doneToday >= 4) {
+                        currentData.lastLimit = new Date().getTime() + (24 * 60 * 60 * 1000); 
+                        currentData.doneToday = 0;
+                    }
+                    await update(userRef, currentData);
+                    updateUI();
+                    alert("Task Completed! Tk.10 Added.");
+                    location.reload();
+                } else {
+                    alert("Ad not completed!");
+                }
+            }
+        });
+    } else {
+        alert("Ads are loading... please try again in 5 seconds.");
+    }
 };
 
 document.addEventListener('click', async (e) => {
     if (e.target.closest('#share-btn-action')) {
         const shareUrl = document.getElementById("refer-url").value;
         if (navigator.share) {
-            await navigator.share({ title: 'ProEarn Rewards', url: shareUrl });
+            await navigator.share({ title: 'ProEarn', url: shareUrl });
         } else {
             navigator.clipboard.writeText(shareUrl);
             alert("Referral Link Copied!");
@@ -124,36 +153,17 @@ document.addEventListener('click', async (e) => {
     }
 });
 
-window.startVideoTask = async () => {
-    if (currentData.lastLimit && new Date().getTime() < currentData.lastLimit) return;
-    window.open("https://www.google.com", '_blank');
-    
-    setTimeout(async () => {
-        currentData.balance += 10;
-        currentData.doneToday = (currentData.doneToday || 0) + 1;
-        currentData.totalTaskCount = (currentData.totalTaskCount || 0) + 1;
-        
-        if (currentData.doneToday >= 4) {
-            currentData.lastLimit = new Date().getTime() + (24 * 60 * 60 * 1000); 
-            currentData.doneToday = 0;
-        }
-        await update(userRef, currentData);
-        updateUI();
-        location.reload();
-    }, 5000);
-};
-
 window.openWithdraw = () => document.getElementById('withdrawModal').style.display = 'flex';
 window.closeWithdraw = () => document.getElementById('withdrawModal').style.display = 'none';
 
 window.sendWithdrawRequest = async () => {
     const amount = parseFloat(document.getElementById('withdrawAmount').value);
-    if (amount < 500) return alert("Minimum Withdraw Tk.500");
+    if (amount < 500) return alert("Min Tk.500");
     if (currentData.balance < amount) return alert("Insufficient Balance");
     currentData.balance -= amount;
     await update(userRef, currentData);
     updateUI();
-    alert("Withdrawal Request Sent!");
+    alert("Request Sent!");
     closeWithdraw();
 };
 
@@ -162,7 +172,7 @@ window.handleLogout = () => signOut(auth).then(() => location.reload());
 document.getElementById('login-btn').addEventListener('click', async () => {
     const e = document.getElementById('email').value;
     const p = document.getElementById('password').value;
-    if(!e || !p) return alert("Please fill all fields");
+    if(!e || !p) return alert("Fill all fields");
     try { await signInWithEmailAndPassword(auth, e, p); } 
     catch { try { await createUserWithEmailAndPassword(auth, e, p); } catch (err) { alert(err.message); } }
 });
