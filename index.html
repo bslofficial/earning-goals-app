@@ -18,9 +18,9 @@
 
     <div id="auth-screen" class="auth-wrapper" style="display: none;">
         <div class="auth-card">
-            <div class="logo">৳</div>
+            <div class="logo">$</div>
             <h2>ProEarn Rewards</h2>
-            <div class="input-field"><i class="fas fa-envelope"></i><input type="email" id="email" placeholder="Email"></div>
+            <div class="input-field"><i class="fas fa-envelope"></i><input type="email" id="email" placeholder="Email Address"></div>
             <div class="input-field"><i class="fas fa-lock"></i><input type="password" id="password" placeholder="Password"></div>
             <button id="login-btn" class="main-btn">Login / Sign Up</button>
         </div>
@@ -39,12 +39,29 @@
                 </div>
                 <div class="balance-box">
                     <small>Balance</small>
-                    <h2>৳<span id="balance">0.00</span></h2>
+                    <h2>Tk.<span id="balance">0.00</span></h2>
                 </div>
             </div>
         </div>
 
         <div class="main-content">
+            <div class="action-buttons">
+                <button onclick="claimDailyBonus()" id="bonus-btn" class="btn-bonus">
+                    <i class="fas fa-gift"></i> <span id="bonus-text">Daily Bonus</span>
+                </button>
+                <button onclick="openWithdraw()" class="btn-withdraw">
+                    <i class="fas fa-wallet"></i> Withdraw
+                </button>
+            </div>
+
+            <div class="refer-info">
+                <p><i class="fas fa-user-plus"></i> Refer & Earn <b>Tk.30.00</b></p>
+                <div class="refer-link-box">
+                    <input type="text" id="refer-url" readonly value="Generating...">
+                    <button id="share-btn-action" class="share-btn"><i class="fas fa-share-alt"></i> Share</button>
+                </div>
+            </div>
+
             <div class="stats-row">
                 <div class="stat-card">
                     <i class="fas fa-users"></i>
@@ -58,39 +75,22 @@
                 </div>
             </div>
 
-            <div class="action-buttons">
-                <button onclick="claimDailyBonus()" id="bonus-btn" class="btn-bonus">
-                    <i class="fas fa-gift"></i> <span id="bonus-text">Daily Bonus</span>
-                </button>
-                <button onclick="openWithdraw()" class="btn-withdraw">
-                    <i class="fas fa-wallet"></i> Withdraw
-                </button>
-            </div>
-
-            <div class="refer-info">
-                <p><i class="fas fa-user-plus"></i> Refer & Earn <b>৳৩০.০০</b></p>
-                <div class="refer-link-box">
-                    <input type="text" id="refer-url" readonly value="Generating...">
-                    <button id="share-btn-action" class="share-btn"><i class="fas fa-share-alt"></i> Share</button>
-                </div>
-            </div>
-
             <div class="tasks-container">
                 <div class="task-card" onclick="startVideoTask()">
                     <div class="task-icon"><i class="fas fa-play"></i></div>
-                    <h3>Task 01</h3><p>৳১০.০০</p>
+                    <h3>Task 01</h3><p>Tk.10.00</p>
                 </div>
                 <div class="task-card" onclick="startVideoTask()">
                     <div class="task-icon"><i class="fas fa-play"></i></div>
-                    <h3>Task 02</h3><p>৳১০.০০</p>
+                    <h3>Task 02</h3><p>Tk.10.00</p>
                 </div>
                 <div class="task-card" onclick="startVideoTask()">
                     <div class="task-icon"><i class="fas fa-play"></i></div>
-                    <h3>Task 03</h3><p>৳১০.০০</p>
+                    <h3>Task 03</h3><p>Tk.10.00</p>
                 </div>
                 <div class="task-card" onclick="startVideoTask()">
                     <div class="task-icon"><i class="fas fa-play"></i></div>
-                    <h3>Task 04</h3><p>৳১০.০০</p>
+                    <h3>Task 04</h3><p>Tk.10.00</p>
                 </div>
             </div>
 
@@ -104,9 +104,9 @@
         <div class="modal-box">
             <h3>Withdraw Funds</h3>
             <select id="method"><option value="Bkash">Bkash</option><option value="Nagad">Nagad</option></select>
-            <input type="text" id="accountNo" placeholder="Personal Number">
-            <input type="number" id="withdrawAmount" placeholder="Min ৳৫০০">
-            <button class="submit-btn" onclick="sendWithdrawRequest()">Confirm</button>
+            <input type="text" id="accountNo" placeholder="Personal Account Number">
+            <input type="number" id="withdrawAmount" placeholder="Min Amount Tk.500">
+            <button class="submit-btn" onclick="sendWithdrawRequest()">Confirm Withdraw</button>
             <p onclick="closeWithdraw()" style="margin-top:15px; cursor:pointer; color:#999;">Close</p>
         </div>
     </div>
