@@ -2,7 +2,6 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/fireba
 import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
 import { getDatabase, ref, get, update, set } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js";
 
-// Firebase Config
 const firebaseConfig = {
     apiKey: "AIzaSyDuLLapNwRk2Fl5rN6F0ezZb9KsMBKhvqA",
     authDomain: "earning-goals-app.firebaseapp.com",
@@ -16,67 +15,72 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getDatabase(app);
 
-const directLink = "https://www.effectivegatecpm.com/uy4hgpbq7?key=4367993c6e478e8144fda5a6e5969fbb";
 let userRef;
-let currentData = { balance: 0, lastLimit: 0, doneToday: 0 };
+let currentData = { balance: 0, lastLimit: 0, doneToday: 0, profilePic: "" };
+const directLink = "https://www.effectivegatecpm.com/uy4hgpbq7?key=4367993c6e478e8144fda5a6e5969fbb";
 
-// Login বাটন লজিক
+// Login / Signup Logic
 document.getElementById('login-btn').addEventListener('click', async () => {
     const email = document.getElementById('email').value.trim();
     const pass = document.getElementById('password').value.trim();
-    const errorDisplay = document.getElementById('auth-error');
-
     if(!email || !pass) return alert("ইমেইল এবং পাসওয়ার্ড দিন");
-
     try {
-        // প্রথমে চেষ্টা করবে লগইন করার
         await signInWithEmailAndPassword(auth, email, pass);
-    } catch (error) {
-        // যদি একাউন্ট না থাকে, তবে অটোমেটিক রেজিস্টার হবে
-        try {
-            await createUserWithEmailAndPassword(auth, email, pass);
-        } catch (regError) {
-            errorDisplay.innerText = "Error: " + regError.message;
-        }
+    } catch (e) {
+        try { await createUserWithEmailAndPassword(auth, email, pass); } 
+        catch (err) { document.getElementById('auth-error').innerText = "Login Failed: " + err.message; }
     }
 });
 
-// লগইন সফল হলে ড্যাশবোর্ড দেখাবে
 onAuthStateChanged(auth, async (user) => {
     if (user) {
         document.getElementById('auth-screen').style.display = 'none';
         document.getElementById('main-app').style.display = 'block';
         document.getElementById('display-name').innerText = user.email.split('@')[0];
-        
         userRef = ref(db, 'users/' + user.uid);
-        const snap = await get(userRef);
-        
-        if (snap.exists()) {
-            currentData = snap.val();
-        } else {
-            currentData = { balance: 0, lastLimit: 0, doneToday: 0 };
-            await set(userRef, currentData);
-        }
-        updateDisplay();
-        checkCooldown();
+        await loadUserData();
     }
 });
 
-function updateDisplay() {
-    document.getElementById('balance').innerText = (currentData.balance || 0).toFixed(2);
+async function loadUserData() {
+    const snap = await get(userRef);
+    if (snap.exists()) {
+        currentData = snap.val();
+        if(currentData.profilePic) document.getElementById('profile-img').src = currentData.profilePic;
+    } else {
+        await set(userRef, currentData);
+    }
+    updateDisplay();
+    checkCooldown();
 }
 
-// টাস্ক বাটন: আগে বিজ্ঞাপন, তারপর টাইমার
+function updateDisplay() {
+    // ব্যালেন্স ফিক্স: নিশ্চিতভাবে নাম্বার ফরম্যাটে দেখানো
+    const safeBalance = parseFloat(currentData.balance) || 0;
+    document.getElementById('balance').innerText = safeBalance.toFixed(2);
+}
+
+// প্রোফাইল পিকচার আপলোড ও সেভ
+document.getElementById('profileInput').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (file.size > 500000) return alert("File too large! Max 500KB."); // লিমিট
+    const reader = new FileReader();
+    reader.onloadend = async function() {
+        const base64 = reader.result;
+        document.getElementById('profile-img').src = base64;
+        currentData.profilePic = base64;
+        await update(userRef, { profilePic: base64 });
+    }
+    if(file) reader.readAsDataURL(file);
+});
+
+// টাস্ক লজিক (বিজ্ঞাপন আগে, টাইমার পরে)
 window.startVideoTask = function(id) {
     const now = new Date().getTime();
-    if (currentData.lastLimit && now < currentData.lastLimit) {
-        return alert("২৪ ঘণ্টার লিমিট চলছে!");
-    }
+    if (currentData.lastLimit && now < currentData.lastLimit) return alert("Daily Limit! Come back later.");
 
-    // বিজ্ঞাপন ওপেন হবে
-    window.open(directLink, '_blank');
+    window.open(directLink, '_blank'); // আগে বিজ্ঞাপন খুলবে
     
-    // টাইমার স্ক্রিন দেখাবে
     const overlay = document.getElementById('videoOverlay');
     overlay.style.display = 'flex';
     let count = 20;
@@ -88,38 +92,58 @@ window.startVideoTask = function(id) {
         if (count <= 0) {
             clearInterval(t);
             overlay.style.display = 'none';
-            await addMoney(id);
+            await addBalance(id);
         }
     }, 1000);
 }
 
-async function addMoney(id) {
-    currentData.balance = (currentData.balance || 0) + 5.00;
-    currentData.doneToday = (currentData.doneToday || 0) + 1;
+// ব্যালেন্স যোগ করার ফিক্সড ফাংশন
+async function addBalance(id) {
+    let newBalance = (parseFloat(currentData.balance) || 0) + 5.00;
+    let newDoneToday = (parseInt(currentData.doneToday) || 0) + 1;
+    let newLimit = currentData.lastLimit || 0;
 
-    if (currentData.doneToday >= 4) {
-        currentData.lastLimit = new Date().getTime() + (24 * 60 * 60 * 1000);
+    if (newDoneToday >= 4) {
+        newLimit = new Date().getTime() + (24 * 60 * 60 * 1000);
     }
 
-    await update(userRef, currentData);
-    updateDisplay();
-    alert("৳৫.০০ যোগ হয়েছে!");
-    location.reload(); 
+    try {
+        await update(userRef, {
+            balance: newBalance,
+            doneToday: newDoneToday,
+            lastLimit: newLimit
+        });
+        
+        // লোকাল ডাটা আপডেট
+        currentData.balance = newBalance;
+        currentData.doneToday = newDoneToday;
+        currentData.lastLimit = newLimit;
+
+        updateDisplay();
+        alert("৳৫.০০ সফলভাবে যোগ হয়েছে!");
+        location.reload(); 
+    } catch (e) {
+        alert("Error saving balance!");
+    }
 }
 
-// ডেইলি বোনাস
+// ডেইলি বোনাস (ডাইরেক্টলিঙ্কসহ)
 window.claimDailyBonus = async () => {
     const today = new Date().toDateString();
-    if (localStorage.getItem('lastBonus') === today) return alert("আজ অলরেডি নিয়েছেন!");
+    if (localStorage.getItem('lastBonus') === today) return alert("Already claimed today!");
 
-    currentData.balance = (currentData.balance || 0) + 20.00;
-    await update(userRef, { balance: currentData.balance });
+    window.open(directLink, '_blank'); // বোনাসেও বিজ্ঞাপন খুলবে
+
+    let newBalance = (parseFloat(currentData.balance) || 0) + 20.00;
+    await update(userRef, { balance: newBalance });
+    
+    currentData.balance = newBalance;
     localStorage.setItem('lastBonus', today);
     updateDisplay();
-    alert("৳২০ বোনাস যোগ হয়েছে!");
+    alert("৳২০.০০ ডেইলি বোনাস যোগ হয়েছে!");
 };
 
-// লিমিট চেক
+// লিমিট টাইমার চেক
 function checkCooldown() {
     const now = new Date().getTime();
     if (currentData.lastLimit && now < currentData.lastLimit) {
@@ -134,20 +158,3 @@ function checkCooldown() {
         }, 1000);
     }
 }
-
-// উইথড্র ফাংশন
-window.openWithdraw = () => document.getElementById('withdrawModal').style.display = 'flex';
-window.closeWithdraw = () => document.getElementById('withdrawModal').style.display = 'none';
-window.sendWithdrawRequest = async () => {
-    const amt = parseFloat(document.getElementById('withdrawAmount').value);
-    const acc = document.getElementById('accountNo').value;
-    const method = document.getElementById('method').value;
-
-    if (amt < 500 || amt > currentData.balance) return alert("ব্যালেন্স নেই বা ভুল অ্যামাউন্ট!");
-    
-    currentData.balance -= amt;
-    await update(userRef, { balance: currentData.balance });
-    updateDisplay();
-    window.open(`https://wa.me/8801917044596?text=WithdrawRequest%0AEmail:${auth.currentUser.email}%0AMethod:${method}%0ANumber:${acc}%0AAmount:৳${amt}`);
-    window.closeWithdraw();
-};
