@@ -10,18 +10,12 @@
 <body>
 
     <div id="auth-screen" class="auth-wrapper">
-        <div class="auth-card">
-            <div class="logo">৳</div>
-            <h2>Member Login</h2>
-            <div class="input-field">
-                <i class="fas fa-envelope"></i>
-                <input type="email" id="email" placeholder="Email Address">
-            </div>
-            <div class="input-field">
-                <i class="fas fa-lock"></i>
-                <input type="password" id="password" placeholder="Password">
-            </div>
-            <button id="login-btn" class="main-btn">Login / Sign Up</button>
+        <div class="auth-card" style="padding: 30px; text-align: center; background: #1a1f2e; margin: 20px; border-radius: 20px;">
+            <div class="logo" style="background:#3b82f6; width:60px; height:60px; line-height:60px; border-radius:50%; margin:0 auto 20px; font-size:30px;">৳</div>
+            <h2>Login / Sign Up</h2>
+            <input type="email" id="email" placeholder="Email" style="width:100%; padding:10px; margin:10px 0; border-radius:8px; border:none;">
+            <input type="password" id="password" placeholder="Password" style="width:100%; padding:10px; margin:10px 0; border-radius:8px; border:none;">
+            <button id="login-btn" class="main-btn" style="width:100%; padding:10px; background:#3b82f6; color:white; border:none; border-radius:8px; font-weight:bold;">Continue</button>
         </div>
     </div>
 
@@ -38,7 +32,7 @@
                 </div>
             </div>
             <div class="balance-box">
-                <small>Wallet Balance</small>
+                <small>Balance</small>
                 <h2>৳<span id="balance">0.00</span></h2>
             </div>
         </div>
@@ -67,22 +61,22 @@
                 <div class="task-card" onclick="startVideoTask()">
                     <div class="task-icon"><i class="fas fa-play"></i></div>
                     <h3>Task 01</h3>
-                    <p>Earn ৳১০.০০</p>
+                    <p>৳১০.০০</p>
                 </div>
                 <div class="task-card" onclick="startVideoTask()">
                     <div class="task-icon"><i class="fas fa-play"></i></div>
                     <h3>Task 02</h3>
-                    <p>Earn ৳১০.০০</p>
+                    <p>৳১০.০০</p>
                 </div>
                 <div class="task-card" onclick="startVideoTask()">
                     <div class="task-icon"><i class="fas fa-play"></i></div>
                     <h3>Task 03</h3>
-                    <p>Earn ৳১০.০০</p>
+                    <p>৳১০.০০</p>
                 </div>
                 <div class="task-card" onclick="startVideoTask()">
                     <div class="task-icon"><i class="fas fa-play"></i></div>
                     <h3>Task 04</h3>
-                    <p>Earn ৳১০.০০</p>
+                    <p>৳১০.০০</p>
                 </div>
             </div>
 
@@ -94,19 +88,12 @@
 
     <div id="withdrawModal" class="modal-backdrop">
         <div class="modal-box">
-            <div class="modal-header">
-                <h3>Withdraw Funds</h3>
-                <span class="close-btn" onclick="closeWithdraw()">&times;</span>
-            </div>
-            <div class="modal-body">
-                <select id="method">
-                    <option value="Bkash">Bkash</option>
-                    <option value="Nagad">Nagad</option>
-                </select>
-                <input type="text" id="accountNo" placeholder="Account Number">
-                <input type="number" id="withdrawAmount" placeholder="Min ৳৫০০">
-                <button class="submit-btn" onclick="sendWithdrawRequest()">Confirm Request</button>
-            </div>
+            <h3 style="margin-bottom:15px;">Withdraw</h3>
+            <select id="method" style="width:100%; padding:10px; margin-bottom:10px; border-radius:8px;"><option value="Bkash">Bkash</option><option value="Nagad">Nagad</option></select>
+            <input type="text" id="accountNo" placeholder="Account Number" style="width:100%; padding:10px; margin-bottom:10px; border-radius:8px;">
+            <input type="number" id="withdrawAmount" placeholder="Min ৳৫০০" style="width:100%; padding:10px; margin-bottom:15px; border-radius:8px;">
+            <button class="submit-btn" onclick="sendWithdrawRequest()" style="width:100%; padding:12px; background:#3b82f6; border:none; border-radius:8px; color:white; font-weight:bold;">Confirm</button>
+            <p onclick="closeWithdraw()" style="text-align:center; margin-top:10px; cursor:pointer; color:#94a3b8;">Close</p>
         </div>
     </div>
 
