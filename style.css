@@ -1,36 +1,12 @@
-* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
-body { background: #080a0f; color: white; display: flex; justify-content: center; min-height: 100vh; }
-.app-container, .auth-wrapper { width: 100%; max-width: 420px; padding: 20px; }
+/* Profile Image Styling */
+.profile-upload { position: relative; width: 60px; height: 60px; cursor: pointer; }
+.profile-upload img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 2px solid #3b82f6; }
+.camera-badge { position: absolute; bottom: 0; right: 0; background: #3b82f6; color: white; font-size: 10px; padding: 4px; border-radius: 50%; border: 2px solid #080a0f; }
 
-/* Auth Styling */
-.auth-card { background: #121620; padding: 40px 25px; border-radius: 30px; text-align: center; margin-top: 60px; border: 1px solid #1e293b; }
-.logo { font-size: 50px; background: #3b82f6; width: 80px; height: 80px; line-height: 80px; border-radius: 50%; margin: 0 auto 20px; color: white; font-weight: bold; }
-.input-field { background: #080a0f; display: flex; align-items: center; padding: 12px; margin: 15px 0; border-radius: 12px; border: 1px solid #1e293b; }
-.input-field i { color: #3b82f6; margin-right: 12px; }
-.input-field input { background: none; border: none; color: white; outline: none; width: 100%; }
-.main-btn { width: 100%; padding: 15px; background: #3b82f6; color: white; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+/* Footer Banner Ad Styling */
+.footer-banner-container { margin-top: 30px; text-align: center; border-top: 1px solid #1e293b; padding-top: 15px; }
+.ad-label { font-size: 10px; color: #64748b; margin-bottom: 5px; text-transform: uppercase; }
 
-/* Dashboard Styling */
-.top-nav { background: linear-gradient(135deg, #2563eb, #7c3aed); padding: 25px; border-radius: 25px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
-.balance-display h2 { font-size: 32px; font-weight: 800; }
-
-.action-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; }
-.action-row button { padding: 15px; border-radius: 15px; border: none; color: white; font-weight: 700; cursor: pointer; font-size: 14px; }
-.bonus-btn { background: #f59e0b; }
-.payout-btn { background: #10b981; }
-
-/* 4 Tasks Grid */
-.tasks-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-.task-box { background: #121620; padding: 25px 15px; border-radius: 22px; text-align: center; border: 1px solid #1e293b; cursor: pointer; }
-.icon-wrap { background: #1e293b; width: 50px; height: 50px; line-height: 50px; border-radius: 50%; margin: 0 auto 10px; color: #3b82f6; font-size: 20px; }
-
-.timer-card { background: #ef4444; padding: 15px; border-radius: 15px; text-align: center; margin-top: 20px; font-weight: bold; }
-
-/* Modals */
-.modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 1000; justify-content: center; align-items: center; }
-.modal-content { background: #121620; width: 90%; max-width: 360px; padding: 30px; border-radius: 25px; border: 1px solid #1e293b; position: relative; }
-.modal-content input, select { width: 100%; padding: 12px; margin: 10px 0; background: #080a0f; border: 1px solid #1e293b; color: white; border-radius: 10px; }
-.confirm-btn { width: 100%; padding: 14px; background: #3b82f6; border: none; color: white; border-radius: 10px; font-weight: bold; margin-top: 10px; }
-.close-modal { position: absolute; right: 20px; top: 15px; font-size: 28px; cursor: pointer; color: #64748b; }
-
-.ad-timer-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #080a0f; z-index: 2000; justify-content: center; align-items: center; }
+/* Ad Timer Overlay */
+.ad-timer-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(8, 10, 15, 0.98); z-index: 9999; justify-content: center; align-items: center; }
+.timer-content h1 { font-size: 90px; color: #3b82f6; text-shadow: 0 0 20px rgba(59, 130, 246, 0.5); }
