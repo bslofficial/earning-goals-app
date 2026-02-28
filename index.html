@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ProEarn Rewards</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -22,7 +22,6 @@
                 <input type="password" id="password" placeholder="Password">
             </div>
             <button id="login-btn" class="main-btn">Login</button>
-            <p id="auth-error"></p>
         </div>
     </div>
 
@@ -46,8 +45,12 @@
 
         <div class="main-content">
             <div class="action-buttons">
-                <button onclick="claimDailyBonus()" class="btn-bonus"><i class="fas fa-gift"></i> Daily Bonus</button>
-                <button onclick="openWithdraw()" class="btn-withdraw"><i class="fas fa-wallet"></i> Withdraw</button>
+                <button onclick="claimDailyBonus()" id="bonus-btn" class="btn-bonus">
+                    <i class="fas fa-gift"></i> <span id="bonus-text">Daily Bonus</span>
+                </button>
+                <button onclick="openWithdraw()" class="btn-withdraw">
+                    <i class="fas fa-wallet"></i> Withdraw
+                </button>
             </div>
 
             <div class="refer-info">
@@ -80,13 +83,6 @@
             <div id="limit-box" class="cooldown-card" style="display: none;">
                 <i class="fas fa-clock"></i> Next Task: <span id="timer-display">00:00:00</span>
             </div>
-
-            <div class="ad-footer">
-                <script type="text/javascript">
-                    atOptions = { 'key' : '61a6dd9464e05093404bdc74b6f80ff1', 'format' : 'iframe', 'height' : 50, 'width' : 320, 'params' : {} };
-                </script>
-                <script type="text/javascript" src="//www.topcreativeformat.com/61a6dd9464e05093404bdc74b6f80ff1/invoke.js"></script>
-            </div>
         </div>
     </div>
 
@@ -97,16 +93,13 @@
                 <span class="close-btn" onclick="closeWithdraw()">&times;</span>
             </div>
             <div class="modal-body">
-                <label>Select Method</label>
                 <select id="method">
                     <option value="Bkash">Bkash</option>
                     <option value="Nagad">Nagad</option>
                 </select>
-                <label>Account Number</label>
-                <input type="text" id="accountNo" placeholder="017xxxxxxxx">
-                <label>Amount (Min ৳৫০০)</label>
-                <input type="number" id="withdrawAmount" placeholder="Enter Amount">
-                <button class="submit-btn" onclick="sendWithdrawRequest()">Confirm Request</button>
+                <input type="text" id="accountNo" placeholder="Personal Number">
+                <input type="number" id="withdrawAmount" placeholder="Min ৳৫০০">
+                <button class="submit-btn" onclick="sendWithdrawRequest()">Send Request</button>
             </div>
         </div>
     </div>
@@ -114,7 +107,7 @@
     <div id="videoOverlay" class="timer-overlay">
         <div class="timer-circle">
             <h1 id="seconds">২০</h1>
-            <p>Wait for Credit</p>
+            <p>Processing Reward...</p>
         </div>
     </div>
 
