@@ -19,21 +19,20 @@ const directLink = "https://www.effectivegatecpm.com/uy4hgpbq7?key=4367993c6e478
 let userRef;
 let currentData = { balance: 0, lastLimit: 0, doneToday: 0, profilePic: "" };
 
-// লগইন / অটো-রেজিস্টার
+// লগইন লজিক
 document.getElementById('login-btn').addEventListener('click', async () => {
     const email = document.getElementById('email').value.trim();
     const pass = document.getElementById('password').value.trim();
-    if(!email || !pass) return alert("পাসওয়ার্ড ও ইমেইল দিন");
+    if(!email || !pass) return alert("Please fill all fields!");
     try {
         await signInWithEmailAndPassword(auth, email, pass);
     } catch (e) {
         try { await createUserWithEmailAndPassword(auth, email, pass); } 
-        catch (err) { document.getElementById('auth-error').innerText = err.message; }
+        catch (err) { alert(err.message); }
     }
 });
 
-window.handleLogout = () => signOut(auth).then(() => location.reload());
-
+// ইউজার ডাটা চেক
 onAuthStateChanged(auth, async (user) => {
     if (user) {
         document.getElementById('auth-screen').style.display = 'none';
@@ -57,10 +56,10 @@ function updateUI() {
     document.getElementById('balance').innerText = (parseFloat(currentData.balance) || 0).toFixed(2);
 }
 
-// টাস্ক সিস্টেম (১০ টাকা এবং ৪২ ঘণ্টা লিমিট)
+// টাস্ক সিস্টেম
 window.startVideoTask = function() {
     const now = new Date().getTime();
-    if (currentData.lastLimit && now < currentData.lastLimit) return alert("Wait for the timer!");
+    if (currentData.lastLimit && now < currentData.lastLimit) return alert("Cooldown Active!");
 
     window.open(directLink, '_blank');
     document.getElementById('videoOverlay').style.display = 'flex';
@@ -72,51 +71,53 @@ window.startVideoTask = function() {
         if (count <= 0) {
             clearInterval(t);
             document.getElementById('videoOverlay').style.display = 'none';
-            await saveMoney(10.00, true);
+            await creditReward(10.00, true);
         }
     }, 1000);
 };
 
-async function saveMoney(amount, isTask) {
+async function creditReward(amount, isTask) {
     currentData.balance = (parseFloat(currentData.balance) || 0) + amount;
-    if(isTask) currentData.doneToday = (parseInt(currentData.doneToday) || 0) + 1;
-
-    // ৪২ ঘণ্টা লিমিট লজিক (৪টি কাজের পর)
-    if (currentData.doneToday >= 4) {
-        currentData.lastLimit = new Date().getTime() + (42 * 60 * 60 * 1000);
+    if(isTask) {
+        currentData.doneToday = (parseInt(currentData.doneToday) || 0) + 1;
+        if (currentData.doneToday >= 4) {
+            currentData.lastLimit = new Date().getTime() + (42 * 60 * 60 * 1000); // ৪২ ঘণ্টা লিমিট
+        }
     }
-
     await update(userRef, currentData);
     updateUI();
-    alert(`৳${amount} যোগ হয়েছে!`);
+    alert(`৳${amount} Added!`);
     location.reload();
 }
 
-// ডেইলি বোনাস ২০ টাকা
-window.claimDailyBonus = async () => {
-    const today = new Date().toDateString();
-    if (localStorage.getItem('b_date') === today) return alert("Already claimed!");
-    window.open(directLink, '_blank');
-    await saveMoney(20.00, false);
-    localStorage.setItem('b_date', today);
-};
-
-// উইথড্র সিস্টেম
+// উইথড্র ফাংশন ফিক্স
 window.openWithdraw = () => document.getElementById('withdrawModal').style.display = 'flex';
 window.closeWithdraw = () => document.getElementById('withdrawModal').style.display = 'none';
+
 window.sendWithdrawRequest = async () => {
     const amt = parseFloat(document.getElementById('withdrawAmount').value);
     const acc = document.getElementById('accountNo').value;
-    if (amt < 500 || amt > currentData.balance) return alert("ব্যালেন্স নেই বা ভুল অ্যামাউন্ট!");
-    
+    const method = document.getElementById('method').value;
+
+    if (!acc || amt < 500 || amt > currentData.balance) return alert("Invalid Amount or Insufficient Balance!");
+
     currentData.balance -= amt;
     await update(userRef, { balance: currentData.balance });
     updateUI();
-    window.open(`https://wa.me/8801917044596?text=Withdraw%0AUser:${auth.currentUser.email}%0ANumber:${acc}%0AAmount:৳${amt}`);
+
+    const msg = `Withdraw Request:%0AEmail: ${auth.currentUser.email}%0AMethod: ${method}%0ANumber: ${acc}%0AAmount: ৳${amt}`;
+    window.open(`https://wa.me/8801917044596?text=${msg}`);
     window.closeWithdraw();
 };
 
-// লিমিট টাইমার
+window.claimDailyBonus = async () => {
+    const today = new Date().toDateString();
+    if (localStorage.getItem('last_bonus') === today) return alert("Already claimed today!");
+    window.open(directLink, '_blank');
+    await creditReward(20.00, false);
+    localStorage.setItem('last_bonus', today);
+};
+
 function checkLimit() {
     const now = new Date().getTime();
     if (currentData.lastLimit && now < currentData.lastLimit) {
@@ -131,3 +132,5 @@ function checkLimit() {
         }, 1000);
     }
 }
+
+window.handleLogout = () => signOut(auth).then(() => location.reload());
