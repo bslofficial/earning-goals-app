@@ -3,28 +3,37 @@ body { background: #0b0e14; color: white; overflow-x: hidden; }
 
 /* Loading Screen */
 #loading-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0b0e14; z-index: 99999; display: flex; justify-content: center; align-items: center; }
-.loader-content { text-align: center; }
 .spinner { width: 40px; height: 40px; border: 4px solid #3b82f6; border-top: 4px solid transparent; border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 10px; }
 @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+/* Stats Row */
+.stats-row { display: flex; gap: 10px; margin-bottom: 20px; }
+.stat-card { flex: 1; background: #1a1f2e; padding: 15px; border-radius: 15px; text-align: center; border: 1px solid rgba(255,255,255,0.05); }
+.stat-card i { color: #3b82f6; font-size: 20px; margin-bottom: 5px; }
+.stat-card p { font-size: 11px; color: #94a3b8; text-transform: uppercase; }
+.stat-card h3 { font-size: 18px; font-weight: 800; }
 
 /* Auth Layout */
 .auth-wrapper { height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
 .auth-card { background: #1a1f2e; width: 100%; max-width: 350px; padding: 30px; border-radius: 20px; text-align: center; border: 1px solid #3b82f6; }
 .logo { font-size: 50px; color: #3b82f6; margin-bottom: 10px; }
 .input-field { background: #0b0e14; margin-bottom: 15px; border-radius: 10px; display: flex; align-items: center; padding: 12px; border: 1px solid #2d3748; }
-.input-field input { background: transparent; border: none; color: white; margin-left: 10px; outline: none; width: 100%; font-size: 16px; }
+.input-field input { background: transparent; border: none; color: white; margin-left: 10px; outline: none; width: 100%; }
 .main-btn { width: 100%; padding: 12px; background: #3b82f6; border: none; color: white; font-weight: bold; border-radius: 10px; cursor: pointer; }
 
-/* App UI */
+/* Dashboard UI */
 .app-container { width: 100%; max-width: 450px; margin: 0 auto; min-height: 100vh; }
-.top-nav-blue { background: linear-gradient(135deg, #1e40af, #3b82f6); padding: 25px 15px; border-bottom-left-radius: 30px; border-bottom-right-radius: 30px; text-align: center; }
+.top-nav-blue { background: linear-gradient(135deg, #1e40af, #3b82f6); padding: 25px 15px; border-bottom-left-radius: 30px; border-bottom-right-radius: 30px; text-align: center; margin-bottom: 15px; }
 .app-title-header { font-size: 18px; font-weight: 800; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 2px; }
 .user-row { display: flex; align-items: center; justify-content: space-between; }
-.profile-box img { width: 45px; height: 45px; border-radius: 50%; border: 2px solid #fff; }
+
+.profile-box { width: 45px; height: 45px; border-radius: 50%; background: #ffffff; display: flex; justify-content: center; align-items: center; border: 2px solid #ffffff; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
+.profile-box img { width: 100%; height: 100%; object-fit: cover; }
+
 .logout-btn { background: rgba(0,0,0,0.3); border: none; color: #cbd5e1; padding: 4px 10px; border-radius: 5px; font-size: 11px; cursor: pointer; margin-top: 5px; }
 .balance-box h2 { font-size: 22px; font-weight: 900; }
 
-.main-content { padding: 15px; }
+.main-content { padding: 0 15px 15px 15px; }
 .action-buttons { display: flex; gap: 10px; margin-bottom: 20px; }
 .btn-bonus { background: #f59e0b; flex: 1; padding: 12px; border-radius: 10px; border: none; color: white; font-weight: bold; cursor: pointer; }
 .btn-withdraw { background: #10b981; flex: 1; padding: 12px; border-radius: 10px; border: none; color: white; font-weight: bold; cursor: pointer; }
@@ -35,8 +44,7 @@ body { background: #0b0e14; color: white; overflow-x: hidden; }
 .share-btn { background: #22c55e; border: none; color: white; padding: 6px 15px; border-radius: 6px; font-weight: bold; cursor: pointer; }
 
 .tasks-container { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.task-card { background: linear-gradient(145deg, #1e293b, #0f172a); padding: 18px; border-radius: 15px; text-align: center; border: 1px solid rgba(59,130,246,0.15); cursor: pointer; transition: 0.3s; }
-.task-card:active { transform: scale(0.95); }
+.task-card { background: linear-gradient(145deg, #1e293b, #0f172a); padding: 18px; border-radius: 15px; text-align: center; border: 1px solid rgba(59,130,246,0.15); cursor: pointer; }
 .task-icon { color: #3b82f6; font-size: 22px; margin-bottom: 8px; }
 
 .cooldown-card { background: #dc2626; padding: 15px; border-radius: 12px; text-align: center; margin-top: 20px; font-weight: bold; }
@@ -44,5 +52,5 @@ body { background: #0b0e14; color: white; overflow-x: hidden; }
 /* Modal */
 .modal-backdrop { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 9999; justify-content: center; align-items: center; }
 .modal-box { background: #1a1f2e; width: 85%; max-width: 320px; padding: 25px; border-radius: 20px; border: 1px solid #3b82f6; }
-.modal-box input, .modal-box select { width: 100%; padding: 12px; margin-bottom: 12px; border-radius: 8px; border: none; background: #0b0e14; color: white; outline: none; }
+.modal-box input, .modal-box select { width: 100%; padding: 12px; margin-bottom: 12px; border-radius: 8px; border: none; background: #0b0e14; color: white; }
 .submit-btn { width: 100%; padding: 12px; background: #3b82f6; border: none; color: white; font-weight: bold; border-radius: 8px; cursor: pointer; }
