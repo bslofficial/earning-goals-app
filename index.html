@@ -4,9 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ProEarn Rewards</title>
-    <script src="https://cdn.jsdelivr.net/npm/@unityadssdk/unity-ads-sdk@latest/dist/unity-ads.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
 
@@ -23,60 +22,66 @@
             <li><a href="refer.html"><i class="fas fa-users-cog"></i> Referral Levels</a></li>
             <li><a href="privacy.html"><i class="fas fa-user-shield"></i> Privacy Policy</a></li>
             <li><a href="https://t.me/incomeworld01" target="_blank"><i class="fas fa-headset"></i> Admin Support</a></li>
-            <hr style="border: 0.5px solid #2d3748; margin: 10px 0;">
+            <hr>
             <li><a href="#" onclick="handleLogout()"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
         </ul>
     </div>
 
-    <div id="main-app" class="app-container">
-        <div class="top-nav-blue">
-            <div class="nav-header">
+    <div class="app-container">
+        <header class="top-nav">
+            <div class="nav-content">
                 <i class="fas fa-bars menu-trigger" onclick="toggleMenu()"></i>
-                <h1 class="app-title-header">PROEARN REWARDS</h1>
-                <div></div>
+                <h1 class="logo-text">PROEARN REWARDS</h1>
+                <div style="width:20px"></div>
             </div>
-            <div class="user-row">
-                <div class="balance-box">
-                    <small>Your Balance</small>
-                    <h2>Tk.<span id="balance">0.00</span></h2>
-                </div>
+            <div class="balance-card">
+                <small>Available Balance</small>
+                <h2>Tk. <span id="balance">0.00</span></h2>
             </div>
-        </div>
+        </header>
 
-        <div class="main-content">
+        <main class="main-content">
             <div class="grid-container">
-                <div class="custom-card task-card" id="task-card-1" onclick="startVideoTask(1)">
-                    <i class="fas fa-play-circle"></i>
-                    <p>Task 01</p>
-                    <h3 id="timer-1">Tk.10.00</h3>
+                <div class="task-card" id="task-card-1" onclick="startVideoTask(1)">
+                    <div class="play-icon"><i class="fas fa-play"></i></div>
+                    <div class="task-info">
+                        <p>Task 01</p>
+                        <h3 id="timer-1">Tk. 10.00</h3>
+                    </div>
                 </div>
-                <div class="custom-card task-card" id="task-card-2" onclick="startVideoTask(2)">
-                    <i class="fas fa-play-circle"></i>
-                    <p>Task 02</p>
-                    <h3 id="timer-2">Tk.10.00</h3>
+                <div class="task-card" id="task-card-2" onclick="startVideoTask(2)">
+                    <div class="play-icon"><i class="fas fa-play"></i></div>
+                    <div class="task-info">
+                        <p>Task 02</p>
+                        <h3 id="timer-2">Tk. 10.00</h3>
+                    </div>
                 </div>
-                <div class="custom-card task-card" id="task-card-3" onclick="startVideoTask(3)">
-                    <i class="fas fa-play-circle"></i>
-                    <p>Task 03</p>
-                    <h3 id="timer-3">Tk.10.00</h3>
+                <div class="task-card" id="task-card-3" onclick="startVideoTask(3)">
+                    <div class="play-icon"><i class="fas fa-play"></i></div>
+                    <div class="task-info">
+                        <p>Task 03</p>
+                        <h3 id="timer-3">Tk. 10.00</h3>
+                    </div>
                 </div>
-                <div class="custom-card task-card" id="task-card-4" onclick="startVideoTask(4)">
-                    <i class="fas fa-play-circle"></i>
-                    <p>Task 04</p>
-                    <h3 id="timer-4">Tk.10.00</h3>
+                <div class="task-card" id="task-card-4" onclick="startVideoTask(4)">
+                    <div class="play-icon"><i class="fas fa-play"></i></div>
+                    <div class="task-info">
+                        <p>Task 04</p>
+                        <h3 id="timer-4">Tk. 10.00</h3>
+                    </div>
                 </div>
             </div>
 
-            <div class="refer-info">
-                <p><i class="fas fa-gift"></i> 6-Level Referral Active!</p>
-                <div class="refer-link-box">
-                    <input type="text" id="refer-url" readonly value="Loading Link...">
-                    <button onclick="copyReferLink()" class="share-btn">Copy</button>
+            <div class="refer-section">
+                <p><i class="fas fa-gift"></i> Refer and Earn (6 Levels)</p>
+                <div class="copy-box">
+                    <input type="text" id="refer-url" readonly value="loading link...">
+                    <button onclick="copyLink()">Copy</button>
                 </div>
             </div>
-        </div>
+        </main>
     </div>
 
-    <script type="module" src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
