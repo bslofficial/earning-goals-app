@@ -16,7 +16,7 @@ const auth = getAuth(app);
 const db = getDatabase(app);
 
 let userRef;
-let currentData = { balance: 0, lastLimit: 0, doneToday: 0, lastBonus: 0 };
+let currentData = { balance: 0, lastLimit: 0, doneToday: 0, lastBonus: 0, referCount: 0, totalTaskCount: 0 };
 
 onAuthStateChanged(auth, async (user) => {
     const loadingScreen = document.getElementById('loading-screen');
@@ -26,9 +26,27 @@ onAuthStateChanged(auth, async (user) => {
     if (user) {
         userRef = ref(db, 'users/' + user.uid);
         const snap = await get(userRef);
+        
         if (snap.exists()) {
             currentData = snap.val();
         } else {
+            // New User Registration
+            const urlParams = new URLSearchParams(window.location.search);
+            const referrerId = urlParams.get('ref');
+            
+            // Handle Referral Bonus
+            if (referrerId) {
+                const refUserRef = ref(db, 'users/' + referrerId);
+                const refSnap = await get(refUserRef);
+                if (refSnap.exists()) {
+                    const refData = refSnap.val();
+                    await update(refUserRef, {
+                        balance: (parseFloat(refData.balance) || 0) + 30,
+                        referCount: (parseInt(refData.referCount) || 0) + 1
+                    });
+                }
+            }
+            
             await set(userRef, currentData);
         }
         
@@ -50,9 +68,10 @@ onAuthStateChanged(auth, async (user) => {
 
 function updateUI() {
     document.getElementById('balance').innerText = (parseFloat(currentData.balance) || 0).toFixed(2);
+    document.getElementById('refer-count').innerText = currentData.referCount || 0;
+    document.getElementById('tasks-done').innerText = currentData.totalTaskCount || 0;
 }
 
-// ২৪ ঘণ্টা ফিক্সড টাইমার ফাংশন
 function startTimers() {
     setInterval(() => {
         const now = new Date().getTime();
@@ -62,6 +81,16 @@ function startTimers() {
             document.getElementById('timer-display').innerText = formatTime(currentData.lastLimit - now);
         } else {
             document.getElementById('limit-box').style.display = 'none';
+        }
+
+        const bonusBtn = document.getElementById('bonus-btn');
+        const bonusText = document.getElementById('bonus-text');
+        if (currentData.lastBonus && now < currentData.lastBonus) {
+            bonusBtn.disabled = true;
+            bonusText.innerText = formatTime(currentData.lastBonus - now);
+        } else {
+            bonusBtn.disabled = false;
+            bonusText.innerText = "Daily Bonus";
         }
     }, 1000);
 }
@@ -73,26 +102,27 @@ function formatTime(ms) {
     return `${h.toString().padStart(2,'0')}h ${m.toString().padStart(2,'0')}m ${s.toString().padStart(2,'0')}s`;
 }
 
-// শেয়ার ফাংশন (সব ডিভাইসের জন্য ফিক্সড)
+window.claimDailyBonus = async () => {
+    const now = new Date().getTime();
+    if (currentData.lastBonus && now < currentData.lastBonus) return;
+
+    window.open("https://www.google.com", '_blank');
+    currentData.balance = (parseFloat(currentData.balance) || 0) + 10;
+    currentData.lastBonus = now + (3 * 60 * 60 * 1000); 
+
+    await update(userRef, currentData);
+    updateUI();
+    alert("৳১০ বোনাস সফল হয়েছে!");
+};
+
 document.addEventListener('click', async (e) => {
     if (e.target.closest('#share-btn-action')) {
         const shareUrl = document.getElementById("refer-url").value;
-        const shareData = {
-            title: 'ProEarn Rewards',
-            text: 'Join ProEarn and start earning today! ৳৩০ Referral Bonus!',
-            url: shareUrl
-        };
-
         if (navigator.share) {
-            try {
-                await navigator.share(shareData);
-            } catch (err) {
-                console.log('Error sharing:', err);
-            }
+            await navigator.share({ title: 'ProEarn Rewards', url: shareUrl });
         } else {
-            // পিসি বা ব্রাউজারে শেয়ার অপশন না থাকলে লিঙ্ক কপি হবে
             navigator.clipboard.writeText(shareUrl);
-            alert("Referral link copied to clipboard!");
+            alert("Referral Link Copied!");
         }
     }
 });
@@ -104,8 +134,9 @@ window.startVideoTask = async () => {
     setTimeout(async () => {
         currentData.balance += 10;
         currentData.doneToday = (currentData.doneToday || 0) + 1;
+        currentData.totalTaskCount = (currentData.totalTaskCount || 0) + 1;
+        
         if (currentData.doneToday >= 4) {
-            // ২৪ ঘণ্টা লিমিট সেট করা হলো
             currentData.lastLimit = new Date().getTime() + (24 * 60 * 60 * 1000); 
             currentData.doneToday = 0;
         }
@@ -117,11 +148,24 @@ window.startVideoTask = async () => {
 
 window.openWithdraw = () => document.getElementById('withdrawModal').style.display = 'flex';
 window.closeWithdraw = () => document.getElementById('withdrawModal').style.display = 'none';
+
+window.sendWithdrawRequest = async () => {
+    const amount = parseFloat(document.getElementById('withdrawAmount').value);
+    if (amount < 500) return alert("Min ৳৫০০");
+    if (currentData.balance < amount) return alert("Insufficient Balance");
+    currentData.balance -= amount;
+    await update(userRef, currentData);
+    updateUI();
+    alert("Withdrawal Requested!");
+    closeWithdraw();
+};
+
 window.handleLogout = () => signOut(auth).then(() => location.reload());
 
 document.getElementById('login-btn').addEventListener('click', async () => {
     const e = document.getElementById('email').value;
     const p = document.getElementById('password').value;
+    if(!e || !p) return alert("Fill all fields");
     try { await signInWithEmailAndPassword(auth, e, p); } 
     catch { try { await createUserWithEmailAndPassword(auth, e, p); } catch (err) { alert(err.message); } }
 });
