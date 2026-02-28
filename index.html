@@ -35,8 +35,8 @@
                     <div class="camera-badge"><i class="fas fa-camera"></i></div>
                 </div>
                 <div class="meta">
-                    <span id="display-name">User</span>
-                    <p>Cloud Sync Active</p>
+                    <span id="display-name">Loading...</span>
+                    <button onclick="handleLogout()" class="logout-link">Logout</button>
                 </div>
             </div>
             <div class="balance-display">
@@ -74,22 +74,35 @@
         </div>
 
         <div id="limit-box" class="timer-card" style="display: none;">
-            Next Task in: <span id="timer-display">00:00:00</span>
+            Daily Limit Reached! Back in: <span id="timer-display">00:00:00</span>
         </div>
 
-        <div class="footer-banner-container">
+        <div class="footer-banner">
             <p class="ad-label">Sponsored Ad</p>
-            <script type="text/javascript">
-                atOptions = { 'key' : '61a6dd9464e05093404bdc74b6f80ff1', 'format' : 'iframe', 'height' : 50, 'width' : 320, 'params' : {} };
-            </script>
-            <script type="text/javascript" src="//www.topcreativeformat.com/61a6dd9464e05093404bdc74b6f80ff1/invoke.js"></script>
+            <div id="ad-container">
+                <script type="text/javascript">
+                    atOptions = { 'key' : '61a6dd9464e05093404bdc74b6f80ff1', 'format' : 'iframe', 'height' : 50, 'width' : 320, 'params' : {} };
+                </script>
+                <script type="text/javascript" src="//www.topcreativeformat.com/61a6dd9464e05093404bdc74b6f80ff1/invoke.js"></script>
+            </div>
+        </div>
+    </div>
+
+    <div id="withdrawModal" class="modal-overlay">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeWithdraw()">&times;</span>
+            <h3>Withdraw Money</h3>
+            <select id="method"><option value="Bkash">Bkash</option><option value="Nagad">Nagad</option></select>
+            <input type="text" id="accountNo" placeholder="Personal Number">
+            <input type="number" id="withdrawAmount" placeholder="Min ৳500">
+            <button class="confirm-btn" onclick="sendWithdrawRequest()">Send Request</button>
         </div>
     </div>
 
     <div id="videoOverlay" class="ad-timer-overlay">
         <div class="timer-content">
             <h1 id="seconds">20</h1>
-            <p>Processing Reward...</p>
+            <p>Wait for Reward...</p>
         </div>
     </div>
 
