@@ -13,21 +13,15 @@
         <div class="auth-card">
             <div class="logo">৳</div>
             <h2>ProEarn Rewards</h2>
-            <div class="input-field">
-                <i class="fas fa-envelope"></i>
-                <input type="email" id="email" placeholder="Email Address">
-            </div>
-            <div class="input-field">
-                <i class="fas fa-lock"></i>
-                <input type="password" id="password" placeholder="Password">
-            </div>
+            <div class="input-field"><i class="fas fa-envelope"></i><input type="email" id="email" placeholder="Email"></div>
+            <div class="input-field"><i class="fas fa-lock"></i><input type="password" id="password" placeholder="Password"></div>
             <button id="login-btn" class="main-btn">Login / Sign Up</button>
         </div>
     </div>
 
     <div id="main-app" class="app-container" style="display: none;">
         <div class="top-nav-blue">
-            <div class="app-title">ProEarn Rewards</div>
+            <div class="app-title-header">ProEarn Rewards</div>
             <div class="user-row">
                 <div class="profile-box" onclick="document.getElementById('profileInput').click()">
                     <img id="profile-img" src="https://via.placeholder.com/100" alt="P">
@@ -58,32 +52,26 @@
                 <p><i class="fas fa-user-plus"></i> Refer & Earn <b>৳৩০.০০</b></p>
                 <div class="refer-link-box">
                     <input type="text" id="refer-url" readonly value="Generating...">
-                    <button onclick="shareReferLink()" class="share-btn">
-                        <i class="fas fa-share-alt"></i> Share
-                    </button>
+                    <button onclick="shareReferLink()" class="share-btn"><i class="fas fa-share-alt"></i> Share</button>
                 </div>
             </div>
 
             <div class="tasks-container">
                 <div class="task-card" onclick="startVideoTask()">
                     <div class="task-icon"><i class="fas fa-play"></i></div>
-                    <h3>Task 01</h3>
-                    <p>৳১০.০০</p>
+                    <h3>Task 01</h3><p>৳১০.০০</p>
                 </div>
                 <div class="task-card" onclick="startVideoTask()">
                     <div class="task-icon"><i class="fas fa-play"></i></div>
-                    <h3>Task 02</h3>
-                    <p>৳১০.০০</p>
+                    <h3>Task 02</h3><p>৳১০.০০</p>
                 </div>
                 <div class="task-card" onclick="startVideoTask()">
                     <div class="task-icon"><i class="fas fa-play"></i></div>
-                    <h3>Task 03</h3>
-                    <p>৳১০.০০</p>
+                    <h3>Task 03</h3><p>৳১০.০০</p>
                 </div>
                 <div class="task-card" onclick="startVideoTask()">
                     <div class="task-icon"><i class="fas fa-play"></i></div>
-                    <h3>Task 04</h3>
-                    <p>৳১০.০০</p>
+                    <h3>Task 04</h3><p>৳১০.০০</p>
                 </div>
             </div>
 
@@ -95,21 +83,16 @@
 
     <div id="withdrawModal" class="modal-backdrop">
         <div class="modal-box">
-            <h3>Withdraw</h3>
+            <h3>Withdraw Funds</h3>
             <select id="method"><option value="Bkash">Bkash</option><option value="Nagad">Nagad</option></select>
             <input type="text" id="accountNo" placeholder="Personal Number">
             <input type="number" id="withdrawAmount" placeholder="Min ৳৫০০">
-            <button class="submit-btn" onclick="sendWithdrawRequest()">Confirm Request</button>
-            <p onclick="closeWithdraw()" style="margin-top:10px; cursor:pointer; color:#ccc;">Cancel</p>
+            <button class="submit-btn" onclick="sendWithdrawRequest()">Confirm</button>
+            <p onclick="closeWithdraw()" style="margin-top:15px; cursor:pointer; color:#999;">Close</p>
         </div>
     </div>
 
-    <div id="videoOverlay" class="timer-overlay">
-        <div class="timer-circle">
-            <h1 id="seconds">২০</h1>
-            <p>Wait for Reward...</p>
-        </div>
-    </div>
+    <div id="videoOverlay" class="timer-overlay"><div class="timer-circle"><h1 id="seconds">২০</h1><p>Wait...</p></div></div>
 
     <script type="module" src="script.js"></script>
 </body>
