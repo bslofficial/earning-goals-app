@@ -3,87 +3,97 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ProEarn - Digital Income</title>
+    <title>ProEarn - Ultimate Rewards</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://unityads.unity3d.com/sdk/3.4/unityads.js"></script>
 </head>
 <body>
-    <div id="login-screen" class="auth-container">
-        <div class="auth-box">
-            <h2>Welcome Back</h2>
-            <p>Login to start earning</p>
-            <input type="email" id="email" placeholder="Email Address">
-            <input type="password" id="password" placeholder="Password">
-            <button onclick="handleLogin()">Login / Register</button>
+
+    <div id="auth-screen" class="auth-wrapper">
+        <div class="auth-card">
+            <div class="logo">৳</div>
+            <h2>Member Login</h2>
+            <div class="input-field">
+                <i class="fas fa-envelope"></i>
+                <input type="email" id="email" placeholder="Email Address">
+            </div>
+            <div class="input-field">
+                <i class="fas fa-lock"></i>
+                <input type="password" id="password" placeholder="Password">
+            </div>
+            <button id="login-btn" class="main-btn">Access Account</button>
+            <p id="auth-error"></p>
         </div>
     </div>
 
-    <div id="main-app" class="container" style="display: none;">
-        <div class="header-card">
-            <div class="profile-info">
-                <i class="fas fa-user-circle avatar"></i>
-                <div>
-                    <span id="display-email">User</span>
-                    <p id="user-id">ID: Loading...</p>
-                </div>
+    <div id="main-app" class="app-container" style="display: none;">
+        <div class="top-nav">
+            <div class="user-info">
+                <span id="display-name">Loading...</span>
+                <p id="user-id">Cloud Sync Active</p>
             </div>
-            <div class="balance-card">
-                <p>Wallet</p>
+            <div class="balance-display">
+                <p>Total Balance</p>
                 <h2>৳<span id="balance">0.00</span></h2>
             </div>
         </div>
 
-        <div class="action-bar">
-            <button class="bonus-btn" onclick="claimDailyBonus()"><i class="fas fa-gift"></i> Bonus</button>
-            <button class="withdraw-nav" onclick="openWithdraw()"><i class="fas fa-wallet"></i> ৳500</button>
+        <div class="action-row">
+            <button onclick="claimDailyBonus()" class="bonus-btn"><i class="fas fa-gift"></i> Daily Bonus</button>
+            <button onclick="openWithdraw()" class="payout-btn"><i class="fas fa-wallet"></i> Withdraw</button>
         </div>
 
-        <div class="task-grid">
-            <div class="task-card" id="task-1" onclick="startVideoTask(1)">
-                <i class="fas fa-play-circle"></i>
+        <div class="tasks-grid">
+            <div class="task-box" id="task-1" onclick="startVideoTask(1)">
+                <div class="icon-wrap"><i class="fas fa-play"></i></div>
                 <h3>Task 01</h3>
                 <p>Earn ৳5.00</p>
             </div>
-            <div class="task-card" id="task-2" onclick="startVideoTask(2)">
-                <i class="fas fa-play-circle"></i>
+            <div class="task-box" id="task-2" onclick="startVideoTask(2)">
+                <div class="icon-wrap"><i class="fas fa-play"></i></div>
                 <h3>Task 02</h3>
                 <p>Earn ৳5.00</p>
             </div>
-            <div class="task-card" id="task-3" onclick="startVideoTask(3)">
-                <i class="fas fa-play-circle"></i>
+            <div class="task-box" id="task-3" onclick="startVideoTask(3)">
+                <div class="icon-wrap"><i class="fas fa-play"></i></div>
                 <h3>Task 03</h3>
                 <p>Earn ৳5.00</p>
             </div>
-            <div class="task-card" id="task-4" onclick="startVideoTask(4)">
-                <i class="fas fa-play-circle"></i>
+            <div class="task-box" id="task-4" onclick="startVideoTask(4)">
+                <div class="icon-wrap"><i class="fas fa-play"></i></div>
                 <h3>Task 04</h3>
                 <p>Earn ৳5.00</p>
             </div>
         </div>
-        
-        <div id="cooldown-timer" class="limit-notice" style="display: none;">
-            Next tasks available in: <span id="timer-display">00:00:00</span>
+
+        <div id="limit-box" class="timer-card" style="display: none;">
+            <i class="fas fa-clock"></i> Next Task in: <span id="timer-display">00:00:00</span>
         </div>
     </div>
 
-    <div id="withdrawModal" class="modal-bg">
-        <div class="modal-box">
-            <span class="close-x" onclick="closeWithdraw()">&times;</span>
-            <h3>Withdraw</h3>
-            <div class="input-group">
-                <select id="method"><option value="Bkash">Bkash</option><option value="Nagad">Nagad</option></select>
-                <input type="text" id="accountNo" placeholder="Personal Number">
-                <input type="number" id="withdrawAmount" placeholder="Min 500">
-                <button class="confirm-btn" onclick="sendWithdrawRequest()">Confirm</button>
-            </div>
+    <div id="withdrawModal" class="modal-overlay">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeWithdraw()">&times;</span>
+            <h3>Withdraw Funds</h3>
+            <p class="min-notice">Minimum withdrawal ৳500</p>
+            <select id="method">
+                <option value="Bkash">Bkash (Personal)</option>
+                <option value="Nagad">Nagad (Personal)</option>
+            </select>
+            <input type="text" id="accountNo" placeholder="Personal Number">
+            <input type="number" id="withdrawAmount" placeholder="Amount (৳)">
+            <button class="confirm-btn" onclick="sendWithdrawRequest()">Send Request</button>
         </div>
     </div>
 
-    <div id="videoOverlay" class="timer-overlay">
-        <div class="timer-box"><h2 id="seconds">20</h2><p>Processing Reward...</p></div>
+    <div id="videoOverlay" class="ad-timer-overlay">
+        <div class="timer-ring">
+            <h1 id="seconds">20</h1>
+            <p>Processing Ad...</p>
+        </div>
     </div>
 
-    <script src="script.js"></script>
+    <script type="module" src="script.js"></script>
 </body>
 </html>
