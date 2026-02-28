@@ -9,31 +9,23 @@
 </head>
 <body>
 
-    <div id="auth-screen" class="auth-wrapper">
-        <div class="auth-card" style="padding: 30px; text-align: center; background: #1a1f2e; margin: 20px; border-radius: 20px;">
-            <div class="logo" style="background:#3b82f6; width:60px; height:60px; line-height:60px; border-radius:50%; margin:0 auto 20px; font-size:30px;">৳</div>
-            <h2>Login / Sign Up</h2>
-            <input type="email" id="email" placeholder="Email" style="width:100%; padding:10px; margin:10px 0; border-radius:8px; border:none;">
-            <input type="password" id="password" placeholder="Password" style="width:100%; padding:10px; margin:10px 0; border-radius:8px; border:none;">
-            <button id="login-btn" class="main-btn" style="width:100%; padding:10px; background:#3b82f6; color:white; border:none; border-radius:8px; font-weight:bold;">Continue</button>
-        </div>
-    </div>
-
-    <div id="main-app" class="app-container" style="display: none;">
+    <div id="main-app" class="app-container">
         <div class="top-nav-blue">
+            <div class="app-header">
+                <h1 class="app-name">ProEarn Rewards</h1>
+            </div>
             <div class="user-row">
                 <div class="profile-box" onclick="document.getElementById('profileInput').click()">
                     <img id="profile-img" src="https://via.placeholder.com/100" alt="P">
-                    <input type="file" id="profileInput" hidden accept="image/*">
                 </div>
                 <div class="user-meta">
                     <span id="display-name">User</span>
                     <button onclick="handleLogout()" class="logout-btn">Logout</button>
                 </div>
-            </div>
-            <div class="balance-box">
-                <small>Balance</small>
-                <h2>৳<span id="balance">0.00</span></h2>
+                <div class="balance-info">
+                    <small>Balance</small>
+                    <h2>৳<span id="balance">0.00</span></h2>
+                </div>
             </div>
         </div>
 
@@ -81,29 +73,11 @@
             </div>
 
             <div id="limit-box" class="cooldown-card" style="display: none;">
-                <i class="fas fa-clock"></i> Next Task in: <span id="timer-display">00:00:00</span>
+                <i class="fas fa-clock"></i> Next Task in: <span id="timer-display">24:00:00</span>
             </div>
         </div>
     </div>
-
-    <div id="withdrawModal" class="modal-backdrop">
-        <div class="modal-box">
-            <h3 style="margin-bottom:15px;">Withdraw</h3>
-            <select id="method" style="width:100%; padding:10px; margin-bottom:10px; border-radius:8px;"><option value="Bkash">Bkash</option><option value="Nagad">Nagad</option></select>
-            <input type="text" id="accountNo" placeholder="Account Number" style="width:100%; padding:10px; margin-bottom:10px; border-radius:8px;">
-            <input type="number" id="withdrawAmount" placeholder="Min ৳৫০০" style="width:100%; padding:10px; margin-bottom:15px; border-radius:8px;">
-            <button class="submit-btn" onclick="sendWithdrawRequest()" style="width:100%; padding:12px; background:#3b82f6; border:none; border-radius:8px; color:white; font-weight:bold;">Confirm</button>
-            <p onclick="closeWithdraw()" style="text-align:center; margin-top:10px; cursor:pointer; color:#94a3b8;">Close</p>
-        </div>
-    </div>
-
-    <div id="videoOverlay" class="timer-overlay">
-        <div class="timer-circle">
-            <h1 id="seconds">২০</h1>
-            <p>Wait for Reward...</p>
-        </div>
-    </div>
-
+    
     <script type="module" src="script.js"></script>
 </body>
 </html>
