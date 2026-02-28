@@ -44,9 +44,9 @@ function updateUI() {
 function startTimers() {
     setInterval(() => {
         const now = new Date().getTime();
-        // টাস্ক লিমিট ২৪ ঘণ্টা
+        // টাস্ক লিমিট ২৪ ঘণ্টা (24h Countdown)
         if (currentData.lastLimit && now < currentData.lastLimit) {
-            document.getElementById('limit-box').style.display = 'flex';
+            document.getElementById('limit-box').style.display = 'block';
             document.getElementById('timer-display').innerText = formatTime(currentData.lastLimit - now);
         } else {
             document.getElementById('limit-box').style.display = 'none';
@@ -63,9 +63,9 @@ function startTimers() {
 }
 
 function formatTime(ms) {
-    const h = Math.floor(ms / 3600000);
-    const m = Math.floor((ms % 3600000) / 60000);
-    const s = Math.floor((ms % 60000) / 1000);
+    const h = Math.floor(ms / (1000 * 60 * 60));
+    const m = Math.floor((ms % (1000 * 60 * 60)) / (1000 * 60));
+    const s = Math.floor((ms % (1000 * 60)) / 1000);
     return `${h.toString().padStart(2,'0')}h ${m.toString().padStart(2,'0')}m ${s.toString().padStart(2,'0')}s`;
 }
 
@@ -78,7 +78,7 @@ window.startVideoTask = async () => {
         currentData.balance += 10;
         currentData.doneToday = (currentData.doneToday || 0) + 1;
         if (currentData.doneToday >= 4) {
-            currentData.lastLimit = new Date().getTime() + (24 * 60 * 60 * 1000); // ২৪ ঘণ্টা ফিক্সড
+            currentData.lastLimit = new Date().getTime() + (24 * 60 * 60 * 1000); // ২৪ ঘণ্টা বিরতি
             currentData.doneToday = 0;
         }
         await update(userRef, currentData);
@@ -90,7 +90,7 @@ window.startVideoTask = async () => {
 window.claimDailyBonus = async () => {
     window.open("https://google.com", '_blank');
     currentData.balance += 20;
-    currentData.lastBonus = new Date().getTime() + (24 * 60 * 60 * 1000); // ২৪ ঘণ্টা ফিক্সড
+    currentData.lastBonus = new Date().getTime() + (24 * 60 * 60 * 1000); // ২৪ ঘণ্টা
     await update(userRef, currentData);
     updateUI();
 };
