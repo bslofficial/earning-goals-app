@@ -9,7 +9,11 @@
 </head>
 <body>
 
-    <div id="auth-screen" class="auth-wrapper">
+    <div id="loading-screen" style="position:fixed; top:0; left:0; width:100%; height:100%; background:#0b0e14; z-index:99999; display:flex; justify-content:center; align-items:center;">
+        <div style="color:white; font-size:18px;">Loading ProEarn...</div>
+    </div>
+
+    <div id="auth-screen" class="auth-wrapper" style="display: none;">
         <div class="auth-card">
             <div class="logo">৳</div>
             <h2>ProEarn Rewards</h2>
@@ -23,9 +27,8 @@
         <div class="top-nav-blue">
             <h1 class="app-title-header">PROEARN REWARDS</h1>
             <div class="user-row">
-                <div class="profile-box" onclick="document.getElementById('profileInput').click()">
+                <div class="profile-box">
                     <img id="profile-img" src="https://via.placeholder.com/100" alt="P">
-                    <input type="file" id="profileInput" hidden accept="image/*">
                 </div>
                 <div class="user-meta">
                     <span id="display-name">User</span>
@@ -91,8 +94,6 @@
             <p onclick="closeWithdraw()" style="margin-top:15px; cursor:pointer; color:#999;">Close</p>
         </div>
     </div>
-
-    <div id="videoOverlay" class="timer-overlay"><div class="timer-circle"><h1 id="seconds">২০</h1><p>Wait...</p></div></div>
 
     <script type="module" src="script.js"></script>
 </body>
