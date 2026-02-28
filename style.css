@@ -1,41 +1,36 @@
-* { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
-body { background: #0b0f1a; color: white; display: flex; justify-content: center; min-height: 100vh; }
-.app-container, .auth-wrapper { width: 100%; max-width: 400px; padding: 20px; }
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+body { background: #080a0f; color: white; display: flex; justify-content: center; min-height: 100vh; }
+.app-container { width: 100%; max-width: 420px; padding-bottom: 30px; }
 
-/* লগইন ডিজাইন */
-.auth-card { background: #1a1f2e; padding: 30px; border-radius: 20px; text-align: center; margin-top: 50px; border: 1px solid #2d3748; }
-.logo { font-size: 40px; background: #3b82f6; width: 70px; height: 70px; line-height: 70px; border-radius: 50%; margin: 0 auto 20px; font-weight: bold; }
-.input-field { background: #0b0f1a; display: flex; align-items: center; padding: 12px; margin: 15px 0; border-radius: 10px; border: 1px solid #2d3748; }
-.input-field i { color: #3b82f6; margin-right: 10px; }
-.input-field input { background: none; border: none; color: white; outline: none; width: 100%; }
-.main-btn { width: 100%; padding: 12px; background: #3b82f6; color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; }
+/* টপ বার নিল কালার */
+.top-nav-blue { background: linear-gradient(135deg, #1e40af, #3b82f6); padding: 25px 20px; border-bottom-left-radius: 25px; border-bottom-right-radius: 25px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3); margin-bottom: 20px; }
 
-/* ড্যাশবোর্ড হেডার */
-.top-nav { display: flex; justify-content: space-between; align-items: center; background: #1a1f2e; padding: 15px; border-radius: 15px; margin-bottom: 20px; border: 1px solid #2d3748; }
 .user-info { display: flex; align-items: center; gap: 12px; }
-.profile-upload { position: relative; width: 55px; height: 55px; cursor: pointer; }
-.profile-upload img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 2px solid #3b82f6; }
-.camera-badge { position: absolute; bottom: 0; right: 0; background: #3b82f6; font-size: 10px; padding: 3px; border-radius: 50%; }
-.logout-link { background: none; border: none; color: #f87171; font-size: 12px; cursor: pointer; text-decoration: underline; margin-top: 5px; display: block; }
-.balance-display { text-align: right; }
-.balance-display h2 { color: #4ade80; }
+.profile-upload { position: relative; width: 60px; height: 60px; }
+.profile-upload img { width: 100%; height: 100%; border-radius: 50%; border: 2px solid white; object-fit: cover; }
+.camera-badge { position: absolute; bottom: 0; right: 0; background: white; color: #1e40af; font-size: 10px; padding: 3px; border-radius: 50%; }
+.meta b { display: block; font-size: 16px; }
+.logout-link { background: rgba(255,255,255,0.2); border: none; color: white; font-size: 10px; padding: 2px 8px; border-radius: 5px; cursor: pointer; margin-top: 4px; }
 
-/* বাটন ও টাস্ক গ্রিড */
-.action-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
-.action-row button { padding: 12px; border-radius: 10px; border: none; color: white; font-weight: bold; cursor: pointer; }
+.balance-display { text-align: right; }
+.balance-display p { font-size: 11px; opacity: 0.8; }
+.balance-display h2 { font-size: 24px; font-weight: bold; }
+
+/* বাটন ও গ্রিড */
+.action-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 0 15px; margin-bottom: 15px; }
+.action-row button { padding: 14px; border-radius: 12px; border: none; color: white; font-weight: bold; cursor: pointer; }
 .bonus-btn { background: #f59e0b; }
 .payout-btn { background: #10b981; }
 
-.tasks-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.task-box { background: #1a1f2e; padding: 20px; border-radius: 15px; text-align: center; border: 1px solid #2d3748; cursor: pointer; }
-.icon-wrap { background: #2d3748; width: 40px; height: 40px; line-height: 40px; border-radius: 50%; margin: 0 auto 10px; color: #3b82f6; }
+.refer-box { background: #1a1f2e; margin: 0 15px 20px; padding: 12px; border-radius: 12px; text-align: center; border: 1px dashed #3b82f6; font-size: 14px; }
+.refer-box b { color: #3b82f6; }
 
-/* পপ-আপ ও ওভারলে */
+.tasks-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 0 15px; }
+.task-box { background: #1a1f2e; padding: 20px; border-radius: 18px; text-align: center; border: 1px solid #2d3748; cursor: pointer; }
+.icon-wrap { background: #2d3748; width: 45px; height: 45px; line-height: 45px; border-radius: 50%; margin: 0 auto 10px; color: #3b82f6; }
+
+/* বাকি স্টাইল আগের মতোই */
 .ad-timer-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 1000; justify-content: center; align-items: center; }
-.timer-content h1 { font-size: 70px; color: #3b82f6; }
-.modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 999; justify-content: center; align-items: center; }
-.modal-content { background: #1a1f2e; width: 90%; padding: 25px; border-radius: 20px; position: relative; }
-.modal-content input, select { width: 100%; padding: 10px; margin: 10px 0; border-radius: 8px; border: 1px solid #2d3748; background: #0b0f1a; color: white; }
-.confirm-btn { width: 100%; padding: 12px; background: #3b82f6; border: none; border-radius: 8px; color: white; font-weight: bold; }
-.close-modal { position: absolute; right: 15px; top: 10px; font-size: 25px; cursor: pointer; }
+.timer-content h1 { font-size: 80px; color: #3b82f6; }
+.timer-card { background: #ef4444; padding: 15px; border-radius: 12px; text-align: center; margin: 20px 15px; }
 .footer-banner { margin-top: 30px; text-align: center; padding: 10px; background: #1a1f2e; border-radius: 15px; }
