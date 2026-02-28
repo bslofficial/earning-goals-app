@@ -1,26 +1,37 @@
-* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Arial', sans-serif; }
-body { background: #0f172a; color: white; display: flex; justify-content: center; padding: 20px; }
-.container { width: 100%; max-width: 400px; }
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+body { background: #020617; color: #f1f5f9; display: flex; justify-content: center; padding: 15px; }
+.container { width: 100%; max-width: 440px; }
 
-.header-card { background: linear-gradient(to right, #2563eb, #9333ea); padding: 25px; border-radius: 20px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-.avatar { font-size: 40px; }
-.balance-section h2 { font-size: 30px; }
+/* Header */
+.header-card { background: linear-gradient(135deg, #1e40af, #6d28d9); padding: 25px; border-radius: 25px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; box-shadow: 0 15px 30px -10px rgba(30, 64, 175, 0.5); }
+.avatar { font-size: 45px; color: #cbd5e1; }
+.user-details span { font-weight: 700; font-size: 18px; }
+.user-details p { font-size: 11px; color: #93c5fd; }
 
-.ad-banner { background: #1e293b; border-radius: 10px; margin-bottom: 20px; min-height: 60px; overflow: hidden; }
-.withdraw-nav-btn { width: 100%; padding: 15px; background: #1e293b; color: #38bdf8; border: 1px solid #334155; border-radius: 12px; font-weight: bold; margin-bottom: 20px; cursor: pointer; }
+/* Action Grid */
+.action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+.action-grid button { padding: 15px; border: none; border-radius: 15px; font-weight: bold; cursor: pointer; color: white; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 14px; }
+.bonus-btn { background: #ea580c; box-shadow: 0 4px 15px rgba(234, 88, 12, 0.3); }
+.refer-btn { background: #16a34a; box-shadow: 0 4px 15px rgba(22, 163, 74, 0.3); }
 
-.task-container { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-.task-card { background: #1e293b; padding: 20px; border-radius: 15px; text-align: center; cursor: pointer; border: 1px solid #334155; }
-.task-card i { font-size: 25px; color: #3b82f6; margin-bottom: 10px; }
+/* Buttons & Tasks */
+.withdraw-nav-btn { width: 100%; padding: 18px; background: #1e293b; color: #38bdf8; border: 1px solid #334155; border-radius: 18px; font-weight: bold; margin-bottom: 20px; cursor: pointer; }
+.task-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+.task-card { background: #0f172a; padding: 25px; border-radius: 20px; text-align: center; border: 1px solid #1e293b; cursor: pointer; transition: 0.3s; }
+.task-card:active { transform: scale(0.95); }
+.task-card i { font-size: 30px; color: #3b82f6; margin-bottom: 10px; }
 
-.modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 100; }
-.modal-content { background: #1e293b; width: 85%; margin: 20% auto; padding: 25px; border-radius: 20px; position: relative; }
-.limit-text { color: #fbbf24; font-size: 14px; margin-bottom: 15px; }
-.input-box { margin-bottom: 15px; text-align: left; }
-.input-box label { display: block; font-size: 12px; color: #94a3b8; margin-bottom: 5px; }
-.input-box input, .input-box select { width: 100%; padding: 10px; background: #0f172a; border: 1px solid #334155; color: white; border-radius: 8px; }
-.final-withdraw-btn { width: 100%; padding: 12px; background: #2563eb; border: none; color: white; border-radius: 10px; font-weight: bold; }
-.close-btn { position: absolute; right: 15px; top: 10px; font-size: 25px; cursor: pointer; }
+/* Modals */
+.modal-bg { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 100; backdrop-filter: blur(8px); }
+.modal-box { background: #1e293b; width: 90%; max-width: 380px; margin: 15vh auto; padding: 30px; border-radius: 30px; position: relative; text-align: center; }
+.refer-code-box { background: #020617; padding: 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; margin-top: 20px; }
+.refer-code-box button { background: #3b82f6; color: white; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; }
+.input-group { text-align: left; margin-top: 15px; }
+.input-group label { font-size: 12px; color: #94a3b8; }
+.input-group input, select { width: 100%; padding: 12px; background: #020617; border: 1px solid #334155; color: white; border-radius: 10px; margin-top: 5px; }
+.confirm-btn { width: 100%; padding: 15px; background: #3b82f6; border: none; color: white; border-radius: 12px; font-weight: bold; margin-top: 20px; cursor: pointer; }
+.close-x { position: absolute; right: 20px; top: 15px; font-size: 25px; cursor: pointer; color: #94a3b8; }
 
-.video-wait { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0f172a; z-index: 200; justify-content: center; align-items: center; }
-#seconds { font-size: 60px; color: #3b82f6; }
+/* Overlay */
+.timer-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #020617; z-index: 200; justify-content: center; align-items: center; }
+#seconds { font-size: 80px; color: #3b82f6; }
