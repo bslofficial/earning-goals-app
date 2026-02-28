@@ -1,37 +1,27 @@
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-body { background: #020617; color: #f1f5f9; display: flex; justify-content: center; padding: 15px; }
-.container { width: 100%; max-width: 440px; }
+body { background: #0b0e14; color: white; display: flex; justify-content: center; min-height: 100vh; }
+.container, .auth-container { width: 100%; max-width: 420px; padding: 20px; }
 
-/* Header */
-.header-card { background: linear-gradient(135deg, #1e40af, #6d28d9); padding: 25px; border-radius: 25px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; box-shadow: 0 15px 30px -10px rgba(30, 64, 175, 0.5); }
-.avatar { font-size: 45px; color: #cbd5e1; }
-.user-details span { font-weight: 700; font-size: 18px; }
-.user-details p { font-size: 11px; color: #93c5fd; }
+/* Auth Box */
+.auth-box { background: #1a1f29; padding: 30px; border-radius: 25px; margin-top: 50px; text-align: center; }
+.auth-box input { width: 100%; padding: 15px; margin: 10px 0; background: #0b0e14; border: 1px solid #334155; color: white; border-radius: 12px; }
+.auth-box button { width: 100%; padding: 15px; background: #3b82f6; border: none; color: white; border-radius: 12px; font-weight: bold; cursor: pointer; }
 
-/* Action Grid */
-.action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
-.action-grid button { padding: 15px; border: none; border-radius: 15px; font-weight: bold; cursor: pointer; color: white; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 14px; }
-.bonus-btn { background: #ea580c; box-shadow: 0 4px 15px rgba(234, 88, 12, 0.3); }
-.refer-btn { background: #16a34a; box-shadow: 0 4px 15px rgba(22, 163, 74, 0.3); }
+/* Dashboard */
+.header-card { background: linear-gradient(135deg, #3b82f6, #8b5cf6); padding: 25px; border-radius: 20px; display: flex; justify-content: space-between; margin-bottom: 20px; }
+.action-bar { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+.action-bar button { padding: 15px; border-radius: 15px; border: none; color: white; font-weight: bold; cursor: pointer; }
+.bonus-btn { background: #f59e0b; }
+.withdraw-nav { background: #10b981; }
 
-/* Buttons & Tasks */
-.withdraw-nav-btn { width: 100%; padding: 18px; background: #1e293b; color: #38bdf8; border: 1px solid #334155; border-radius: 18px; font-weight: bold; margin-bottom: 20px; cursor: pointer; }
+/* Task Grid - ৪টি বাটন সুন্দরভাবে সাজানো */
 .task-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-.task-card { background: #0f172a; padding: 25px; border-radius: 20px; text-align: center; border: 1px solid #1e293b; cursor: pointer; transition: 0.3s; }
-.task-card:active { transform: scale(0.95); }
-.task-card i { font-size: 30px; color: #3b82f6; margin-bottom: 10px; }
+.task-card { background: #1a1f29; padding: 30px 15px; border-radius: 20px; text-align: center; border: 1px solid #334155; cursor: pointer; }
+.task-card i { font-size: 35px; color: #3b82f6; margin-bottom: 10px; }
 
-/* Modals */
-.modal-bg { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 100; backdrop-filter: blur(8px); }
-.modal-box { background: #1e293b; width: 90%; max-width: 380px; margin: 15vh auto; padding: 30px; border-radius: 30px; position: relative; text-align: center; }
-.refer-code-box { background: #020617; padding: 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; margin-top: 20px; }
-.refer-code-box button { background: #3b82f6; color: white; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; }
-.input-group { text-align: left; margin-top: 15px; }
-.input-group label { font-size: 12px; color: #94a3b8; }
-.input-group input, select { width: 100%; padding: 12px; background: #020617; border: 1px solid #334155; color: white; border-radius: 10px; margin-top: 5px; }
-.confirm-btn { width: 100%; padding: 15px; background: #3b82f6; border: none; color: white; border-radius: 12px; font-weight: bold; margin-top: 20px; cursor: pointer; }
-.close-x { position: absolute; right: 20px; top: 15px; font-size: 25px; cursor: pointer; color: #94a3b8; }
+.limit-notice { background: #ef4444; padding: 15px; border-radius: 15px; text-align: center; margin-top: 20px; font-weight: bold; }
 
-/* Overlay */
-.timer-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #020617; z-index: 200; justify-content: center; align-items: center; }
-#seconds { font-size: 80px; color: #3b82f6; }
+/* Modals & Overlays */
+.modal-bg { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 100; justify-content: center; align-items: center; display: none; }
+.modal-box { background: #1a1f29; width: 90%; max-width: 350px; padding: 30px; border-radius: 25px; position: relative; }
+.timer-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0b0e14; z-index: 200; justify-content: center; align-items: center; }
