@@ -30,7 +30,9 @@
         <div class="top-nav-blue">
             <h1 class="app-title-header">PROEARN REWARDS</h1>
             <div class="user-row">
-                <div class="profile-box"><img id="profile-img" src="https://via.placeholder.com/100" alt="P"></div>
+                <div class="profile-box">
+                    <img id="profile-img" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="User">
+                </div>
                 <div class="user-meta">
                     <span id="display-name">User</span>
                     <button onclick="handleLogout()" class="logout-btn">Logout</button>
@@ -43,6 +45,19 @@
         </div>
 
         <div class="main-content">
+            <div class="stats-row">
+                <div class="stat-card">
+                    <i class="fas fa-users"></i>
+                    <p>Total Refer</p>
+                    <h3 id="refer-count">0</h3>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-check-circle"></i>
+                    <p>Tasks Done</p>
+                    <h3 id="tasks-done">0</h3>
+                </div>
+            </div>
+
             <div class="action-buttons">
                 <button onclick="claimDailyBonus()" id="bonus-btn" class="btn-bonus">
                     <i class="fas fa-gift"></i> <span id="bonus-text">Daily Bonus</span>
