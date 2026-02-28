@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ProEarn - Ultimate Rewards</title>
+    <title>ProEarn - Digital Rewards</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -22,12 +22,12 @@
                 <input type="password" id="password" placeholder="Password">
             </div>
             <button id="login-btn" class="main-btn">Login</button>
-            <p id="auth-error" style="color: red; margin-top: 10px;"></p>
+            <p id="auth-error" style="color: #ff4d4d; margin-top: 10px; font-size: 13px;"></p>
         </div>
     </div>
 
     <div id="main-app" class="app-container" style="display: none;">
-        <div class="top-nav">
+        <div class="top-nav-blue">
             <div class="user-info">
                 <div class="profile-upload" onclick="document.getElementById('profileInput').click()">
                     <img id="profile-img" src="https://via.placeholder.com/100" alt="Profile">
@@ -40,7 +40,7 @@
                 </div>
             </div>
             <div class="balance-display">
-                <p>Wallet Balance</p>
+                <p>Current Balance</p>
                 <h2>৳<span id="balance">0.00</span></h2>
             </div>
         </div>
@@ -50,31 +50,36 @@
             <button onclick="openWithdraw()" class="payout-btn"><i class="fas fa-wallet"></i> Withdraw</button>
         </div>
 
+        <div class="refer-box">
+            <i class="fas fa-users"></i>
+            <span>Refer Friend & Earn <b>৳৩০.০০</b></span>
+        </div>
+
         <div class="tasks-grid">
-            <div class="task-box" id="task-1" onclick="startVideoTask(1)">
+            <div class="task-box" onclick="startVideoTask(1)">
                 <div class="icon-wrap"><i class="fas fa-play"></i></div>
                 <h3>Task 01</h3>
-                <p>Earn ৳5.00</p>
+                <p>Earn ৳১০.০০</p>
             </div>
-            <div class="task-box" id="task-2" onclick="startVideoTask(2)">
+            <div class="task-box" onclick="startVideoTask(2)">
                 <div class="icon-wrap"><i class="fas fa-play"></i></div>
                 <h3>Task 02</h3>
-                <p>Earn ৳5.00</p>
+                <p>Earn ৳১০.০০</p>
             </div>
-            <div class="task-box" id="task-3" onclick="startVideoTask(3)">
+            <div class="task-box" onclick="startVideoTask(3)">
                 <div class="icon-wrap"><i class="fas fa-play"></i></div>
                 <h3>Task 03</h3>
-                <p>Earn ৳5.00</p>
+                <p>Earn ৳১০.০০</p>
             </div>
-            <div class="task-box" id="task-4" onclick="startVideoTask(4)">
+            <div class="task-box" onclick="startVideoTask(4)">
                 <div class="icon-wrap"><i class="fas fa-play"></i></div>
                 <h3>Task 04</h3>
-                <p>Earn ৳5.00</p>
+                <p>Earn ৳১০.০০</p>
             </div>
         </div>
 
         <div id="limit-box" class="timer-card" style="display: none;">
-            Daily Limit! Back in: <span id="timer-display">00:00:00</span>
+            <i class="fas fa-clock"></i> Next Task in: <span id="timer-display">00:00:00</span>
         </div>
 
         <div class="footer-banner">
@@ -92,19 +97,16 @@
         <div class="modal-content">
             <span class="close-modal" onclick="closeWithdraw()">&times;</span>
             <h3>Withdraw Money</h3>
-            <select id="method">
-                <option value="Bkash">Bkash</option>
-                <option value="Nagad">Nagad</option>
-            </select>
+            <select id="method"><option value="Bkash">Bkash</option><option value="Nagad">Nagad</option></select>
             <input type="text" id="accountNo" placeholder="Personal Number">
-            <input type="number" id="withdrawAmount" placeholder="Min ৳500">
+            <input type="number" id="withdrawAmount" placeholder="Min ৳৫০০">
             <button class="confirm-btn" onclick="sendWithdrawRequest()">Send Request</button>
         </div>
     </div>
 
     <div id="videoOverlay" class="ad-timer-overlay">
         <div class="timer-content">
-            <h1 id="seconds">20</h1>
+            <h1 id="seconds">২০</h1>
             <p>Wait for Reward...</p>
         </div>
     </div>
