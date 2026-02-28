@@ -3,19 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ProEarn - Digital Goals</title>
+    <title>ProEarn - Digital Income</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://unityads.unity3d.com/sdk/3.4/unityads.js"></script>
 </head>
 <body>
-    <div class="container">
+    <div id="login-screen" class="auth-container">
+        <div class="auth-box">
+            <h2>Welcome Back</h2>
+            <p>Login to start earning</p>
+            <input type="email" id="email" placeholder="Email Address">
+            <input type="password" id="password" placeholder="Password">
+            <button onclick="handleLogin()">Login / Register</button>
+        </div>
+    </div>
+
+    <div id="main-app" class="container" style="display: none;">
         <div class="header-card">
             <div class="profile-info">
-                <i class="fas fa-user-shield avatar"></i>
-                <div class="user-details">
-                    <span>Active User</span>
-                    <p id="user-id-display">ID: Loading...</p>
+                <i class="fas fa-user-circle avatar"></i>
+                <div>
+                    <span id="display-email">User</span>
+                    <p id="user-id">ID: Loading...</p>
                 </div>
             </div>
             <div class="balance-card">
@@ -24,79 +34,54 @@
             </div>
         </div>
 
-        <div class="action-grid">
-            <button class="bonus-btn" onclick="claimDailyBonus()">
-                <i class="fas fa-gift"></i> Daily Bonus
-            </button>
-            <button class="refer-btn" onclick="openRefer()">
-                <i class="fas fa-share-alt"></i> Refer & Earn
-            </button>
+        <div class="action-bar">
+            <button class="bonus-btn" onclick="claimDailyBonus()"><i class="fas fa-gift"></i> Bonus</button>
+            <button class="withdraw-nav" onclick="openWithdraw()"><i class="fas fa-wallet"></i> ৳500</button>
         </div>
-
-        <div class="ad-box">
-            <script type="text/javascript">
-                atOptions = { 'key' : '61a6dd9464e05093404bdc74b6f80ff1', 'format' : 'iframe', 'height' : 60, 'width' : 468, 'params' : {} };
-            </script>
-            <script type="text/javascript" src="https://www.highperformanceformat.com/61a6dd9464e05093404bdc74b6f80ff1/invoke.js"></script>
-        </div>
-
-        <button class="withdraw-nav-btn" onclick="openWithdraw()">
-            <i class="fas fa-money-check-alt"></i> Withdraw (Min: ৳500)
-        </button>
 
         <div class="task-grid">
-            <script>
-                for(let i=1; i<=6; i++) {
-                    document.write(`
-                        <div class="task-card" id="task-${i}" onclick="startVideoTask(${i})">
-                            <i class="fas fa-play-circle"></i>
-                            <h3>Task ${i}</h3>
-                            <p>Premium Ad</p>
-                        </div>
-                    `);
-                }
-            </script>
-        </div>
-    </div>
-
-    <div id="referModal" class="modal-bg">
-        <div class="modal-box">
-            <span class="close-x" onclick="closeRefer()">&times;</span>
-            <i class="fas fa-users-cog modal-icon"></i>
-            <h3>Refer Friends</h3>
-            <p>Share your ID and get ৳50 for each active referral!</p>
-            <div class="refer-code-box">
-                <span id="my-refer-code">...</span>
-                <button onclick="copyRefer()">Copy</button>
+            <div class="task-card" id="task-1" onclick="startVideoTask(1)">
+                <i class="fas fa-play-circle"></i>
+                <h3>Task 01</h3>
+                <p>Earn ৳5.00</p>
             </div>
+            <div class="task-card" id="task-2" onclick="startVideoTask(2)">
+                <i class="fas fa-play-circle"></i>
+                <h3>Task 02</h3>
+                <p>Earn ৳5.00</p>
+            </div>
+            <div class="task-card" id="task-3" onclick="startVideoTask(3)">
+                <i class="fas fa-play-circle"></i>
+                <h3>Task 03</h3>
+                <p>Earn ৳5.00</p>
+            </div>
+            <div class="task-card" id="task-4" onclick="startVideoTask(4)">
+                <i class="fas fa-play-circle"></i>
+                <h3>Task 04</h3>
+                <p>Earn ৳5.00</p>
+            </div>
+        </div>
+        
+        <div id="cooldown-timer" class="limit-notice" style="display: none;">
+            Next tasks available in: <span id="timer-display">00:00:00</span>
         </div>
     </div>
 
     <div id="withdrawModal" class="modal-bg">
         <div class="modal-box">
             <span class="close-x" onclick="closeWithdraw()">&times;</span>
-            <h3>Payout</h3>
+            <h3>Withdraw</h3>
             <div class="input-group">
-                <label>Method</label>
                 <select id="method"><option value="Bkash">Bkash</option><option value="Nagad">Nagad</option></select>
-            </div>
-            <div class="input-group">
-                <label>Number</label>
-                <input type="text" id="accountNo" placeholder="01XXXXXXXXX">
-            </div>
-            <div class="input-group">
-                <label>Amount (BDT)</label>
+                <input type="text" id="accountNo" placeholder="Personal Number">
                 <input type="number" id="withdrawAmount" placeholder="Min 500">
+                <button class="confirm-btn" onclick="sendWithdrawRequest()">Confirm</button>
             </div>
-            <button class="confirm-btn" onclick="sendWithdrawRequest()">Withdraw ৳</button>
         </div>
     </div>
 
     <div id="videoOverlay" class="timer-overlay">
-        <div class="timer-box">
-            <h2 id="seconds">20</h2>
-            <p>Wait for Reward...</p>
-        </div>
+        <div class="timer-box"><h2 id="seconds">20</h2><p>Processing Reward...</p></div>
     </div>
 
     <script src="script.js"></script>
