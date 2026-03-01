@@ -11,59 +11,38 @@ body { background: #0b0e14; color: white; overflow-x: hidden; }
 .sidebar-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 30px; }
 .sidebar-logo { font-size: 30px; color: #3b82f6; font-weight: 900; }
 .menu-list { list-style: none; }
-.menu-list li a { 
-    text-decoration: none; color: #cbd5e1; font-size: 16px; 
-    display: flex; align-items: center; padding: 12px; border-radius: 10px; margin-bottom: 5px;
-}
+.menu-list li a { text-decoration: none; color: #cbd5e1; font-size: 16px; display: flex; align-items: center; padding: 12px; border-radius: 10px; margin-bottom: 5px; }
 .menu-list li a i { margin-right: 15px; width: 20px; color: #3b82f6; }
 .menu-list hr { border: 0.1px solid #2d3748; margin: 10px 0; }
 
-/* Header */
-.top-nav-blue { 
-    background: linear-gradient(135deg, #1e40af, #3b82f6); 
-    padding: 25px 15px; border-bottom-left-radius: 30px; border-bottom-right-radius: 30px; 
-    text-align: center; margin-bottom: 20px;
-}
+/* Nav & Layout */
+.top-nav-blue { background: linear-gradient(135deg, #1e40af, #3b82f6); padding: 25px 15px; border-bottom-left-radius: 30px; border-bottom-right-radius: 30px; text-align: center; }
 .nav-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; }
 .menu-trigger { font-size: 22px; cursor: pointer; }
-.app-title-header { font-size: 18px; font-weight: 800; letter-spacing: 1px; }
+.app-title-header { font-size: 18px; font-weight: 800; }
 
-/* Balance & Profile */
 .user-row { display: flex; align-items: center; justify-content: space-between; margin-top: 15px; }
 .profile-box { width: 45px; height: 45px; border-radius: 50%; background: #fff; border: 2px solid #fff; overflow: hidden; }
 .profile-box img { width: 100%; height: 100%; object-fit: cover; }
 .user-meta { flex: 1; margin-left: 12px; text-align: left; }
 .balance-box h2 { font-size: 22px; font-weight: 900; }
 
-/* Grid Cards */
-.main-content { padding: 0 15px 20px 15px; }
+.main-content { padding: 20px 15px; }
 .grid-container { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
-.custom-card { 
-    background: #1a1f2e; padding: 20px 10px; border-radius: 18px; 
-    text-align: center; border: 1px solid rgba(255,255,255,0.05); 
-}
-.task-card { background: linear-gradient(145deg, #1e293b, #0f172a); cursor: pointer; }
+.custom-card { background: #1a1f2e; padding: 20px 10px; border-radius: 18px; text-align: center; border: 1px solid rgba(255,255,255,0.05); }
+.task-card { background: linear-gradient(145deg, #1e293b, #0f172a); cursor: pointer; transition: 0.3s; }
 .task-disabled { opacity: 0.5; pointer-events: none; filter: grayscale(1); }
-.custom-card i { color: #3b82f6; font-size: 24px; margin-bottom: 8px; }
-.custom-card h3 { font-size: 16px; color: #10b981; }
 
 /* Buttons */
 .action-buttons { display: flex; gap: 10px; margin-bottom: 20px; }
 .btn-bonus { background: #f59e0b; flex: 1; padding: 12px; border-radius: 12px; border: none; color: #fff; font-weight: bold; cursor: pointer; }
 .btn-withdraw { background: #10b981; flex: 1; padding: 12px; border-radius: 12px; border: none; color: #fff; font-weight: bold; cursor: pointer; }
-button:disabled { filter: brightness(0.7); cursor: not-allowed; opacity: 0.8; }
+button:disabled { filter: brightness(0.7); cursor: not-allowed; }
 
 .refer-info { background: #1a1f2e; padding: 15px; border-radius: 15px; border: 1px dashed #3b82f6; text-align: center; margin-bottom: 20px; }
 .refer-link-box { display: flex; background: #0b0e14; border-radius: 8px; padding: 5px; margin-top: 10px; }
 .refer-link-box input { flex: 1; background: transparent; border: none; color: #3b82f6; padding: 8px; outline: none; font-size: 12px; }
 .share-btn { background: #3b82f6; border: none; color: white; padding: 5px 15px; border-radius: 6px; font-weight: bold; }
-
-/* Auth */
-.auth-wrapper { height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
-.auth-card { background: #1a1f2e; width: 100%; max-width: 350px; padding: 30px; border-radius: 20px; text-align: center; border: 1px solid #3b82f6; }
-.input-field { background: #0b0e14; margin-bottom: 15px; border-radius: 10px; display: flex; align-items: center; padding: 12px; border: 1px solid #2d3748; }
-.input-field input { background: transparent; border: none; color: white; margin-left: 10px; outline: none; width: 100%; }
-.main-btn { width: 100%; padding: 12px; background: #3b82f6; border: none; color: white; font-weight: bold; border-radius: 10px; cursor: pointer; }
 
 /* Loader & Modal */
 #loading-screen { position: fixed; inset: 0; background: #0b0e14; z-index: 99999; display: flex; justify-content: center; align-items: center; }
