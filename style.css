@@ -1,42 +1,17 @@
-* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
-body { background-color: #0b0e14; color: white; }
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
+body { background: #0b0e14; color: white; }
+.app-container { max-width: 500px; margin: 0 auto; min-height: 100vh; }
 
-.app-container { max-width: 500px; margin: 0 auto; min-height: 100vh; background: #0b0e14; }
+.top-nav-blue { background: #1e40af; padding: 30px 20px; border-radius: 0 0 25px 25px; text-align: center; }
+.nav-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+.balance-box { background: rgba(255,255,255,0.1); padding: 15px; border-radius: 15px; }
 
-/* Sidebar */
-.sidebar { position: fixed; left: -280px; top: 0; width: 260px; height: 100%; background: #161b22; z-index: 1000; transition: 0.3s; padding: 20px; border-right: 1px solid #30363d; }
+.grid-container { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
+.task-card { background: #1a1f2e; padding: 20px; border-radius: 15px; text-align: center; border: 1px solid #2d3748; cursor: pointer; }
+.task-card i { font-size: 25px; color: #3b82f6; margin-bottom: 10px; }
+
+.adsterra-box { background: linear-gradient(to right, #10b981, #059669); margin-top: 20px; padding: 15px; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+
+.task-disabled { opacity: 0.5; pointer-events: none; filter: grayscale(1); }
+.sidebar { position: fixed; left: -280px; top: 0; width: 260px; height: 100%; background: #1a1f2e; z-index: 1000; transition: 0.3s; padding: 20px; }
 .sidebar.active { left: 0; }
-.sidebar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
-.sidebar-logo { width: 40px; height: 40px; background: #2f81f7; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
-.menu-list { list-style: none; }
-.menu-list li { margin-bottom: 5px; }
-.menu-list a { color: #c9d1d9; text-decoration: none; display: flex; align-items: center; padding: 12px; border-radius: 8px; transition: 0.2s; }
-.menu-list a i { margin-right: 15px; width: 20px; color: #2f81f7; }
-.menu-list a:hover { background: #21262d; }
-.menu-list hr { border: 0; border-top: 1px solid #30363d; margin: 10px 0; }
-
-/* Top Navigation */
-.top-nav { background: linear-gradient(135deg, #1e40af, #3b82f6); padding: 20px; border-bottom-left-radius: 25px; border-bottom-right-radius: 25px; text-align: center; }
-.nav-content { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-.logo-text { font-size: 18px; letter-spacing: 1px; }
-.menu-trigger { font-size: 20px; cursor: pointer; }
-
-.balance-card { background: rgba(255,255,255,0.1); padding: 15px; border-radius: 15px; backdrop-filter: blur(5px); }
-.balance-card h2 { font-size: 28px; margin-top: 5px; }
-
-/* Grid Tasks */
-.main-content { padding: 20px; }
-.grid-container { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 10px; }
-.task-card { background: #161b22; border-radius: 15px; padding: 15px; display: flex; align-items: center; border: 1px solid #30363d; cursor: pointer; }
-.play-icon { width: 40px; height: 40px; background: #2f81f7; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-right: 12px; }
-.task-info p { font-size: 12px; color: #8b949e; }
-.task-info h3 { font-size: 15px; color: #39d353; }
-
-/* Timers & Refer */
-.task-disabled { opacity: 0.5; pointer-events: none; }
-.timer-active { color: #f85149 !important; font-family: monospace; }
-
-.refer-section { background: #161b22; margin-top: 25px; padding: 15px; border-radius: 15px; border: 1px dashed #2f81f7; }
-.copy-box { display: flex; margin-top: 10px; background: #0b0e14; padding: 5px; border-radius: 8px; }
-.copy-box input { background: transparent; border: none; color: #58a6ff; flex: 1; padding: 5px; outline: none; font-size: 12px; }
-.copy-box button { background: #2f81f7; color: white; border: none; padding: 5px 15px; border-radius: 5px; cursor: pointer; }
