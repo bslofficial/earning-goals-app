@@ -6,7 +6,7 @@
     <title>ProEarn Rewards</title>
     <script src="https://cdn.jsdelivr.net/npm/@unityadssdk/unity-ads-sdk@latest/dist/unity-ads.min.js"></script>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
@@ -18,9 +18,13 @@
         </div>
         <ul class="menu-list">
             <li><a href="index.html"><i class="fas fa-home"></i> Dashboard</a></li>
+            <li><a href="leaderboard.html"><i class="fas fa-trophy"></i> Leaderboard</a></li>
+            <li><a href="history.html"><i class="fas fa-history"></i> Payment History</a></li>
+            <li><a href="refer.html"><i class="fas fa-users-cog"></i> Referral Levels</a></li>
             <li><a href="about.html"><i class="fas fa-info-circle"></i> About Us</a></li>
-            <li><a href="#"><i class="fas fa-user-shield"></i> Privacy Policy</a></li>
-            <li><a href="https://t.me/yourlink" target="_blank"><i class="fab fa-telegram"></i> Telegram Support</a></li>
+            <li><a href="privacy.html"><i class="fas fa-user-shield"></i> Privacy Policy</a></li>
+            <li><a href="https://t.me/incomeworld01" target="_blank"><i class="fab fa-telegram"></i> Admin Support</a></li>
+            <hr style="border: 0.5px solid #2d3748; margin: 10px 0;">
             <li><a href="#" onclick="handleLogout()"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
         </ul>
         <div class="sidebar-footer">Version 1.0.2</div>
@@ -48,7 +52,8 @@
             <div class="nav-header">
                 <i class="fas fa-bars menu-trigger" onclick="toggleMenu()"></i>
                 <h1 class="app-title-header">PROEARN REWARDS</h1>
-                <div style="width: 25px;"></div> </div>
+                <div style="width: 25px;"></div> 
+            </div>
             
             <div class="user-row">
                 <div class="profile-box">
@@ -76,10 +81,10 @@
             </div>
 
             <div class="refer-info">
-                <p><i class="fas fa-user-plus"></i> Refer & Earn <b>Tk.30.00</b></p>
+                <p><i class="fas fa-user-plus"></i> Refer & Earn (6 Levels Active)</p>
                 <div class="refer-link-box">
                     <input type="text" id="refer-url" readonly value="Generating...">
-                    <button id="share-btn-action" class="share-btn"><i class="fas fa-share-alt"></i> Share</button>
+                    <button id="copy-btn-action" class="share-btn" onclick="copyReferLink()">Copy</button>
                 </div>
             </div>
 
@@ -97,30 +102,26 @@
             </div>
 
             <div class="grid-container">
-                <div class="custom-card task-card" onclick="startVideoTask()">
+                <div class="custom-card task-card" onclick="startVideoTask(1)" id="task-1">
                     <i class="fas fa-play"></i>
                     <p>Task 01</p>
-                    <h3>Tk.10.00</h3>
+                    <h3 id="timer-1">Tk.10.00</h3>
                 </div>
-                <div class="custom-card task-card" onclick="startVideoTask()">
+                <div class="custom-card task-card" onclick="startVideoTask(2)" id="task-2">
                     <i class="fas fa-play"></i>
                     <p>Task 02</p>
-                    <h3>Tk.10.00</h3>
+                    <h3 id="timer-2">Tk.10.00</h3>
                 </div>
-                <div class="custom-card task-card" onclick="startVideoTask()">
+                <div class="custom-card task-card" onclick="startVideoTask(3)" id="task-3">
                     <i class="fas fa-play"></i>
                     <p>Task 03</p>
-                    <h3>Tk.10.00</h3>
+                    <h3 id="timer-3">Tk.10.00</h3>
                 </div>
-                <div class="custom-card task-card" onclick="startVideoTask()">
+                <div class="custom-card task-card" onclick="startVideoTask(4)" id="task-4">
                     <i class="fas fa-play"></i>
                     <p>Task 04</p>
-                    <h3>Tk.10.00</h3>
+                    <h3 id="timer-4">Tk.10.00</h3>
                 </div>
-            </div>
-
-            <div id="limit-box" class="cooldown-card" style="display: none;">
-                <i class="fas fa-clock"></i> Next Task in: <span id="timer-display">24:00:00</span>
             </div>
         </div>
     </div>
@@ -138,4 +139,4 @@
 
     <script type="module" src="script.js"></script>
 </body>
-    </html>
+</html>
