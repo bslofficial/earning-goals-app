@@ -4,40 +4,82 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ProEarn Rewards</title>
-    <script src="https://cdn.unityads.unity3d.com/sdk/4.9.0/unity-ads.js"></script>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <div id="loading-screen">
-        <div class="spinner"></div>
-        <p>Initializing Ads...</p>
+
+    <div id="side-menu" class="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-logo">$</div>
+            <h3>ProEarn Menu</h3>
+            <i class="fas fa-times close-btn" onclick="toggleMenu()"></i>
+        </div>
+        <ul class="menu-list">
+            <li><a href="index.html"><i class="fas fa-home"></i> Dashboard</a></li>
+            <li><a href="leaderboard.html"><i class="fas fa-trophy"></i> Leaderboard</a></li>
+            <li><a href="history.html"><i class="fas fa-history"></i> Payment History</a></li>
+            <li><a href="#" onclick="handleLogout()"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+        </ul>
     </div>
 
-    <div id="main-app" class="app-container">
+    <div id="loading-screen">
+        <div class="loader-content">
+            <div class="spinner"></div>
+            <p>Loading ProEarn...</p>
+        </div>
+    </div>
+
+    <div id="auth-screen" class="auth-wrapper">
+        <div class="auth-card">
+            <div class="logo">$</div>
+            <h2>ProEarn Rewards</h2>
+            <div class="input-field"><i class="fas fa-envelope"></i><input type="email" id="email" placeholder="Email"></div>
+            <div class="input-field"><i class="fas fa-lock"></i><input type="password" id="password" placeholder="Password"></div>
+            <button id="login-btn" class="main-btn">Login / Sign Up</button>
+        </div>
+    </div>
+
+    <div id="main-app" class="app-container" style="display: none;">
         <div class="top-nav-blue">
-            <h1 class="app-title-header">PROEARN REWARDS</h1>
-            <div class="balance-box">
-                <h2>Tk.<span id="balance">0.00</span></h2>
+            <div class="nav-header">
+                <i class="fas fa-bars menu-trigger" onclick="toggleMenu()"></i>
+                <h1 class="app-title-header">PROEARN REWARDS</h1>
+                <div style="width: 25px;"></div> 
+            </div>
+            <div class="user-row">
+                <div class="profile-box">
+                    <img id="profile-img" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="User">
+                </div>
+                <div class="user-meta">
+                    <span id="display-name">User</span>
+                    <small style="display:block; opacity: 0.8; font-size: 10px;">Status: Active</small>
+                </div>
+                <div class="balance-box">
+                    <small>Balance</small>
+                    <h2>Tk.<span id="balance">0.00</span></h2>
+                </div>
             </div>
         </div>
 
         <div class="main-content">
             <div class="grid-container">
-                <div class="custom-card task-card" onclick="startVideoTask('Rewarded_Android')">
-                    <i class="fas fa-play"></i>
-                    <p>Task 01</p>
-                    <h3>Tk.10.00</h3>
+                <div class="custom-card task-card" onclick="startAdTask(1)">
+                    <i class="fas fa-play"></i><p>Task 01</p><h3>Tk.10.00</h3>
                 </div>
-                <div class="custom-card task-card" onclick="startVideoTask('Rewarded_Android')">
-                    <i class="fas fa-play"></i>
-                    <p>Task 02</p>
-                    <h3>Tk.10.00</h3>
+                <div class="custom-card task-card" onclick="startAdTask(2)">
+                    <i class="fas fa-play"></i><p>Task 02</p><h3>Tk.10.00</h3>
+                </div>
+                <div class="custom-card task-card" onclick="startAdTask(3)">
+                    <i class="fas fa-play"></i><p>Task 03</p><h3>Tk.10.00</h3>
+                </div>
+                <div class="custom-card task-card" onclick="startAdTask(4)">
+                    <i class="fas fa-play"></i><p>Task 04</p><h3>Tk.10.00</h3>
                 </div>
             </div>
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <script type="module" src="script.js"></script>
 </body>
 </html>
