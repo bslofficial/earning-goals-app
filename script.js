@@ -20,33 +20,29 @@ const gameId = '6055094';
 const placementId = 'Rewarded_Android';
 if (window.unityAds) { window.unityAds.initialize(gameId, false); }
 
-window.toggleMenu = () => document.getElementById('side-menu').classList.toggle('active');
+window.toggleMenu = () => { document.getElementById('side-menu').classList.toggle('active'); };
 
 let userRef;
 let currentData = {};
 const referBonuses = [10, 7, 5, 3, 2, 1];
 
-// ৬ লেভেল রেফারেল লজিক
+// ৬ লেভেল রেফারেল বোনাস
 async function giveReferBonus(referrerId, level = 0) {
     if (level >= 6 || !referrerId) return;
     const rRef = ref(db, 'users/' + referrerId);
     const snap = await get(rRef);
     if (snap.exists()) {
         const u = snap.val();
-        await update(rRef, { 
-            balance: (parseFloat(u.balance) || 0) + referBonuses[level],
-            referCount: (u.referCount || 0) + (level === 0 ? 1 : 0)
-        });
+        await update(rRef, { balance: (parseFloat(u.balance) || 0) + referBonuses[level] });
         if (u.referredBy) giveReferBonus(u.referredBy, level + 1);
     }
 }
 
-// অল-ইন-ওয়ান টাইমার লুপ
-function updateTimers() {
-    if (!currentData) return;
+// টাইমার আপডেট লুপ
+function updateAllTimers() {
     const now = new Date().getTime();
     
-    // বোনাস বাটন ফিক্স
+    // ১. বোনাস কাউন্টডাউন
     const bBtn = document.getElementById('bonus-btn');
     const bTxt = document.getElementById('bonus-text');
     if (currentData.lastBonus && now < currentData.lastBonus) {
@@ -58,10 +54,10 @@ function updateTimers() {
         bTxt.innerText = `${h}h ${m}m ${s}s`;
     } else {
         bBtn.disabled = false;
-        bTxt.innerText = "DAILY BONUS";
+        bTxt.innerText = "Daily Bonus";
     }
 
-    // ৪টি টাস্ক কার্ড ফিক্স
+    // ২. টাস্ক টাইমার
     for (let i = 1; i <= 4; i++) {
         const nextTime = currentData[`task_${i}_limit`] || 0;
         const card = document.getElementById(`card-${i}`);
@@ -72,13 +68,13 @@ function updateTimers() {
             text.innerText = `${Math.floor(diff/60000)}m ${Math.floor((diff%60000)/1000)}s`;
         } else {
             card.classList.remove('task-disabled');
-            text.innerText = "৳ 10.00";
+            text.innerText = "Tk.10.00";
         }
     }
 }
-setInterval(updateTimers, 1000);
+setInterval(updateAllTimers, 1000);
 
-onAuthStateChanged(auth, (user) => {
+onAuthStateChanged(auth, async (user) => {
     if (user) {
         userRef = ref(db, 'users/' + user.uid);
         onValue(userRef, (snap) => {
@@ -88,12 +84,14 @@ onAuthStateChanged(auth, (user) => {
             document.getElementById('tasks-done').innerText = currentData.totalTaskCount || 0;
             document.getElementById('display-name').innerText = user.email.split('@')[0];
             document.getElementById('refer-url').value = `${window.location.origin}${window.location.pathname}?ref=${user.uid}`;
+            
             document.getElementById('loading-screen').style.display = 'none';
+            document.getElementById('auth-screen').style.display = 'none';
             document.getElementById('main-app').style.display = 'block';
         });
     } else {
-        // লগইন না থাকলে লগইন পেজে পাঠাতে পারেন অথবা অন্য স্ক্রিন দেখাতে পারেন
-        window.location.href = "login.html"; 
+        document.getElementById('loading-screen').style.display = 'none';
+        document.getElementById('auth-screen').style.display = 'flex';
     }
 });
 
@@ -103,7 +101,7 @@ window.claimDailyBonus = async () => {
     window.open("https://www.google.com", '_blank');
     await update(userRef, {
         balance: (parseFloat(currentData.balance) || 0) + 10,
-        lastBonus: now + (3 * 60 * 60 * 1000) // ৩ ঘণ্টা
+        lastBonus: now + (3 * 60 * 60 * 1000)
     });
     alert("Tk.10 Bonus Claimed!");
 };
@@ -117,22 +115,44 @@ window.startVideoTask = async (num) => {
                         balance: (parseFloat(currentData.balance) || 0) + 10,
                         totalTaskCount: (parseInt(currentData.totalTaskCount) || 0) + 1
                     };
-                    up[`task_${num}_limit`] = new Date().getTime() + (60 * 60 * 1000); // ১ ঘণ্টা
+                    up[`task_${num}_limit`] = new Date().getTime() + (60 * 60 * 1000);
                     await update(userRef, up);
-                    alert("Task Complete! ৳10 Added.");
+                    alert("Success!");
                 }
             }
         });
-    } else { alert("Ad is loading..."); }
+    } else { alert("Ads Loading..."); }
 };
 
 window.copyReferLink = () => {
     const input = document.getElementById('refer-url');
     input.select();
     document.execCommand('copy');
-    alert("Refer Link Copied!");
+    alert("Copied!");
 };
 
+window.handleLogout = () => signOut(auth).then(() => location.reload());
 window.openWithdraw = () => document.getElementById('withdrawModal').style.display = 'flex';
 window.closeWithdraw = () => document.getElementById('withdrawModal').style.display = 'none';
-window.handleLogout = () => signOut(auth).then(() => location.reload());
+
+document.getElementById('login-btn').addEventListener('click', async () => {
+    const e = document.getElementById('email').value, p = document.getElementById('password').value;
+    if(!e || !p) return alert("Fill all fields");
+    try { await signInWithEmailAndPassword(auth, e, p); } 
+    catch { 
+        try { 
+            const res = await createUserWithEmailAndPassword(auth, e, p);
+            const refId = new URLSearchParams(window.location.search).get('ref');
+            await set(ref(db, `users/${res.user.uid}`), { email: e, balance: 0, referredBy: refId || null, referCount: 0, totalTaskCount: 0 });
+            if(refId) giveReferBonus(refId, 0);
+        } catch (err) { alert(err.message); }
+    }
+});
+
+document.addEventListener('click', (e) => {
+    const menu = document.getElementById('side-menu');
+    const trigger = document.querySelector('.menu-trigger');
+    if (menu.classList.contains('active') && !menu.contains(e.target) && !trigger.contains(e.target)) {
+        menu.classList.remove('active');
+    }
+});
