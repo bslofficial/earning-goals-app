@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ProEarn Luxury</title>
+    <title>ProEarn Rewards</title>
     <script src="https://cdn.jsdelivr.net/npm/@unityadssdk/unity-ads-sdk@latest/dist/unity-ads.min.js"></script>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -12,43 +12,60 @@
 
     <div id="side-menu" class="sidebar">
         <div class="sidebar-header">
-            <div class="sidebar-logo">ProEarn</div>
-            <i class="fas fa-times" onclick="toggleMenu()" style="cursor:pointer; font-size: 20px;"></i>
+            <div class="sidebar-logo">$</div>
+            <h3>ProEarn Menu</h3>
+            <i class="fas fa-times close-btn" onclick="toggleMenu()"></i>
         </div>
         <ul class="menu-list">
-            <li><a href="index.html"><i class="fas fa-th-large"></i> Dashboard</a></li>
-            <li><a href="leaderboard.html"><i class="fas fa-chart-line"></i> Top Earners</a></li>
-            <li><a href="history.html"><i class="fas fa-history"></i> Payments</a></li>
-            <li><a href="refer.html"><i class="fas fa-network-wired"></i> Refer Levels</a></li>
-            <hr style="border: 0; border-top: 1px solid #1e293b; margin: 10px 0;">
-            <li><a href="https://t.me/incomeworld01" target="_blank"><i class="fab fa-telegram-plane"></i> Support</a></li>
-            <li><a href="#" onclick="handleLogout()"><i class="fas fa-power-off"></i> Logout</a></li>
+            <li><a href="index.html"><i class="fas fa-home"></i> Dashboard</a></li>
+            <li><a href="leaderboard.html"><i class="fas fa-trophy"></i> Leaderboard</a></li>
+            <li><a href="history.html"><i class="fas fa-history"></i> Payment History</a></li>
+            <li><a href="refer.html"><i class="fas fa-users-cog"></i> Referral Levels</a></li>
+            <li><a href="about.html"><i class="fas fa-info-circle"></i> About Us</a></li>
+            <li><a href="privacy.html"><i class="fas fa-user-shield"></i> Privacy Policy</a></li>
+            <li><a href="https://t.me/incomeworld01" target="_blank"><i class="fab fa-telegram"></i> Support</a></li>
+            <hr>
+            <li><a href="#" onclick="handleLogout()"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
         </ul>
+        <div class="sidebar-footer">Version 1.0.2</div>
     </div>
 
     <div id="loading-screen">
-        <div class="spinner"></div>
+        <div class="loader-content">
+            <div class="spinner"></div>
+            <p>Loading ProEarn...</p>
+        </div>
     </div>
 
-    <div id="main-app" style="display: none;">
+    <div id="auth-screen" class="auth-wrapper" style="display: none;">
+        <div class="auth-card">
+            <div class="logo">$</div>
+            <h2>ProEarn Rewards</h2>
+            <div class="input-field"><i class="fas fa-envelope"></i><input type="email" id="email" placeholder="Email"></div>
+            <div class="input-field"><i class="fas fa-lock"></i><input type="password" id="password" placeholder="Password"></div>
+            <button id="login-btn" class="main-btn">Login / Sign Up</button>
+        </div>
+    </div>
+
+    <div id="main-app" class="app-container" style="display: none;">
         <div class="top-nav-blue">
             <div class="nav-header">
-                <i class="fas fa-align-left menu-trigger" onclick="toggleMenu()"></i>
-                <h1 class="app-title-header">DASHBOARD</h1>
-                <div style="width:24px"></div>
+                <i class="fas fa-bars menu-trigger" onclick="toggleMenu()"></i>
+                <h1 class="app-title-header">PROEARN REWARDS</h1>
+                <div style="width: 25px;"></div> 
             </div>
             
             <div class="user-row">
-                <div style="display:flex; align-items:center;">
-                    <div class="profile-box"><img id="profile-img" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"></div>
-                    <div style="margin-left:12px">
-                        <p id="display-name" style="font-weight:bold; font-size:16px;">User</p>
-                        <p style="font-size:10px; color:#10b981;">● Account Active</p>
-                    </div>
+                <div class="profile-box">
+                    <img id="profile-img" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="User">
+                </div>
+                <div class="user-meta">
+                    <span id="display-name">User</span>
+                    <small style="display:block; opacity: 0.8; font-size: 10px;">Status: Active</small>
                 </div>
                 <div class="balance-box">
-                    <p style="font-size:10px; color:#94a3b8;">BALANCE</p>
-                    <h2>৳ <span id="balance">0.00</span></h2>
+                    <small>Balance</small>
+                    <h2>Tk.<span id="balance">0.00</span></h2>
                 </div>
             </div>
         </div>
@@ -56,54 +73,46 @@
         <div class="main-content">
             <div class="action-buttons">
                 <button onclick="claimDailyBonus()" id="bonus-btn" class="btn-bonus">
-                    <i class="fas fa-crown"></i> <span id="bonus-text">DAILY BONUS</span>
+                    <i class="fas fa-gift"></i> <span id="bonus-text">Daily Bonus</span>
                 </button>
                 <button onclick="openWithdraw()" class="btn-withdraw">
-                    <i class="fas fa-wallet"></i> WITHDRAW
+                    <i class="fas fa-wallet"></i> Withdraw
                 </button>
+            </div>
+
+            <div class="refer-info">
+                <p><i class="fas fa-user-plus"></i> Refer & Earn (6 Levels Active)</p>
+                <div class="refer-link-box">
+                    <input type="text" id="refer-url" readonly value="Generating...">
+                    <button class="share-btn" onclick="copyReferLink()">Copy</button>
+                </div>
             </div>
 
             <div class="grid-container">
                 <div class="custom-card">
-                    <i class="fas fa-users" style="color:#3b82f6"></i>
+                    <i class="fas fa-users"></i>
                     <p>Total Refer</p>
                     <h3 id="refer-count">0</h3>
                 </div>
                 <div class="custom-card">
-                    <i class="fas fa-check-double" style="color:#10b981"></i>
-                    <p>Task Done</p>
+                    <i class="fas fa-check-circle"></i>
+                    <p>Tasks Done</p>
                     <h3 id="tasks-done">0</h3>
                 </div>
             </div>
 
             <div class="grid-container">
                 <div class="custom-card task-card" id="card-1" onclick="startVideoTask(1)">
-                    <i class="fas fa-play-circle"></i>
-                    <p>TASK 01</p>
-                    <h3 id="timer-1">৳ 10.00</h3>
+                    <i class="fas fa-play"></i><p>Task 01</p><h3 id="timer-1">Tk.10.00</h3>
                 </div>
                 <div class="custom-card task-card" id="card-2" onclick="startVideoTask(2)">
-                    <i class="fas fa-play-circle"></i>
-                    <p>TASK 02</p>
-                    <h3 id="timer-2">৳ 10.00</h3>
+                    <i class="fas fa-play"></i><p>Task 02</p><h3 id="timer-2">Tk.10.00</h3>
                 </div>
                 <div class="custom-card task-card" id="card-3" onclick="startVideoTask(3)">
-                    <i class="fas fa-play-circle"></i>
-                    <p>TASK 03</p>
-                    <h3 id="timer-3">৳ 10.00</h3>
+                    <i class="fas fa-play"></i><p>Task 03</p><h3 id="timer-3">Tk.10.00</h3>
                 </div>
                 <div class="custom-card task-card" id="card-4" onclick="startVideoTask(4)">
-                    <i class="fas fa-play-circle"></i>
-                    <p>TASK 04</p>
-                    <h3 id="timer-4">৳ 10.00</h3>
-                </div>
-            </div>
-
-            <div class="refer-info">
-                <p style="font-size:13px;"><i class="fas fa-link"></i> Your Referral Link</p>
-                <div class="refer-link-box">
-                    <input type="text" id="refer-url" readonly value="Generating...">
-                    <button class="share-btn" onclick="copyReferLink()">COPY</button>
+                    <i class="fas fa-play"></i><p>Task 04</p><h3 id="timer-4">Tk.10.00</h3>
                 </div>
             </div>
         </div>
@@ -111,12 +120,12 @@
 
     <div id="withdrawModal" class="modal-backdrop">
         <div class="modal-box">
-            <h3 style="margin-bottom:15px">Withdraw</h3>
+            <h3>Withdraw Funds</h3>
             <select id="method"><option value="Bkash">Bkash</option><option value="Nagad">Nagad</option></select>
             <input type="text" id="accountNo" placeholder="Account Number">
-            <input type="number" id="withdrawAmount" placeholder="Min ৳ 500">
-            <button class="submit-btn" onclick="sendWithdrawRequest()">CONFIRM</button>
-            <p onclick="closeWithdraw()" style="margin-top:15px; cursor:pointer; color:#94a3b8; font-size:13px;">Cancel</p>
+            <input type="number" id="withdrawAmount" placeholder="Min Tk.500">
+            <button class="submit-btn" onclick="sendWithdrawRequest()">Confirm</button>
+            <p onclick="closeWithdraw()" style="margin-top:15px; cursor:pointer; color:#999;">Close</p>
         </div>
     </div>
 
