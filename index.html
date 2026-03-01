@@ -1,87 +1,141 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
-import { getDatabase, ref, get, update, onValue } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ProEarn Rewards</title>
+    <script src="https://cdn.jsdelivr.net/npm/@unityadssdk/unity-ads-sdk@latest/dist/unity-ads.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
 
-// --- আপনার দেওয়া FIREBASE তথ্য ---
-const firebaseConfig = {
-    apiKey: "AIzaSyDuLLapNwRk2Fl5rN6F0ezZb9KsMBKhvqA",
-    authDomain: "earning-goals-app.firebaseapp.com",
-    projectId: "earning-goals-app",
-    databaseURL: "https://earning-goals-app-default-rtdb.firebaseio.com",
-    storageBucket: "earning-goals-app.firebasestorage.app",
-    messagingSenderId: "999611133128",
-    appId: "1:999611133128:web:f8bd2cb60ac5a07b1249fd"
-};
+    <div id="side-menu" class="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-logo">$</div>
+            <h3>ProEarn Menu</h3>
+            <i class="fas fa-times close-btn" onclick="toggleMenu()"></i>
+        </div>
+        <ul class="menu-list">
+            <li><a href="index.html"><i class="fas fa-home"></i> Dashboard</a></li>
+            <li><a href="about.html"><i class="fas fa-info-circle"></i> About Us</a></li>
+            <li><a href="#"><i class="fas fa-user-shield"></i> Privacy Policy</a></li>
+            <li><a href="https://t.me/yourlink" target="_blank"><i class="fab fa-telegram"></i> Telegram Support</a></li>
+            <li><a href="#" onclick="handleLogout()"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+        </ul>
+        <div class="sidebar-footer">Version 1.0.2</div>
+    </div>
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getDatabase(app);
+    <div id="loading-screen">
+        <div class="loader-content">
+            <div class="spinner"></div>
+            <p>Loading ProEarn...</p>
+        </div>
+    </div>
 
-// --- ইউনিটি এবং অ্যাডস্টারা তথ্য ---
-const unityGameId = '6055094';
-const adsterraLink = "https://www.effectiveratecpm.com/z486m67w?key=41981242372d807662867809635e9854";
+    <div id="auth-screen" class="auth-wrapper" style="display: none;">
+        <div class="auth-card">
+            <div class="logo">$</div>
+            <h2>ProEarn Rewards</h2>
+            <div class="input-field"><i class="fas fa-envelope"></i><input type="email" id="email" placeholder="Email Address"></div>
+            <div class="input-field"><i class="fas fa-lock"></i><input type="password" id="password" placeholder="Password"></div>
+            <button id="login-btn" class="main-btn">Login / Sign Up</button>
+        </div>
+    </div>
 
-let currentData = {};
-const referBonuses = [10, 7, 5, 3, 2, 1]; // ৬ লেভেল বোনাস
+    <div id="main-app" class="app-container" style="display: none;">
+        <div class="top-nav-blue">
+            <div class="nav-header">
+                <i class="fas fa-bars menu-trigger" onclick="toggleMenu()"></i>
+                <h1 class="app-title-header">PROEARN REWARDS</h1>
+                <div style="width: 25px;"></div> </div>
+            
+            <div class="user-row">
+                <div class="profile-box">
+                    <img id="profile-img" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="User">
+                </div>
+                <div class="user-meta">
+                    <span id="display-name">User</span>
+                    <small style="display:block; opacity: 0.7; font-size: 10px;">Status: Active</small>
+                </div>
+                <div class="balance-box">
+                    <small>Balance</small>
+                    <h2>Tk.<span id="balance">0.00</span></h2>
+                </div>
+            </div>
+        </div>
 
-// --- ৬ লেভেল রেফারেল লজিক ---
-async function distributeReferBonus(referrerId, level = 0) {
-    if (level >= 6 || !referrerId) return;
-    const rRef = ref(db, 'users/' + referrerId);
-    const snap = await get(rRef);
-    if (snap.exists()) {
-        const u = snap.val();
-        await update(rRef, { balance: (parseFloat(u.balance) || 0) + referBonuses[level] });
-        if (u.referredBy) distributeReferBonus(u.referredBy, level + 1);
-    }
-}
+        <div class="main-content">
+            <div class="action-buttons">
+                <button onclick="claimDailyBonus()" id="bonus-btn" class="btn-bonus">
+                    <i class="fas fa-gift"></i> <span id="bonus-text">Daily Bonus</span>
+                </button>
+                <button onclick="openWithdraw()" class="btn-withdraw">
+                    <i class="fas fa-wallet"></i> Withdraw
+                </button>
+            </div>
 
-// --- টাইমার এবং টাস্ক লজিক ---
-function runTimers() {
-    const now = new Date().getTime();
-    for (let i = 1; i <= 4; i++) {
-        const limit = currentData[`task_${i}_limit`] || 0;
-        const card = document.getElementById(`card-${i}`);
-        const text = document.getElementById(`timer-${i}`);
-        if (now < limit) {
-            card.classList.add('task-disabled');
-            const diff = Math.ceil((limit - now) / 1000 / 60);
-            text.innerText = diff + " min left";
-        } else {
-            card.classList.remove('task-disabled');
-            text.innerText = "Tk. 10.00";
-        }
-    }
-}
-setInterval(runTimers, 1000);
+            <div class="refer-info">
+                <p><i class="fas fa-user-plus"></i> Refer & Earn <b>Tk.30.00</b></p>
+                <div class="refer-link-box">
+                    <input type="text" id="refer-url" readonly value="Generating...">
+                    <button id="share-btn-action" class="share-btn"><i class="fas fa-share-alt"></i> Share</button>
+                </div>
+            </div>
 
-// Unity Video Task
-window.startVideoTask = async (num) => {
-    // এখানে Unity Ads Show হবে। সফল হলে নিচের কোড:
-    const nextTime = new Date().getTime() + (60 * 60 * 1000); // ১ ঘণ্টা
-    const updates = { balance: (currentData.balance || 0) + 10 };
-    updates[`task_${num}_limit`] = nextTime;
-    await update(ref(db, `users/${auth.currentUser.uid}`), updates);
-    alert("Task Success!");
-};
+            <div class="grid-container">
+                <div class="custom-card">
+                    <i class="fas fa-users"></i>
+                    <p>Total Refer</p>
+                    <h3 id="refer-count">0</h3>
+                </div>
+                <div class="custom-card">
+                    <i class="fas fa-check-circle"></i>
+                    <p>Tasks Done</p>
+                    <h3 id="tasks-done">0</h3>
+                </div>
+            </div>
 
-// Adsterra Task
-window.startAdsterraTask = () => {
-    window.open(adsterraLink, "_blank");
-    // ইউজার ফিরে এলে বোনাস দেওয়ার লজিক (নিরাপত্তার জন্য ৩-৫ মিনিট পর বাটন একটিভ করা যায়)
-    alert("Visit and wait 30 seconds for Tk. 5 bonus!");
-};
+            <div class="grid-container">
+                <div class="custom-card task-card" onclick="startVideoTask()">
+                    <i class="fas fa-play"></i>
+                    <p>Task 01</p>
+                    <h3>Tk.10.00</h3>
+                </div>
+                <div class="custom-card task-card" onclick="startVideoTask()">
+                    <i class="fas fa-play"></i>
+                    <p>Task 02</p>
+                    <h3>Tk.10.00</h3>
+                </div>
+                <div class="custom-card task-card" onclick="startVideoTask()">
+                    <i class="fas fa-play"></i>
+                    <p>Task 03</p>
+                    <h3>Tk.10.00</h3>
+                </div>
+                <div class="custom-card task-card" onclick="startVideoTask()">
+                    <i class="fas fa-play"></i>
+                    <p>Task 04</p>
+                    <h3>Tk.10.00</h3>
+                </div>
+            </div>
 
-// ডাটা আপডেট করা
-onAuthStateChanged(auth, (user) => {
-    if (user) {
-        onValue(ref(db, `users/${user.uid}`), (s) => {
-            currentData = s.val() || {};
-            document.getElementById('balance').innerText = (currentData.balance || 0).toFixed(2);
-            document.getElementById('refer-url').value = window.location.origin + "?ref=" + user.uid;
-        });
-    }
-});
+            <div id="limit-box" class="cooldown-card" style="display: none;">
+                <i class="fas fa-clock"></i> Next Task in: <span id="timer-display">24:00:00</span>
+            </div>
+        </div>
+    </div>
 
-window.toggleMenu = () => document.getElementById('side-menu').classList.toggle('active');
-window.copyLink = () => { document.getElementById('refer-url').select(); document.execCommand('copy'); alert("Copied!"); };
+    <div id="withdrawModal" class="modal-backdrop">
+        <div class="modal-box">
+            <h3>Withdraw Funds</h3>
+            <select id="method"><option value="Bkash">Bkash</option><option value="Nagad">Nagad</option></select>
+            <input type="text" id="accountNo" placeholder="Account Number">
+            <input type="number" id="withdrawAmount" placeholder="Min Tk.500">
+            <button class="submit-btn" onclick="sendWithdrawRequest()">Confirm Withdraw</button>
+            <p onclick="closeWithdraw()" style="margin-top:15px; cursor:pointer; color:#999;">Close</p>
+        </div>
+    </div>
+
+    <script type="module" src="script.js"></script>
+</body>
+    </html>
