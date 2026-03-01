@@ -13,20 +13,22 @@
     <div id="side-menu" class="sidebar">
         <div class="sidebar-header">
             <div class="sidebar-logo">ProEarn</div>
-            <i class="fas fa-times" style="font-size:20px" onclick="toggleMenu()"></i>
+            <i class="fas fa-times" onclick="toggleMenu()" style="cursor:pointer; font-size: 20px;"></i>
         </div>
         <ul class="menu-list">
             <li><a href="index.html"><i class="fas fa-th-large"></i> Dashboard</a></li>
             <li><a href="leaderboard.html"><i class="fas fa-chart-line"></i> Top Earners</a></li>
-            <li><a href="history.html"><i class="fas fa-wallet"></i> My Payments</a></li>
-            <li><a href="refer.html"><i class="fas fa-network-wired"></i> Network Levels</a></li>
-            <hr style="border:0; border-top:1px solid #1e293b; margin:10px 0;">
-            <li><a href="https://t.me/incomeworld01"><i class="fab fa-telegram-plane"></i> Help Center</a></li>
+            <li><a href="history.html"><i class="fas fa-history"></i> Payments</a></li>
+            <li><a href="refer.html"><i class="fas fa-network-wired"></i> Refer Levels</a></li>
+            <hr style="border: 0; border-top: 1px solid #1e293b; margin: 10px 0;">
+            <li><a href="https://t.me/incomeworld01" target="_blank"><i class="fab fa-telegram-plane"></i> Support</a></li>
             <li><a href="#" onclick="handleLogout()"><i class="fas fa-power-off"></i> Logout</a></li>
         </ul>
     </div>
 
-    <div id="loading-screen"><div class="spinner"></div></div>
+    <div id="loading-screen">
+        <div class="spinner"></div>
+    </div>
 
     <div id="main-app" style="display: none;">
         <div class="top-nav-blue">
@@ -41,11 +43,11 @@
                     <div class="profile-box"><img id="profile-img" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"></div>
                     <div style="margin-left:12px">
                         <p id="display-name" style="font-weight:bold; font-size:16px;">User</p>
-                        <p style="font-size:10px; color:#10b981;">● Account Verified</p>
+                        <p style="font-size:10px; color:#10b981;">● Account Active</p>
                     </div>
                 </div>
                 <div class="balance-box">
-                    <p style="font-size:10px; color:#94a3b8;">TOTAL BALANCE</p>
+                    <p style="font-size:10px; color:#94a3b8;">BALANCE</p>
                     <h2>৳ <span id="balance">0.00</span></h2>
                 </div>
             </div>
@@ -57,19 +59,19 @@
                     <i class="fas fa-crown"></i> <span id="bonus-text">DAILY BONUS</span>
                 </button>
                 <button onclick="openWithdraw()" class="btn-withdraw">
-                    <i class="fas fa-arrow-alt-circle-up"></i> WITHDRAW
+                    <i class="fas fa-wallet"></i> WITHDRAW
                 </button>
             </div>
 
             <div class="grid-container">
                 <div class="custom-card">
-                    <i class="fas fa-users-crown" style="color:#f59e0b"></i>
-                    <p>Referrals</p>
+                    <i class="fas fa-users" style="color:#3b82f6"></i>
+                    <p>Total Refer</p>
                     <h3 id="refer-count">0</h3>
                 </div>
                 <div class="custom-card">
-                    <i class="fas fa-tasks" style="color:#10b981"></i>
-                    <p>Success Tasks</p>
+                    <i class="fas fa-check-double" style="color:#10b981"></i>
+                    <p>Task Done</p>
                     <h3 id="tasks-done">0</h3>
                 </div>
             </div>
@@ -77,23 +79,44 @@
             <div class="grid-container">
                 <div class="custom-card task-card" id="card-1" onclick="startVideoTask(1)">
                     <i class="fas fa-play-circle"></i>
-                    <p>Elite Task 1</p>
+                    <p>TASK 01</p>
                     <h3 id="timer-1">৳ 10.00</h3>
                 </div>
                 <div class="custom-card task-card" id="card-2" onclick="startVideoTask(2)">
                     <i class="fas fa-play-circle"></i>
-                    <p>Elite Task 2</p>
+                    <p>TASK 02</p>
                     <h3 id="timer-2">৳ 10.00</h3>
+                </div>
+                <div class="custom-card task-card" id="card-3" onclick="startVideoTask(3)">
+                    <i class="fas fa-play-circle"></i>
+                    <p>TASK 03</p>
+                    <h3 id="timer-3">৳ 10.00</h3>
+                </div>
+                <div class="custom-card task-card" id="card-4" onclick="startVideoTask(4)">
+                    <i class="fas fa-play-circle"></i>
+                    <p>TASK 04</p>
+                    <h3 id="timer-4">৳ 10.00</h3>
                 </div>
             </div>
 
             <div class="refer-info">
-                <p style="font-weight:bold; font-size:14px;"><i class="fas fa-gift"></i> Share & Earn Rewards</p>
+                <p style="font-size:13px;"><i class="fas fa-link"></i> Your Referral Link</p>
                 <div class="refer-link-box">
-                    <input type="text" id="refer-url" readonly value="Loading link...">
+                    <input type="text" id="refer-url" readonly value="Generating...">
                     <button class="share-btn" onclick="copyReferLink()">COPY</button>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div id="withdrawModal" class="modal-backdrop">
+        <div class="modal-box">
+            <h3 style="margin-bottom:15px">Withdraw</h3>
+            <select id="method"><option value="Bkash">Bkash</option><option value="Nagad">Nagad</option></select>
+            <input type="text" id="accountNo" placeholder="Account Number">
+            <input type="number" id="withdrawAmount" placeholder="Min ৳ 500">
+            <button class="submit-btn" onclick="sendWithdrawRequest()">CONFIRM</button>
+            <p onclick="closeWithdraw()" style="margin-top:15px; cursor:pointer; color:#94a3b8; font-size:13px;">Cancel</p>
         </div>
     </div>
 
