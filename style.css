@@ -1,24 +1,8 @@
-* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
-body { background: #0b0e14; color: white; overflow-x: hidden; }
-
-/* Sidebar */
-.sidebar {
-    position: fixed; top: 0; left: -280px; width: 260px; height: 100%;
-    background: #1a1f2e; z-index: 100000; transition: 0.4s ease;
-    box-shadow: 10px 0 30px rgba(0,0,0,0.5); padding: 20px; border-right: 1px solid #3b82f6;
-}
-.sidebar.active { left: 0; }
-.sidebar-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 30px; }
-
-/* Nav & Layout */
-.top-nav-blue { background: linear-gradient(135deg, #1e40af, #3b82f6); padding: 25px 15px; border-bottom-left-radius: 30px; border-bottom-right-radius: 30px; text-align: center; }
-.user-row { display: flex; align-items: center; justify-content: space-between; margin-top: 15px; }
-.balance-box h2 { font-size: 22px; font-weight: 900; color: #fff; }
-
-.main-content { padding: 20px 15px; }
-.grid-container { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.custom-card { background: #1a1f2e; padding: 20px 10px; border-radius: 18px; text-align: center; border: 1px solid rgba(255,255,255,0.05); cursor: pointer; }
-
-#loading-screen { position: fixed; inset: 0; background: #0b0e14; z-index: 99999; display: flex; justify-content: center; align-items: center; }
-.spinner { width: 40px; height: 40px; border: 4px solid #3b82f6; border-top: 4px solid transparent; border-radius: 50%; animation: spin 1s linear infinite; }
-@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
+body { background: #0b0e14; color: white; }
+.top-nav-blue { background: linear-gradient(135deg, #1e40af, #3b82f6); padding: 30px; border-bottom-radius: 20px; text-align: center; }
+.grid-container { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 20px; }
+.custom-card { background: #1a1f2e; padding: 20px; border-radius: 15px; text-align: center; cursor: pointer; border: 1px solid #3b82f6; }
+#loading-screen { position: fixed; inset: 0; background: #0b0e14; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 1000; }
+.spinner { width: 40px; height: 40px; border: 4px solid #3b82f6; border-top-color: transparent; border-radius: 50%; animation: spin 1s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
