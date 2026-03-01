@@ -1,57 +1,47 @@
 // Unity Ads Configuration
-const unityGameID = "6055095"; //
-const placementID = "Rewarded_Android"; //
-const isTestMode = true; //
+const unityGameID = "6055095"; // আপনার অ্যান্ড্রয়েড গেম আইডি
+const isTestMode = true; // আপনার ডিভাইস টেস্ট মোডে আছে
 
-// Initialize Unity Ads
-function initAds() {
+// ১. বিজ্ঞাপন ইনিশিয়ালাইজ করা
+function initUnityAds() {
     if (typeof UnityAds !== 'undefined') {
         UnityAds.init(unityGameID, isTestMode, {
             onComplete: () => {
-                console.log('Unity Ads Initialized');
-                loadAd();
+                console.log('Unity Ads Ready');
+                document.getElementById('loading-screen').style.display = 'none';
+                loadNextAd();
             },
-            onError: (error) => console.log('Init Error:', error)
+            onError: (error) => {
+                console.error('Unity Init Failed:', error);
+                alert("Ads failing to init. Try a VPN.");
+            }
         });
     }
 }
 
-// Load Ad
-function loadAd() {
-    UnityAds.load(placementID);
+// ২. বিজ্ঞাপন লোড করা
+function loadNextAd() {
+    UnityAds.load('Rewarded_Android'); // আপনার প্লেসমেন্ট আইডি
 }
 
-// Show Ad on Task Click
-window.startVideoTask = function(taskId) {
-    UnityAds.show(placementID, {
+// ৩. টাস্ক ক্লিক করলে বিজ্ঞাপন দেখানো
+window.startVideoTask = function(placementId) {
+    UnityAds.show(placementId, {
         onComplete: (state) => {
             if (state === 'COMPLETED') {
-                giveReward(10);
-                alert("Task Complete! 10 Tk Added.");
-                loadAd();
+                // ব্যালেন্স আপডেট
+                let balanceEl = document.getElementById('balance');
+                let currentBalance = parseFloat(balanceEl.innerText);
+                balanceEl.innerText = (currentBalance + 10.00).toFixed(2);
+                alert("Success! 10 Tk added.");
+                loadNextAd();
             }
         },
         onError: (error) => {
-            alert("Ad not ready. Please use a VPN or wait.");
-            loadAd();
+            alert("Ad not loaded yet. Use a VPN and refresh.");
+            loadNextAd();
         }
     });
 };
 
-function giveReward(amount) {
-    let balance = document.getElementById('balance');
-    balance.innerText = (parseFloat(balance.innerText) + amount).toFixed(2);
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-    initAds();
-    // Remove loading screen after 2 seconds
-    setTimeout(() => {
-        document.getElementById('loading-screen').style.display = 'none';
-    }, 2000);
-});
-
-// Sidebar Toggle
-window.toggleMenu = function() {
-    document.getElementById('side-menu').classList.toggle('active');
-};
+document.addEventListener('DOMContentLoaded', initUnityAds);
