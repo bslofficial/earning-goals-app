@@ -20,14 +20,13 @@ const gameId = '6055094';
 const placementId = 'Rewarded_Android';
 if (window.unityAds) { window.unityAds.initialize(gameId, false); }
 
-// সাইডবার
 window.toggleMenu = () => { document.getElementById('side-menu').classList.toggle('active'); };
 
 let userRef;
 let currentData = {};
-const referBonuses = [10, 7, 5, 3, 2, 1]; // লেভেল ১ থেকে ৬
+const referBonuses = [10, 7, 5, 3, 2, 1];
 
-// ৬ লেভেল রেফারেল বোনাস লজিক
+// ৬ লেভেল রেফারেল বোনাস
 async function giveReferBonus(referrerId, level = 0) {
     if (level >= 6 || !referrerId) return;
     const rRef = ref(db, 'users/' + referrerId);
@@ -43,15 +42,15 @@ async function giveReferBonus(referrerId, level = 0) {
 function updateAllTimers() {
     const now = new Date().getTime();
     
-    // ১. ডেইলি বোনাস কাউন্টডাউন
+    // ১. বোনাস কাউন্টডাউন
     const bBtn = document.getElementById('bonus-btn');
     const bTxt = document.getElementById('bonus-text');
     if (currentData.lastBonus && now < currentData.lastBonus) {
         bBtn.disabled = true;
         const diff = currentData.lastBonus - now;
-        const h = Math.floor(diff / (1000 * 60 * 60));
-        const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-        const s = Math.floor((diff % (1000 * 60)) / 1000);
+        const h = Math.floor(diff / 3600000);
+        const m = Math.floor((diff % 3600000) / 60000);
+        const s = Math.floor((diff % 60000) / 1000);
         bTxt.innerText = `${h}h ${m}m ${s}s`;
     } else {
         bBtn.disabled = false;
@@ -66,14 +65,10 @@ function updateAllTimers() {
         if (now < nextTime) {
             card.classList.add('task-disabled');
             const diff = nextTime - now;
-            const m = Math.floor(diff / (1000 * 60));
-            const s = Math.floor((diff % (1000 * 60)) / 1000);
-            text.innerText = `${m}m ${s}s`;
-            text.style.color = "#ef4444";
+            text.innerText = `${Math.floor(diff/60000)}m ${Math.floor((diff%60000)/1000)}s`;
         } else {
             card.classList.remove('task-disabled');
             text.innerText = "Tk.10.00";
-            text.style.color = "#10b981";
         }
     }
 }
@@ -97,20 +92,17 @@ onAuthStateChanged(auth, async (user) => {
     } else {
         document.getElementById('loading-screen').style.display = 'none';
         document.getElementById('auth-screen').style.display = 'flex';
-        document.getElementById('main-app').style.display = 'none';
     }
 });
 
 window.claimDailyBonus = async () => {
     const now = new Date().getTime();
     if (currentData.lastBonus && now < currentData.lastBonus) return;
-    
     window.open("https://www.google.com", '_blank');
-    const updates = {
+    await update(userRef, {
         balance: (parseFloat(currentData.balance) || 0) + 10,
-        lastBonus: now + (3 * 60 * 60 * 1000) // ৩ ঘণ্টা লক
-    };
-    await update(userRef, updates);
+        lastBonus: now + (3 * 60 * 60 * 1000)
+    });
     alert("Tk.10 Bonus Claimed!");
 };
 
@@ -123,9 +115,9 @@ window.startVideoTask = async (num) => {
                         balance: (parseFloat(currentData.balance) || 0) + 10,
                         totalTaskCount: (parseInt(currentData.totalTaskCount) || 0) + 1
                     };
-                    up[`task_${num}_limit`] = new Date().getTime() + (60 * 60 * 1000); // ১ ঘণ্টা লক
+                    up[`task_${num}_limit`] = new Date().getTime() + (60 * 60 * 1000);
                     await update(userRef, up);
-                    alert("Success! Tk.10 added.");
+                    alert("Success!");
                 }
             }
         });
@@ -136,7 +128,7 @@ window.copyReferLink = () => {
     const input = document.getElementById('refer-url');
     input.select();
     document.execCommand('copy');
-    alert("Refer Link Copied!");
+    alert("Copied!");
 };
 
 window.handleLogout = () => signOut(auth).then(() => location.reload());
@@ -144,8 +136,7 @@ window.openWithdraw = () => document.getElementById('withdrawModal').style.displ
 window.closeWithdraw = () => document.getElementById('withdrawModal').style.display = 'none';
 
 document.getElementById('login-btn').addEventListener('click', async () => {
-    const e = document.getElementById('email').value;
-    const p = document.getElementById('password').value;
+    const e = document.getElementById('email').value, p = document.getElementById('password').value;
     if(!e || !p) return alert("Fill all fields");
     try { await signInWithEmailAndPassword(auth, e, p); } 
     catch { 
@@ -158,7 +149,6 @@ document.getElementById('login-btn').addEventListener('click', async () => {
     }
 });
 
-// মেনুর বাইরে ক্লিক করলে বন্ধ হবে
 document.addEventListener('click', (e) => {
     const menu = document.getElementById('side-menu');
     const trigger = document.querySelector('.menu-trigger');
