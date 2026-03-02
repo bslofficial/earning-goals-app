@@ -1,4 +1,3 @@
-// আপনার আগের Firebase কনফিগ এবং ইম্পোর্ট একই থাকবে
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
 import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
 import { getDatabase, ref, get, update, set, onValue } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js";
@@ -17,32 +16,6 @@ const auth = getAuth(app);
 const db = getDatabase(app);
 const adsterraLink = "https://glamourpicklessteward.com/mur0zqw1i?key=1357f8fdd3f1c4497af9b8581d8ad6cb";
 
-window.toggleMenu = () => document.getElementById('side-menu').classList.toggle('active');
-
-// পেজ দেখানোর নতুন ফাংশন
-window.showSection = (section) => {
-    const dashboard = document.getElementById('dashboard-section');
-    const other = document.getElementById('other-section');
-    const title = document.getElementById('section-title');
-    const details = document.getElementById('section-details');
-
-    if (section === 'dashboard') {
-        dashboard.style.display = 'block';
-        other.style.display = 'none';
-    } else {
-        dashboard.style.display = 'none';
-        other.style.display = 'block';
-        title.innerText = section.charAt(0).toUpperCase() + section.slice(1);
-        
-        // ডামি কন্টেন্ট (আপনি এখানে আসল ডাটা বসাতে পারবেন)
-        if(section === 'leaderboard') details.innerHTML = "<p>Top users will be listed here...</p>";
-        if(section === 'refer-team') details.innerHTML = "<p>Your refer team members will appear here...</p>";
-        if(section === 'history') details.innerHTML = "<p>Your payment history is empty.</p>";
-    }
-    window.toggleMenu(); // সাইডবার বন্ধ করা
-};
-
-// আপনার বাকি লজিক (Auth, Balance, Timers) অপরিবর্তিত থাকবে...
 let userRef;
 let currentData = { balance: 0, lastBonus: 0, referCount: 0, totalTaskCount: 0 };
 
@@ -54,7 +27,6 @@ onAuthStateChanged(auth, async (user) => {
                 currentData = snap.val();
                 document.getElementById('balance').innerText = (parseFloat(currentData.balance) || 0).toFixed(2);
                 document.getElementById('refer-count').innerText = currentData.referCount || 0;
-                document.getElementById('tasks-done').innerText = currentData.totalTaskCount || 0;
             }
         });
         document.getElementById('display-name').innerText = user.email.split('@')[0];
@@ -69,7 +41,29 @@ onAuthStateChanged(auth, async (user) => {
     }
 });
 
-// অন্যান্য উইন্ডো ফাংশন একই থাকবে (claimDailyBonus, startVideoTask, etc.)
+window.toggleMenu = () => document.getElementById('side-menu').classList.toggle('active');
+
+window.showSection = (section) => {
+    const dashboard = document.getElementById('dashboard-section');
+    const other = document.getElementById('other-section');
+    const title = document.getElementById('section-title');
+    const details = document.getElementById('section-details');
+
+    if (section === 'dashboard') {
+        dashboard.style.display = 'block';
+        other.style.display = 'none';
+    } else {
+        dashboard.style.display = 'none';
+        other.style.display = 'block';
+        title.innerText = section.replace('-', ' ').toUpperCase();
+        
+        if(section === 'leaderboard') details.innerHTML = "<h4>Top Earners List</h4><p>1. Admin - Tk.5000</p><p>2. User102 - Tk.4200</p>";
+        if(section === 'refer-team') details.innerHTML = "<h4>Your Refer Team</h4><p>Total Members: " + (currentData.referCount || 0) + "</p>";
+        if(section === 'history') details.innerHTML = "<h4>Withdraw History</h4><p>No history found.</p>";
+    }
+    window.toggleMenu();
+};
+
 window.copyReferLink = () => {
     const copyText = document.getElementById("refer-url");
     copyText.select();
@@ -77,6 +71,4 @@ window.copyReferLink = () => {
     alert("Refer Link Copied!");
 };
 
-window.openWithdraw = () => document.getElementById('withdrawModal').style.display = 'flex';
-window.closeWithdraw = () => document.getElementById('withdrawModal').style.display = 'none';
 window.handleLogout = () => signOut(auth).then(() => location.reload());
