@@ -14,44 +14,32 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getDatabase(app);
-
 const adsterraLink = "https://glamourpicklessteward.com/mur0zqw1i?key=1357f8fdd3f1c4497af9b8581d8ad6cb";
 
 let userRef;
 let currentData = { balance: 0, lastBonus: 0, referCount: 0, totalTaskCount: 0 };
 
-// লোডিং ফিক্স: Firebase কানেকশন চেক
 onAuthStateChanged(auth, async (user) => {
-    const loader = document.getElementById('loading-screen');
-    const authScr = document.getElementById('auth-screen');
-    const mainApp = document.getElementById('main-app');
-
-    try {
-        if (user) {
-            userRef = ref(db, 'users/' + user.uid);
-            onValue(userRef, (snap) => {
-                if (snap.exists()) {
-                    currentData = snap.val();
-                    updateUI();
-                    loader.style.display = 'none';
-                    authScr.style.display = 'none';
-                    mainApp.style.display = 'block';
-                }
-            });
-            document.getElementById('display-name').innerText = user.email.split('@')[0];
-            document.getElementById('refer-url').value = `${window.location.origin}${window.location.pathname}?ref=${user.uid}`;
-        } else {
-            loader.style.display = 'none';
-            authScr.style.display = 'flex';
-            mainApp.style.display = 'none';
-        }
-    } catch (e) {
-        console.error("Firebase Error:", e);
-        alert("Check Internet connection!");
+    if (user) {
+        userRef = ref(db, 'users/' + user.uid);
+        onValue(userRef, (snap) => {
+            if (snap.exists()) {
+                currentData = snap.val();
+                updateUI();
+                document.getElementById('loading-screen').style.display = 'none';
+                document.getElementById('auth-screen').style.display = 'none';
+                document.getElementById('main-app').style.display = 'block';
+            }
+        });
+        document.getElementById('display-name').innerText = user.email.split('@')[0];
+        document.getElementById('refer-url').value = `${window.location.origin}${window.location.pathname}?ref=${user.uid}`;
+    } else {
+        document.getElementById('loading-screen').style.display = 'none';
+        document.getElementById('auth-screen').style.display = 'flex';
+        document.getElementById('main-app').style.display = 'none';
     }
 });
 
-// বাটন ফাংশনগুলো
 window.toggleMenu = () => document.getElementById('side-menu').classList.toggle('active');
 window.showSection = (name) => {
     document.getElementById('dashboard-content').style.display = name === 'dashboard' ? 'block' : 'none';
@@ -59,24 +47,44 @@ window.showSection = (name) => {
     document.getElementById('side-menu').classList.remove('active');
 };
 
-// ডাটা আপডেট ফাংশন
+window.claimDailyBonus = async () => {
+    window.open(adsterraLink, '_blank');
+    await update(userRef, { balance: (currentData.balance + 10) });
+    alert("Bonus Added!");
+};
+
+window.startVideoTask = async (taskNum) => {
+    window.open(adsterraLink, '_blank');
+    await update(userRef, { 
+        balance: currentData.balance + 10,
+        totalTaskCount: (currentData.totalTaskCount || 0) + 1 
+    });
+    alert("Task Completed!");
+};
+
 function updateUI() {
     document.getElementById('balance').innerText = (currentData.balance || 0).toFixed(2);
     document.getElementById('refer-count').innerText = currentData.referCount || 0;
     document.getElementById('tasks-done').innerText = currentData.totalTaskCount || 0;
 }
 
-// লগইন লজিক
+window.copyReferLink = () => {
+    const link = document.getElementById('refer-url');
+    link.select();
+    document.execCommand('copy');
+    alert("Link Copied!");
+};
+
+window.openWithdraw = () => document.getElementById('withdrawModal').style.display = 'flex';
+window.closeWithdraw = () => document.getElementById('withdrawModal').style.display = 'none';
+window.handleLogout = () => signOut(auth).then(() => location.reload());
+
 document.getElementById('login-btn').addEventListener('click', async () => {
     const e = document.getElementById('email').value.trim();
     const p = document.getElementById('password').value.trim();
-    if(!e || !p) return alert("Email & Password required!");
-    
     try {
         await signInWithEmailAndPassword(auth, e, p);
     } catch (err) {
-        if (err.code === 'auth/invalid-credential') {
-            try { await createUserWithEmailAndPassword(auth, e, p); } catch(sE) { alert(sE.message); }
-        } else { alert(err.message); }
+        await createUserWithEmailAndPassword(auth, e, p);
     }
 });
