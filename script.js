@@ -15,6 +15,7 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getDatabase(app);
 
+// Adsterra Direct Link (Daily Bonus এবং Tasks এর জন্য)
 const adsterraLink = "https://glamourpicklessteward.com/mur0zqw1i?key=1357f8fdd3f1c4497af9b8581d8ad6cb";
 
 let userRef;
@@ -32,11 +33,12 @@ onAuthStateChanged(auth, async (user) => {
                 currentData = snap.val();
                 document.getElementById('balance').innerText = (currentData.balance || 0).toFixed(2);
             } else {
-                set(userRef, { balance: 0 });
+                set(userRef, { balance: 0, lastBonus: 0 });
             }
         });
         document.getElementById('display-name').innerText = user.email.split('@')[0];
         document.getElementById('refer-url').value = `${window.location.origin}${window.location.pathname}?ref=${user.uid}`;
+        
         loader.style.display = 'none';
         authScr.style.display = 'none';
         mainApp.style.display = 'block';
@@ -48,7 +50,7 @@ onAuthStateChanged(auth, async (user) => {
     }
 });
 
-// লগইন লজিক যেখানে ইমেইল এবং পাসওয়ার্ড এরর আলাদা করা হয়েছে
+// লগইন লজিক - ভুল ধরিয়ে দেওয়ার সিস্টেম
 document.getElementById('login-btn').addEventListener('click', async () => {
     const e = document.getElementById('email').value.trim();
     const p = document.getElementById('password').value.trim();
@@ -58,22 +60,13 @@ document.getElementById('login-btn').addEventListener('click', async () => {
     try {
         await signInWithEmailAndPassword(auth, e, p);
     } catch (err) {
-        console.log("Error Code:", err.code);
-        
-        // এখানে আপনার চাওয়া অনুযায়ী এরর হ্যান্ডলিং
         if (err.code === 'auth/invalid-email' || err.code === 'auth/user-not-found') {
-            alert("আপনার ইমেইলটি ভুল! সঠিক ইমেইল দিন।");
-        } 
-        else if (err.code === 'auth/wrong-password' || err.code === 'auth/invalid-credential') {
-            // নতুন ফায়ারবেস ভার্সনে ইমেইল বা পাসওয়ার্ড যেকোনোটি ভুল হলে invalid-credential দেখায়
+            alert("আপনার ইমেইলটি ভুল! সঠিক ইমেইল দিন অথবা নতুন একাউন্ট খুলুন।");
+        } else if (err.code === 'auth/wrong-password' || err.code === 'auth/invalid-credential') {
             alert("আপনার পাসওয়ার্ডটি ভুল! সঠিক পাসওয়ার্ড দিন।");
-        } 
-        else if (err.code === 'auth/user-disabled') {
-            alert("আপনার অ্যাকাউন্টটি ব্লক করা হয়েছে!");
-        }
-        else {
-            // যদি ইউজার একদম নতুন হয়, তবে সাইন আপ করার সুযোগ দিবে
-            if(confirm("অ্যাকাউন্ট নেই! নতুন অ্যাকাউন্ট খুলবেন?")){
+        } else {
+            // যদি অ্যাকাউন্ট না থাকে তবে নতুন তৈরি করবে
+            if(confirm("অ্যাকাউন্ট নেই! নতুন করে খুলতে চান?")){
                 try {
                     await createUserWithEmailAndPassword(auth, e, p);
                 } catch (sErr) {
@@ -84,29 +77,35 @@ document.getElementById('login-btn').addEventListener('click', async () => {
     }
 });
 
-window.toggleMenu = () => document.getElementById('side-menu').classList.toggle('active');
-window.handleLogout = () => signOut(auth).then(() => location.reload());
-window.openWithdraw = () => document.getElementById('withdrawModal').style.display = 'flex';
-window.closeWithdraw = () => document.getElementById('withdrawModal').style.display = 'none';
-
-window.copyReferLink = () => {
-    const copyText = document.getElementById("refer-url");
-    copyText.select();
-    navigator.clipboard.writeText(copyText.value);
-    alert("Refer Link Copied!");
-};
-
-window.startVideoTask = async (num) => {
+// ডেইলি বোনাস লজিক
+window.claimDailyBonus = async () => {
     const now = new Date().getTime();
-    if (currentData[`task_${num}_limit`] > now) return alert("অপেক্ষা করুন!");
+    if (currentData.lastBonus && now < currentData.lastBonus) {
+        alert("আপনি আজ বোনাস নিয়েছেন! কাল আবার চেষ্টা করুন।");
+        return;
+    }
     
     window.open(adsterraLink, '_blank');
     const updates = {};
     updates['balance'] = (currentData.balance || 0) + 10;
-    updates[`task_${num}_limit`] = now + (15 * 60 * 1000);
+    updates['lastBonus'] = now + (24 * 60 * 60 * 1000); // ২৪ ঘণ্টা লক
+    await update(userRef, updates);
+    alert("অভিনন্দন! ১০ টাকা বোনাস যোগ হয়েছে।");
+};
+
+// টাস্ক লজিক
+window.startVideoTask = async (num) => {
+    const now = new Date().getTime();
+    if (currentData[`task_${num}_limit`] > now) return;
+    
+    window.open(adsterraLink, '_blank');
+    const updates = {};
+    updates['balance'] = (currentData.balance || 0) + 10;
+    updates[`task_${num}_limit`] = now + (15 * 60 * 1000); // ১৫ মিনিট লক
     await update(userRef, updates);
 };
 
+// টাইমার আপডেট
 function startTimers() {
     setInterval(() => {
         const now = new Date().getTime();
@@ -125,5 +124,38 @@ function startTimers() {
                 txt.innerText = "Tk.10.00";
             }
         }
+
+        // ডেইলি বোনাস টাইমার টেক্সট আপডেট
+        const bTxt = document.getElementById('bonus-text');
+        if(currentData.lastBonus && now < currentData.lastBonus) {
+            let bDiff = currentData.lastBonus - now;
+            let h = Math.floor(bDiff / 3600000);
+            let m = Math.floor((bDiff % 3600000) / 60000);
+            bTxt.innerText = `NEXT BONUS IN ${h}h ${m}m`;
+        } else {
+            bTxt.innerText = "DAILY BONUS";
+        }
     }, 1000);
 }
+
+// অন্যান্য ফাংশন
+window.toggleMenu = () => document.getElementById('side-menu').classList.toggle('active');
+window.handleLogout = () => signOut(auth).then(() => location.reload());
+window.openWithdraw = () => document.getElementById('withdrawModal').style.display = 'flex';
+window.closeWithdraw = () => document.getElementById('withdrawModal').style.display = 'none';
+window.copyReferLink = () => {
+    const copyText = document.getElementById("refer-url");
+    copyText.select();
+    navigator.clipboard.writeText(copyText.value);
+    alert("Refer Link Copied!");
+};
+
+window.sendWithdrawRequest = async () => {
+    const amount = parseFloat(document.getElementById('withdrawAmount').value);
+    if (amount < 500) return alert("সর্বনিম্ন উইথড্র ৫০০ টাকা!");
+    if (currentData.balance < amount) return alert("পর্যাপ্ত ব্যালেন্স নেই!");
+    
+    await update(userRef, { balance: currentData.balance - amount });
+    alert("আপনার উইথড্র রিকোয়েস্ট সফলভাবে পাঠানো হয়েছে!");
+    closeWithdraw();
+};
