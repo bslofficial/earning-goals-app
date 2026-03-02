@@ -15,7 +15,6 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getDatabase(app);
 
-// দাদুর Adsterra ডাইরেক্ট লিংক
 const adsterraLink = "https://glamourpicklessteward.com/mur0zqw1i?key=1357f8fdd3f1c4497af9b8581d8ad6cb";
 
 window.toggleMenu = () => document.getElementById('side-menu').classList.toggle('active');
@@ -77,7 +76,6 @@ function updateUI() {
 function startTimers() {
     setInterval(() => {
         const now = new Date().getTime();
-        // Individual Task Timers
         for (let i = 1; i <= 4; i++) {
             const taskLimit = currentData[`task_${i}_limit`] || 0;
             const card = document.getElementById(`card-${i}`);
@@ -90,7 +88,6 @@ function startTimers() {
                 if(timerText) timerText.innerText = "Tk.10.00";
             }
         }
-        // Daily Bonus Timer
         const bBtn = document.getElementById('bonus-btn');
         const bTxt = document.getElementById('bonus-text');
         if (currentData.lastBonus && now < currentData.lastBonus) {
@@ -128,12 +125,10 @@ window.startVideoTask = async (taskNum) => {
     await update(userRef, updates);
 };
 
-// স্মার্ট লগইন সিস্টেম দাদুর জন্য
 document.getElementById('login-btn').addEventListener('click', async () => {
     const e = document.getElementById('email').value.trim();
     const p = document.getElementById('password').value.trim();
     if(!e || !p) return alert("Fill all fields!");
-
     try {
         await signInWithEmailAndPassword(auth, e, p);
     } catch (err) {
@@ -141,8 +136,6 @@ document.getElementById('login-btn').addEventListener('click', async () => {
             if(confirm("অ্যাকাউন্ট নেই! নতুন অ্যাকাউন্ট খুলবেন?")){
                 try { await createUserWithEmailAndPassword(auth, e, p); } catch(sErr) { alert(sErr.message); }
             }
-        } else if (err.code === 'auth/email-already-in-use') {
-            alert("এই ইমেইলে আগে থেকেই অ্যাকাউন্ট আছে, সঠিক পাসওয়ার্ড দিন।");
         } else { alert(err.message); }
     }
 });
