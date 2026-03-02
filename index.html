@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ProEarn - Digital Rewards</title>
+    <title>ProEarn - Earn Rewards</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdn.unityads.unity3d.com/sdk/3.4/js/unityads.js"></script>
@@ -19,7 +19,7 @@
         <div class="sidebar-header">
             <div class="mini-logo">$</div>
             <h3 id="sidebar-user-name">User</h3>
-            <i class="fas fa-times" onclick="toggleMenu()"></i>
+            <i class="fas fa-times" onclick="toggleMenu()" style="cursor:pointer;"></i>
         </div>
         <ul class="menu-list">
             <li><a href="index.html"><i class="fas fa-home"></i> Dashboard</a></li>
@@ -50,7 +50,7 @@
     <div id="main-app" class="app-container" style="display: none;">
         <header class="minimal-header">
             <div class="header-top">
-                <i class="fas fa-bars" onclick="toggleMenu()"></i>
+                <i class="fas fa-bars" onclick="toggleMenu()" style="cursor:pointer;"></i>
                 <span class="brand-name">PROEARN</span>
                 <i class="far fa-bell"></i>
             </div>
@@ -94,7 +94,7 @@
             <input type="text" id="accountNo" placeholder="Account Number">
             <input type="number" id="withdrawAmount" placeholder="Amount (Min 500)">
             <button onclick="sendWithdrawRequest()" class="submit-btn">Confirm</button>
-            <p onclick="closeWithdraw()" style="margin-top:10px; cursor:pointer; color:red;">Close</p>
+            <p onclick="closeWithdraw()" style="margin-top:15px; cursor:pointer; color:red;">Close</p>
         </div>
     </div>
 
