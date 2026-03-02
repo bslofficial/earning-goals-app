@@ -1,3 +1,4 @@
+// ১. এখানে ছোট হাতের 'import' ব্যবহার করা হয়েছে (Fix)
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
 import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
 import { getDatabase, ref, get, update, set, onValue } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js";
@@ -25,7 +26,10 @@ if (window.unityAds) {
 }
 
 // Sidebar logic
-window.toggleMenu = () => document.getElementById('side-menu').classList.toggle('active');
+window.toggleMenu = () => {
+    const menu = document.getElementById('side-menu');
+    if(menu) menu.classList.toggle('active');
+};
 
 let userRef;
 let currentData = { balance: 0, lastLimit: 0, doneToday: 0, lastBonus: 0, referCount: 0, totalTaskCount: 0 };
@@ -38,7 +42,6 @@ onAuthStateChanged(auth, async (user) => {
     if (user) {
         userRef = ref(db, 'users/' + user.uid);
         
-        // Real-time data sync using onValue (বেশি ফাস্ট কাজ করবে)
         onValue(userRef, (snap) => {
             if (snap.exists()) {
                 currentData = snap.val();
@@ -48,17 +51,20 @@ onAuthStateChanged(auth, async (user) => {
             }
         });
 
-        document.getElementById('display-name').innerText = user.email.split('@')[0];
-        document.getElementById('refer-url').value = `${window.location.origin}${window.location.pathname}?ref=${user.uid}`;
+        const nameEl = document.getElementById('display-name');
+        if(nameEl) nameEl.innerText = user.email.split('@')[0];
+        
+        const referUrlEl = document.getElementById('refer-url');
+        if(referUrlEl) referUrlEl.value = `${window.location.origin}${window.location.pathname}?ref=${user.uid}`;
         
         startTimers();
-        loadingScreen.style.display = 'none';
-        authScreen.style.display = 'none';
-        mainApp.style.display = 'block';
+        if(loadingScreen) loadingScreen.style.display = 'none';
+        if(authScreen) authScreen.style.display = 'none';
+        if(mainApp) mainApp.style.display = 'block';
     } else {
-        loadingScreen.style.display = 'none';
-        authScreen.style.display = 'flex';
-        mainApp.style.display = 'none';
+        if(loadingScreen) loadingScreen.style.display = 'none';
+        if(authScreen) authScreen.style.display = 'flex';
+        if(mainApp) mainApp.style.display = 'none';
     }
 });
 
@@ -81,10 +87,9 @@ async function createNewUser(uid) {
 }
 
 function updateUI() {
-    // Balance এবং অন্যান্য ডাটা আপডেট
-    document.getElementById('balance').innerText = (parseFloat(currentData.balance) || 0).toFixed(2);
+    const balanceEl = document.getElementById('balance');
+    if(balanceEl) balanceEl.innerText = (parseFloat(currentData.balance) || 0).toFixed(2);
     
-    // মিনিমাল ডিজাইনের আইডি অনুযায়ী ডাটা বসানো
     const refCountEl = document.getElementById('refer-count');
     const taskDoneEl = document.getElementById('tasks-done');
     
@@ -96,24 +101,23 @@ function startTimers() {
     setInterval(() => {
         const now = new Date().getTime();
         
-        // টাস্ক লিমিট টাইমার
         const limitBox = document.getElementById('limit-box');
-        if (limitBox) {
+        const timerDisp = document.getElementById('timer-display');
+        if (limitBox && timerDisp) {
             if (currentData.lastLimit && now < currentData.lastLimit) {
                 limitBox.style.display = 'block';
-                document.getElementById('timer-display').innerText = formatTime(currentData.lastLimit - now);
+                timerDisp.innerText = formatTime(currentData.lastLimit - now);
             } else {
                 limitBox.style.display = 'none';
             }
         }
 
-        // বোনাস বাটন টাইমার
         const bBtn = document.getElementById('bonus-btn');
         if (bBtn) {
-            const bTxt = bBtn.querySelector('span') || bBtn; // বোনাস টেক্সট খোঁজা
+            const bTxt = bBtn.querySelector('span') || bBtn;
             if (currentData.lastBonus && now < currentData.lastBonus) {
                 bBtn.disabled = true;
-                bBtn.style.opacity = "0.5";
+                bBtn.style.opacity = "0.6";
                 bTxt.innerText = formatTime(currentData.lastBonus - now);
             } else {
                 bBtn.disabled = false;
@@ -143,7 +147,7 @@ window.claimDailyBonus = async () => {
     alert("Tk.10 Bonus Claimed!");
 };
 
-window.startVideoTask = async () => {
+window.startVideoTask = async (taskNum) => {
     if (currentData.lastLimit && new Date().getTime() < currentData.lastLimit) {
         return alert("Please wait for cooldown!");
     }
@@ -157,12 +161,10 @@ window.startVideoTask = async () => {
                         doneToday: (currentData.doneToday || 0) + 1,
                         totalTaskCount: (currentData.totalTaskCount || 0) + 1
                     };
-
                     if (updates.doneToday >= 4) {
                         updates.lastLimit = new Date().getTime() + (24 * 60 * 60 * 1000); 
                         updates.doneToday = 0;
                     }
-                    
                     await update(userRef, updates);
                     alert("Task Completed! Tk.10 Added.");
                 } else {
@@ -171,54 +173,60 @@ window.startVideoTask = async () => {
             }
         });
     } else {
-        alert("Ads are loading... check internet or wait a moment.");
+        alert("Ads are loading... please try again in a few seconds.");
     }
 };
 
 window.copyReferLink = () => {
     const copyText = document.getElementById("refer-url");
-    copyText.select();
-    copyText.setSelectionRange(0, 99999); 
-    navigator.clipboard.writeText(copyText.value);
-    alert("Link Copied!");
+    if(copyText) {
+        copyText.select();
+        navigator.clipboard.writeText(copyText.value);
+        alert("Link Copied!");
+    }
 };
 
 window.sendWithdrawRequest = async () => {
-    const amount = parseFloat(document.getElementById('withdrawAmount').value);
-    if (amount < 500 || isNaN(amount)) return alert("Min Tk.500");
+    const amountInput = document.getElementById('withdrawAmount');
+    if(!amountInput) return;
+    const amount = parseFloat(amountInput.value);
+    
+    if (amount < 500 || isNaN(amount)) return alert("Minimum withdrawal Tk.500");
     if (currentData.balance < amount) return alert("Insufficient Balance");
     
     await update(userRef, { balance: currentData.balance - amount });
-    alert("Withdrawal Request Sent Successfully!");
-    closeWithdraw();
+    alert("Withdrawal request sent!");
+    window.closeWithdraw();
 };
 
-window.openWithdraw = () => document.getElementById('withdrawModal').style.display = 'flex';
-window.closeWithdraw = () => document.getElementById('withdrawModal').style.display = 'none';
+window.openWithdraw = () => {
+    const modal = document.getElementById('withdrawModal');
+    if(modal) modal.style.display = 'flex';
+};
+window.closeWithdraw = () => {
+    const modal = document.getElementById('withdrawModal');
+    if(modal) modal.style.display = 'none';
+};
 window.handleLogout = () => signOut(auth).then(() => location.reload());
 
-// Auth Event Listener
-document.getElementById('login-btn').addEventListener('click', async () => {
-    const e = document.getElementById('email').value.trim();
-    const p = document.getElementById('password').value.trim();
-    if(!e || !p) return alert("Please fill all fields");
-    
-    try { 
-        await signInWithEmailAndPassword(auth, e, p); 
-    } catch { 
-        try { 
-            await createUserWithEmailAndPassword(auth, e, p); 
-        } catch (err) { 
-            alert("Error: " + err.message); 
-        } 
-    }
-});
-
-// Close Sidebar on outside click
-document.addEventListener('click', (e) => {
-    const menu = document.getElementById('side-menu');
-    const trigger = document.querySelector('.menu-trigger');
-    if (menu && menu.classList.contains('active') && !menu.contains(e.target) && trigger && !trigger.contains(e.target)) {
-        menu.classList.remove('active');
+// লগইন বাটনের ইভেন্ট লিসেনার ফিক্স
+document.addEventListener('DOMContentLoaded', () => {
+    const loginBtn = document.getElementById('login-btn');
+    if(loginBtn) {
+        loginBtn.addEventListener('click', async () => {
+            const e = document.getElementById('email').value.trim();
+            const p = document.getElementById('password').value.trim();
+            if(!e || !p) return alert("Fill all fields");
+            
+            try { 
+                await signInWithEmailAndPassword(auth, e, p); 
+            } catch (err) { 
+                try { 
+                    await createUserWithEmailAndPassword(auth, e, p); 
+                } catch (createErr) { 
+                    alert("Error: " + createErr.message); 
+                } 
+            }
+        });
     }
 });
