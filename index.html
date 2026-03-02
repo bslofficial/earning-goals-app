@@ -10,108 +10,103 @@
 <body>
 
     <div id="side-menu" class="sidebar">
-        <div class="sidebar-header">
-            <div class="sidebar-logo">$</div>
+        <div class="sidebar-user">
+            <div class="mini-avatar">P</div>
             <h3>ProEarn Menu</h3>
-            <i class="fas fa-times close-btn" onclick="toggleMenu()"></i>
         </div>
         <ul class="menu-list">
-            <li><a href="#" onclick="showSection('dashboard')"><i class="fas fa-home"></i> Dashboard</a></li>
-            <li><a href="#" onclick="showSection('leaderboard')"><i class="fas fa-trophy"></i> Leaderboard</a></li>
-            <li><a href="#" onclick="showSection('refer-team')"><i class="fas fa-users-cog"></i> Refer Team</a></li>
-            <li><a href="#" onclick="showSection('history')"><i class="fas fa-history"></i> Payment History</a></li>
-            <li><a href="https://t.me/incomeworld01" target="_blank"><i class="fas fa-headset"></i> Admin Support</a></li>
-            <hr style="border: 0.5px solid #eee; margin: 10px 0;">
-            <li><a href="#" onclick="handleLogout()"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            <li><a href="#" onclick="showSection('dashboard')"><i class="fas fa-th-large"></i> Dashboard</a></li>
+            <li><a href="#" onclick="showSection('leaderboard')"><i class="fas fa-medal"></i> Leaderboard</a></li>
+            <li><a href="#" onclick="showSection('refer-team')"><i class="fas fa-user-friends"></i> Refer Team</a></li>
+            <li><a href="#" onclick="showSection('history')"><i class="fas fa-wallet"></i> History</a></li>
+            <hr>
+            <li><a href="#" onclick="handleLogout()"><i class="fas fa-power-off"></i> Logout</a></li>
         </ul>
-        <div class="sidebar-footer">Version 1.0.3</div>
     </div>
 
     <div id="loading-screen">
         <div class="spinner"></div>
-        <p>Loading ProEarn...</p>
     </div>
 
     <div id="auth-screen" class="auth-wrapper" style="display: none;">
         <div class="auth-card">
-            <div class="logo" style="background: #2563eb;">$</div>
-            <h2>ProEarn Rewards</h2>
-            <div class="input-field"><i class="fas fa-envelope"></i><input type="email" id="email" placeholder="Email Address"></div>
-            <div class="input-field"><i class="fas fa-lock"></i><input type="password" id="password" placeholder="Password"></div>
-            <button id="login-btn" class="main-btn" style="background: #2563eb;">Login / Sign Up</button>
+            <h2 class="minimal-brand">PROEARN</h2>
+            <p>Welcome back! Please login.</p>
+            <input type="email" id="email" class="min-input" placeholder="Email">
+            <input type="password" id="password" class="min-input" placeholder="Password">
+            <button id="login-btn" class="min-btn">Continue</button>
         </div>
     </div>
 
     <div id="main-app" class="app-container" style="display: none;">
-        <div class="top-nav-blue">
-            <div class="nav-header">
-                <i class="fas fa-bars menu-trigger" onclick="toggleMenu()"></i>
-                <h1 class="app-title-header">PROEARN REWARDS</h1>
-                <div style="width: 25px;"></div> 
+        <header class="minimal-header">
+            <div class="header-top">
+                <i class="fas fa-align-left" onclick="toggleMenu()"></i>
+                <span class="brand-text">PROEARN</span>
+                <i class="far fa-bell"></i>
             </div>
-            
-            <div class="user-row">
-                <div class="profile-info">
-                    <div class="profile-box"><img src="https://cdn-icons-png.flaticon.com/512/149/149071.png"></div>
-                    <div class="user-meta">
-                        <span id="display-name">User</span>
-                        <small>Status: Active</small>
-                    </div>
-                </div>
-                <div class="balance-box">
-                    <small>Balance</small>
-                    <h2>Tk.<span id="balance">0.00</span></h2>
-                </div>
+            <div class="balance-card">
+                <p>Available Balance</p>
+                <h1>Tk. <span id="balance">0.00</span></h1>
             </div>
-        </div>
+        </header>
 
         <div id="dashboard-section" class="main-content">
-            <div class="action-buttons">
-                <button onclick="claimDailyBonus()" id="bonus-btn" class="btn-bonus">Daily Bonus</button>
-                <button onclick="openWithdraw()" class="btn-withdraw">Withdraw</button>
-            </div>
-
-            <div class="refer-info">
-                <p>Refer & Earn <b>Tk.30.00</b></p>
-                <div class="refer-link-box">
-                    <input type="text" id="refer-url" readonly>
-                    <button onclick="copyReferLink()" class="share-btn" style="background: #2563eb;">Copy</button>
+            <div class="quick-stats">
+                <div class="stat-item">
+                    <small>Total Refer</small>
+                    <b id="refer-count">0</b>
+                </div>
+                <div class="stat-item">
+                    <small>Tasks Done</small>
+                    <b id="tasks-done">0</b>
                 </div>
             </div>
 
-            <div class="grid-container tasks">
-                <div class="custom-card task-card red-task" id="card-1" onclick="startVideoTask(1)">
-                    <i class="fas fa-play"></i><p>Task 01</p><h3 id="timer-1">Tk.10.00</h3>
+            <h3 class="section-label">Earning Tasks</h3>
+            <div class="task-grid">
+                <div class="soft-card" onclick="startVideoTask(1)">
+                    <div class="icon-circle red-tint"><i class="fas fa-play"></i></div>
+                    <div class="task-info">
+                        <span>Task 01</span>
+                        <small id="timer-1">Tk.10.00</small>
+                    </div>
                 </div>
-                <div class="custom-card task-card red-task" id="card-2" onclick="startVideoTask(2)">
-                    <i class="fas fa-play"></i><p>Task 02</p><h3 id="timer-2">Tk.10.00</h3>
+                <div class="soft-card" onclick="startVideoTask(2)">
+                    <div class="icon-circle red-tint"><i class="fas fa-play"></i></div>
+                    <div class="task-info">
+                        <span>Task 02</span>
+                        <small id="timer-2">Tk.10.00</small>
+                    </div>
                 </div>
-                <div class="custom-card task-card red-task" id="card-3" onclick="startVideoTask(3)">
-                    <i class="fas fa-play"></i><p>Task 03</p><h3 id="timer-3">Tk.10.00</h3>
+                <div class="soft-card" onclick="startVideoTask(3)">
+                    <div class="icon-circle red-tint"><i class="fas fa-play"></i></div>
+                    <div class="task-info">
+                        <span>Task 03</span>
+                        <small id="timer-3">Tk.10.00</small>
+                    </div>
                 </div>
-                <div class="custom-card task-card red-task" id="card-4" onclick="startVideoTask(4)">
-                    <i class="fas fa-play"></i><p>Task 04</p><h3 id="timer-4">Tk.10.00</h3>
+                <div class="soft-card" onclick="startVideoTask(4)">
+                    <div class="icon-circle red-tint"><i class="fas fa-play"></i></div>
+                    <div class="task-info">
+                        <span>Task 04</span>
+                        <small id="timer-4">Tk.10.00</small>
+                    </div>
                 </div>
+            </div>
+
+            <div class="bottom-actions">
+                <button onclick="claimDailyBonus()" class="bonus-min">Daily Bonus</button>
+                <button onclick="openWithdraw()" class="withdraw-min">Withdraw</button>
             </div>
         </div>
 
         <div id="other-section" class="main-content" style="display: none;">
-            <div class="section-card">
-                <button onclick="showSection('dashboard')" class="back-btn"><i class="fas fa-arrow-left"></i> Back</button>
-                <h2 id="section-title" style="margin-bottom: 15px; color: #2563eb;">Details</h2>
-                <div id="section-details"></div>
+            <div class="detail-container">
+                <button onclick="showSection('dashboard')" class="back-link"><i class="fas fa-chevron-left"></i> Back</button>
+                <h2 id="section-title">Details</h2>
+                <div id="section-details" class="details-content"></div>
             </div>
-        </div>
-    </div>
-
-    <div id="withdrawModal" class="modal-backdrop">
-        <div class="modal-box">
-            <h3>Withdraw Funds</h3>
-            <select id="method"><option value="Bkash">Bkash</option><option value="Nagad">Nagad</option></select>
-            <input type="text" id="accountNo" placeholder="Account Number">
-            <input type="number" id="withdrawAmount" placeholder="Min Tk.500">
-            <button class="submit-btn" style="background: #2563eb;" onclick="sendWithdrawRequest()">Confirm Withdraw</button>
-            <p onclick="closeWithdraw()" class="close-txt">Close</p>
         </div>
     </div>
 
