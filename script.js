@@ -15,15 +15,15 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getDatabase(app);
 
-// --- দাদুর Adsterra ডাইরেক্ট লিংক ---
-const adsterraLink = "https://glamourpicklessteward.com/mur0zqw1i?key=1357f8fdd3f1c4497af9b8581d8ad6cb"; 
+// আপনার Adsterra ডাইরেক্ট লিংক
+const adsterraLink = "https://glamourpicklessteward.com/mur0zqw1i?key=1357f8fdd3f1c4497af9b8581d8ad6cb";
 
 window.toggleMenu = () => {
     document.getElementById('side-menu').classList.toggle('active');
 };
 
 let userRef;
-let currentData = { balance: 0, lastLimit: 0, doneToday: 0, lastBonus: 0, referCount: 0, totalTaskCount: 0 };
+let currentData = { balance: 0, lastBonus: 0, referCount: 0, totalTaskCount: 0 };
 
 onAuthStateChanged(auth, async (user) => {
     const loadingScreen = document.getElementById('loading-screen');
@@ -33,6 +33,7 @@ onAuthStateChanged(auth, async (user) => {
     if (user) {
         userRef = ref(db, 'users/' + user.uid);
         
+        // রিয়েলটাইম ডাটা লিসেনার (এটি আপনার অ্যাপকে দ্রুত করবে)
         onValue(userRef, (snap) => {
             if (snap.exists()) {
                 currentData = snap.val();
@@ -57,6 +58,19 @@ onAuthStateChanged(auth, async (user) => {
 });
 
 async function setupNewUser(userId) {
+    const urlParams = new URLSearchParams(window.location.search);
+    const referrerId = urlParams.get('ref');
+    if (referrerId) {
+        const refUserRef = ref(db, 'users/' + referrerId);
+        const refSnap = await get(refUserRef);
+        if (refSnap.exists()) {
+            const rData = refSnap.val();
+            await update(refUserRef, {
+                balance: (parseFloat(rData.balance) || 0) + 30,
+                referCount: (parseInt(rData.referCount) || 0) + 1
+            });
+        }
+    }
     await set(ref(db, 'users/' + userId), currentData);
 }
 
@@ -70,15 +84,19 @@ function startTimers() {
     setInterval(() => {
         const now = new Date().getTime();
         
-        // টাস্ক লিমিট চেক (১৫ মিনিট)
-        const limitBox = document.getElementById('limit-box');
-        const timerDisp = document.getElementById('timer-display');
-        
-        if (currentData.lastLimit && now < currentData.lastLimit) {
-            if(limitBox) limitBox.style.display = 'block';
-            if(timerDisp) timerDisp.innerText = formatTime(currentData.lastLimit - now);
-        } else {
-            if(limitBox) limitBox.style.display = 'none';
+        // প্রতিটি টাস্ক কার্ডের আলাদা টাইমার আপডেট
+        for (let i = 1; i <= 4; i++) {
+            const taskLimit = currentData[`task_${i}_limit`] || 0;
+            const card = document.getElementById(`card-${i}`);
+            const timerText = document.getElementById(`timer-${i}`);
+            
+            if (taskLimit && now < taskLimit) {
+                if(card) card.classList.add('task-disabled');
+                if(timerText) timerText.innerText = formatTime(taskLimit - now);
+            } else {
+                if(card) card.classList.remove('task-disabled');
+                if(timerText) timerText.innerText = "Tk.10.00";
+            }
         }
 
         // ডেইলি বোনাস টাইমার
@@ -95,18 +113,15 @@ function startTimers() {
 }
 
 function formatTime(ms) {
-    const h = Math.floor(ms / (1000 * 60 * 60));
     const m = Math.floor((ms % (1000 * 60 * 60)) / (1000 * 60));
     const s = Math.floor((ms % (1000 * 60)) / 1000);
-    return `${h > 0 ? h.toString().padStart(2,'0') + 'h ' : ''}${m.toString().padStart(2,'0')}m ${s.toString().padStart(2,'0')}s`;
+    return `${m.toString().padStart(2,'0')}m ${s.toString().padStart(2,'0')}s`;
 }
 
 window.claimDailyBonus = async () => {
     const now = new Date().getTime();
     if (currentData.lastBonus && now < currentData.lastBonus) return;
-    
     window.open(adsterraLink, '_blank');
-    
     await update(userRef, {
         balance: (parseFloat(currentData.balance) || 0) + 10,
         lastBonus: now + (3 * 60 * 60 * 1000)
@@ -114,42 +129,31 @@ window.claimDailyBonus = async () => {
     alert("Tk.10 Bonus Claimed!");
 };
 
-window.startVideoTask = async () => {
+window.startVideoTask = async (taskNum) => {
     const now = new Date().getTime();
-    if (currentData.lastLimit && now < currentData.lastLimit) {
-        alert("Please wait for the timer to finish!");
+    const taskLimitKey = `task_${taskNum}_limit`;
+    
+    if (currentData[taskLimitKey] && now < currentData[taskLimitKey]) {
+        alert("Please wait for the timer!");
         return;
     }
 
     window.open(adsterraLink, '_blank');
 
-    let newBalance = (parseFloat(currentData.balance) || 0) + 10;
-    let newDoneToday = (parseInt(currentData.doneToday) || 0) + 1;
-    let newTotalTask = (parseInt(currentData.totalTaskCount) || 0) + 1;
-    let newLimit = currentData.lastLimit || 0;
+    // ডাটা আপডেট লজিক
+    const updates = {};
+    updates['balance'] = (parseFloat(currentData.balance) || 0) + 10;
+    updates['totalTaskCount'] = (parseInt(currentData.totalTaskCount) || 0) + 1;
+    updates[taskLimitKey] = now + (15 * 60 * 1000); // ১৫ মিনিট লক
 
-    // ৪টি টাস্ক হলে ১৫ মিনিটের বিরতি
-    if (newDoneToday >= 4) {
-        newLimit = new Date().getTime() + (15 * 60 * 1000); // ১৫ মিনিট
-        newDoneToday = 0;
-        alert("Task Completed! Please wait 15 minutes for the next set.");
-    } else {
-        alert("Task Completed! Tk.10 Added.");
-    }
-
-    await update(userRef, {
-        balance: newBalance,
-        doneToday: newDoneToday,
-        totalTaskCount: newTotalTask,
-        lastLimit: newLimit
-    });
+    await update(userRef, updates);
+    alert(`Task ${taskNum} Completed! Tk.10 Added.`);
 };
 
 window.sendWithdrawRequest = async () => {
     const amount = parseFloat(document.getElementById('withdrawAmount').value);
     if (amount < 500) return alert("Min Tk.500");
     if (currentData.balance < amount) return alert("Insufficient Balance");
-    
     await update(userRef, { balance: currentData.balance - amount });
     alert("Request Sent!");
     closeWithdraw();
@@ -164,7 +168,14 @@ document.getElementById('login-btn').addEventListener('click', async () => {
     const p = document.getElementById('password').value;
     if(!e || !p) return alert("Fill all fields");
     try { await signInWithEmailAndPassword(auth, e, p); } 
-    catch { 
-        try { await createUserWithEmailAndPassword(auth, e, p); } catch (err) { alert(err.message); } 
-    }
+    catch { try { await createUserWithEmailAndPassword(auth, e, p); } catch (err) { alert(err.message); } }
 });
+
+// কপি রেফারাল লিংক ফাংশন
+window.copyReferLink = () => {
+    const copyText = document.getElementById("refer-url");
+    copyText.select();
+    copyText.setSelectionRange(0, 99999);
+    navigator.clipboard.writeText(copyText.value);
+    alert("Refer Link Copied!");
+};
