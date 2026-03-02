@@ -15,12 +15,10 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getDatabase(app);
 
-// Adsterra Direct Link (Daily Bonus এবং Tasks এর জন্য)
+// দাদুর Adsterra ডাইরেক্ট লিংক
 const adsterraLink = "https://glamourpicklessteward.com/mur0zqw1i?key=1357f8fdd3f1c4497af9b8581d8ad6cb";
 
-window.toggleMenu = () => {
-    document.getElementById('side-menu').classList.toggle('active');
-};
+window.toggleMenu = () => document.getElementById('side-menu').classList.toggle('active');
 
 let userRef;
 let currentData = { balance: 0, lastBonus: 0, referCount: 0, totalTaskCount: 0 };
@@ -32,7 +30,6 @@ onAuthStateChanged(auth, async (user) => {
 
     if (user) {
         userRef = ref(db, 'users/' + user.uid);
-        
         onValue(userRef, (snap) => {
             if (snap.exists()) {
                 currentData = snap.val();
@@ -41,10 +38,8 @@ onAuthStateChanged(auth, async (user) => {
                 setupNewUser(user.uid);
             }
         });
-
         document.getElementById('display-name').innerText = user.email.split('@')[0];
         document.getElementById('refer-url').value = `${window.location.origin}${window.location.pathname}?ref=${user.uid}`;
-        
         startTimers();
         loadingScreen.style.display = 'none';
         authScreen.style.display = 'none';
@@ -59,18 +54,18 @@ onAuthStateChanged(auth, async (user) => {
 async function setupNewUser(userId) {
     const urlParams = new URLSearchParams(window.location.search);
     const referrerId = urlParams.get('ref');
+    const newData = { balance: 0, lastBonus: 0, referCount: 0, totalTaskCount: 0 };
     if (referrerId) {
         const refUserRef = ref(db, 'users/' + referrerId);
         const refSnap = await get(refUserRef);
         if (refSnap.exists()) {
-            const rData = refSnap.val();
             await update(refUserRef, {
-                balance: (parseFloat(rData.balance) || 0) + 30,
-                referCount: (parseInt(rData.referCount) || 0) + 1
+                balance: (refSnap.val().balance || 0) + 30,
+                referCount: (refSnap.val().referCount || 0) + 1
             });
         }
     }
-    await set(ref(db, 'users/' + userId), currentData);
+    await set(ref(db, 'users/' + userId), newData);
 }
 
 function updateUI() {
@@ -82,12 +77,11 @@ function updateUI() {
 function startTimers() {
     setInterval(() => {
         const now = new Date().getTime();
-        
+        // Individual Task Timers
         for (let i = 1; i <= 4; i++) {
             const taskLimit = currentData[`task_${i}_limit`] || 0;
             const card = document.getElementById(`card-${i}`);
             const timerText = document.getElementById(`timer-${i}`);
-            
             if (taskLimit && now < taskLimit) {
                 if(card) card.classList.add('task-disabled');
                 if(timerText) timerText.innerText = formatTime(taskLimit - now);
@@ -96,22 +90,22 @@ function startTimers() {
                 if(timerText) timerText.innerText = "Tk.10.00";
             }
         }
-
+        // Daily Bonus Timer
         const bBtn = document.getElementById('bonus-btn');
         const bTxt = document.getElementById('bonus-text');
         if (currentData.lastBonus && now < currentData.lastBonus) {
-            bBtn.disabled = true;
-            bTxt.innerText = formatTime(currentData.lastBonus - now);
+            if(bBtn) bBtn.disabled = true;
+            if(bTxt) bTxt.innerText = formatTime(currentData.lastBonus - now);
         } else {
-            bBtn.disabled = false;
-            bTxt.innerText = "Daily Bonus";
+            if(bBtn) bBtn.disabled = false;
+            if(bTxt) bTxt.innerText = "Daily Bonus";
         }
     }, 1000);
 }
 
 function formatTime(ms) {
-    const m = Math.floor((ms % (1000 * 60 * 60)) / (1000 * 60));
-    const s = Math.floor((ms % (1000 * 60)) / 1000);
+    const m = Math.floor((ms % 3600000) / 60000);
+    const s = Math.floor((ms % 60000) / 1000);
     return `${m.toString().padStart(2,'0')}m ${s.toString().padStart(2,'0')}s`;
 }
 
@@ -119,31 +113,50 @@ window.claimDailyBonus = async () => {
     const now = new Date().getTime();
     if (currentData.lastBonus && now < currentData.lastBonus) return;
     window.open(adsterraLink, '_blank');
-    await update(userRef, {
-        balance: (parseFloat(currentData.balance) || 0) + 10,
-        lastBonus: now + (3 * 60 * 60 * 1000)
-    });
-    alert("Tk.10 Bonus Claimed!");
+    await update(userRef, { balance: (currentData.balance + 10), lastBonus: now + (3 * 60 * 60 * 1000) });
 };
 
 window.startVideoTask = async (taskNum) => {
     const now = new Date().getTime();
     const taskLimitKey = `task_${taskNum}_limit`;
-    
-    if (currentData[taskLimitKey] && now < currentData[taskLimitKey]) {
-        alert("Please wait for the timer!");
-        return;
-    }
-
+    if (currentData[taskLimitKey] && now < currentData[taskLimitKey]) return;
     window.open(adsterraLink, '_blank');
-
     const updates = {};
-    updates['balance'] = (parseFloat(currentData.balance) || 0) + 10;
-    updates['totalTaskCount'] = (parseInt(currentData.totalTaskCount) || 0) + 1;
-    updates[taskLimitKey] = now + (15 * 60 * 1000); // ১৫ মিনিট লক
-
+    updates['balance'] = currentData.balance + 10;
+    updates['totalTaskCount'] = currentData.totalTaskCount + 1;
+    updates[taskLimitKey] = now + (15 * 60 * 1000);
     await update(userRef, updates);
 };
+
+// স্মার্ট লগইন সিস্টেম দাদুর জন্য
+document.getElementById('login-btn').addEventListener('click', async () => {
+    const e = document.getElementById('email').value.trim();
+    const p = document.getElementById('password').value.trim();
+    if(!e || !p) return alert("Fill all fields!");
+
+    try {
+        await signInWithEmailAndPassword(auth, e, p);
+    } catch (err) {
+        if (err.code === 'auth/user-not-found' || err.code === 'auth/invalid-credential') {
+            if(confirm("অ্যাকাউন্ট নেই! নতুন অ্যাকাউন্ট খুলবেন?")){
+                try { await createUserWithEmailAndPassword(auth, e, p); } catch(sErr) { alert(sErr.message); }
+            }
+        } else if (err.code === 'auth/email-already-in-use') {
+            alert("এই ইমেইলে আগে থেকেই অ্যাকাউন্ট আছে, সঠিক পাসওয়ার্ড দিন।");
+        } else { alert(err.message); }
+    }
+});
+
+window.copyReferLink = () => {
+    const copyText = document.getElementById("refer-url");
+    copyText.select();
+    navigator.clipboard.writeText(copyText.value);
+    alert("Refer Link Copied!");
+};
+
+window.openWithdraw = () => document.getElementById('withdrawModal').style.display = 'flex';
+window.closeWithdraw = () => document.getElementById('withdrawModal').style.display = 'none';
+window.handleLogout = () => signOut(auth).then(() => location.reload());
 
 window.sendWithdrawRequest = async () => {
     const amount = parseFloat(document.getElementById('withdrawAmount').value);
@@ -152,23 +165,4 @@ window.sendWithdrawRequest = async () => {
     await update(userRef, { balance: currentData.balance - amount });
     alert("Request Sent!");
     closeWithdraw();
-};
-
-window.openWithdraw = () => document.getElementById('withdrawModal').style.display = 'flex';
-window.closeWithdraw = () => document.getElementById('withdrawModal').style.display = 'none';
-window.handleLogout = () => signOut(auth).then(() => location.reload());
-
-document.getElementById('login-btn').addEventListener('click', async () => {
-    const e = document.getElementById('email').value.trim();
-    const p = document.getElementById('password').value.trim();
-    if(!e || !p) return alert("Fill all fields");
-    try { await signInWithEmailAndPassword(auth, e, p); } 
-    catch { try { await createUserWithEmailAndPassword(auth, e, p); } catch (err) { alert(err.message); } }
-});
-
-window.copyReferLink = () => {
-    const copyText = document.getElementById("refer-url");
-    copyText.select();
-    navigator.clipboard.writeText(copyText.value);
-    alert("Refer Link Copied!");
 };
