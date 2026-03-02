@@ -56,10 +56,24 @@ body { background: #0b0e14; color: white; overflow-x: hidden; }
 .task-card { background: linear-gradient(145deg, #1e293b, #0f172a); cursor: pointer; transition: 0.2s; }
 .task-card:active { transform: scale(0.95); }
 
+/* --- দাদু এখানে আপনার নতুন লজিক যোগ করা হয়েছে --- */
+.task-disabled { 
+    opacity: 0.5; 
+    filter: grayscale(1); 
+    pointer-events: none; /* যাতে লক থাকা অবস্থায় ক্লিক না হয় */
+    border: 1px solid rgba(255, 0, 0, 0.2) !important;
+}
+
+.task-disabled h3 {
+    color: #f87171 !important; /* টাইমারের রঙ লালচে দেখাবে */
+    font-size: 16px !important;
+}
+
 /* Buttons & UI */
 .action-buttons { display: flex; gap: 10px; margin-bottom: 20px; }
 .btn-bonus, .btn-withdraw { flex: 1; padding: 12px; border-radius: 12px; border: none; color: white; font-weight: bold; cursor: pointer; }
 .btn-bonus { background: #f59e0b; }
+.btn-bonus:disabled { background: #94a3b8; cursor: not-allowed; }
 .btn-withdraw { background: #10b981; }
 
 .refer-info { background: #1a1f2e; padding: 15px; border-radius: 15px; border: 1px dashed #3b82f6; text-align: center; margin-bottom: 20px; }
