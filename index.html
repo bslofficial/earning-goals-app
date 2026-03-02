@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ProEarn Rewards</title>
-    <script src="https://cdn.jsdelivr.net/npm/@unityadssdk/unity-ads-sdk@latest/dist/unity-ads.min.js"></script>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -83,7 +82,7 @@
                 <p><i class="fas fa-user-plus"></i> Refer & Earn <b>Tk.30.00</b></p>
                 <div class="refer-link-box">
                     <input type="text" id="refer-url" readonly value="Generating...">
-                    <button id="share-btn-action" class="share-btn"><i class="fas fa-share-alt"></i> Share</button>
+                    <button onclick="copyReferLink()" id="share-btn-action" class="share-btn"><i class="fas fa-copy"></i> Copy</button>
                 </div>
             </div>
 
@@ -101,30 +100,30 @@
             </div>
 
             <div class="grid-container">
-                <div class="custom-card task-card" onclick="startVideoTask()">
+                <div class="custom-card task-card" id="card-1" onclick="startVideoTask(1)">
                     <i class="fas fa-play"></i>
                     <p>Task 01</p>
-                    <h3>Tk.10.00</h3>
+                    <h3 id="timer-1">Tk.10.00</h3>
                 </div>
-                <div class="custom-card task-card" onclick="startVideoTask()">
+                <div class="custom-card task-card" id="card-2" onclick="startVideoTask(2)">
                     <i class="fas fa-play"></i>
                     <p>Task 02</p>
-                    <h3>Tk.10.00</h3>
+                    <h3 id="timer-2">Tk.10.00</h3>
                 </div>
-                <div class="custom-card task-card" onclick="startVideoTask()">
+                <div class="custom-card task-card" id="card-3" onclick="startVideoTask(3)">
                     <i class="fas fa-play"></i>
                     <p>Task 03</p>
-                    <h3>Tk.10.00</h3>
+                    <h3 id="timer-3">Tk.10.00</h3>
                 </div>
-                <div class="custom-card task-card" onclick="startVideoTask()">
+                <div class="custom-card task-card" id="card-4" onclick="startVideoTask(4)">
                     <i class="fas fa-play"></i>
                     <p>Task 04</p>
-                    <h3>Tk.10.00</h3>
+                    <h3 id="timer-4">Tk.10.00</h3>
                 </div>
             </div>
 
             <div id="limit-box" class="cooldown-card" style="display: none;">
-                <i class="fas fa-clock"></i> Next Task in: <span id="timer-display">24:00:00</span>
+                <i class="fas fa-clock"></i> Task Cooldown Active
             </div>
         </div>
     </div>
