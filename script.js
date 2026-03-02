@@ -33,7 +33,6 @@ onAuthStateChanged(auth, async (user) => {
     if (user) {
         userRef = ref(db, 'users/' + user.uid);
         
-        // রিয়েলটাইম ডাটা লিসেনার (এটি আপনার অ্যাপকে দ্রুত করবে)
         onValue(userRef, (snap) => {
             if (snap.exists()) {
                 currentData = snap.val();
@@ -60,6 +59,16 @@ onAuthStateChanged(auth, async (user) => {
 async function setupNewUser(userId) {
     const urlParams = new URLSearchParams(window.location.search);
     const referrerId = urlParams.get('ref');
+    
+    // নতুন ইউজারের ডিফল্ট ডাটা
+    const newData = {
+        balance: 0,
+        lastBonus: 0,
+        referCount: 0,
+        totalTaskCount: 0,
+        createdAt: new Date().getTime()
+    };
+
     if (referrerId) {
         const refUserRef = ref(db, 'users/' + referrerId);
         const refSnap = await get(refUserRef);
@@ -71,7 +80,7 @@ async function setupNewUser(userId) {
             });
         }
     }
-    await set(ref(db, 'users/' + userId), currentData);
+    await set(ref(db, 'users/' + userId), newData);
 }
 
 function updateUI() {
@@ -83,8 +92,6 @@ function updateUI() {
 function startTimers() {
     setInterval(() => {
         const now = new Date().getTime();
-        
-        // প্রতিটি টাস্ক কার্ডের আলাদা টাইমার আপডেট
         for (let i = 1; i <= 4; i++) {
             const taskLimit = currentData[`task_${i}_limit`] || 0;
             const card = document.getElementById(`card-${i}`);
@@ -99,15 +106,14 @@ function startTimers() {
             }
         }
 
-        // ডেইলি বোনাস টাইমার
         const bBtn = document.getElementById('bonus-btn');
         const bTxt = document.getElementById('bonus-text');
         if (currentData.lastBonus && now < currentData.lastBonus) {
-            bBtn.disabled = true;
-            bTxt.innerText = formatTime(currentData.lastBonus - now);
+            if(bBtn) bBtn.disabled = true;
+            if(bTxt) bTxt.innerText = formatTime(currentData.lastBonus - now);
         } else {
-            bBtn.disabled = false;
-            bTxt.innerText = "Daily Bonus";
+            if(bBtn) bBtn.disabled = false;
+            if(bTxt) bTxt.innerText = "Daily Bonus";
         }
     }, 1000);
 }
@@ -126,7 +132,6 @@ window.claimDailyBonus = async () => {
         balance: (parseFloat(currentData.balance) || 0) + 10,
         lastBonus: now + (3 * 60 * 60 * 1000)
     });
-    alert("Tk.10 Bonus Claimed!");
 };
 
 window.startVideoTask = async (taskNum) => {
@@ -140,14 +145,12 @@ window.startVideoTask = async (taskNum) => {
 
     window.open(adsterraLink, '_blank');
 
-    // ডাটা আপডেট লজিক
     const updates = {};
     updates['balance'] = (parseFloat(currentData.balance) || 0) + 10;
     updates['totalTaskCount'] = (parseInt(currentData.totalTaskCount) || 0) + 1;
-    updates[taskLimitKey] = now + (15 * 60 * 1000); // ১৫ মিনিট লক
+    updates[taskLimitKey] = now + (15 * 60 * 1000); 
 
     await update(userRef, updates);
-    alert(`Task ${taskNum} Completed! Tk.10 Added.`);
 };
 
 window.sendWithdrawRequest = async () => {
@@ -163,19 +166,34 @@ window.openWithdraw = () => document.getElementById('withdrawModal').style.displ
 window.closeWithdraw = () => document.getElementById('withdrawModal').style.display = 'none';
 window.handleLogout = () => signOut(auth).then(() => location.reload());
 
+// --- দাদুর স্মার্ট লগইন লজিক আপডেট ---
 document.getElementById('login-btn').addEventListener('click', async () => {
-    const e = document.getElementById('email').value;
-    const p = document.getElementById('password').value;
-    if(!e || !p) return alert("Fill all fields");
-    try { await signInWithEmailAndPassword(auth, e, p); } 
-    catch { try { await createUserWithEmailAndPassword(auth, e, p); } catch (err) { alert(err.message); } }
+    const e = document.getElementById('email').value.trim();
+    const p = document.getElementById('password').value.trim();
+    if(!e || !p) return alert("সব ঘর পূরণ করুন!");
+
+    try {
+        // প্রথমে লগইন করার চেষ্টা
+        await signInWithEmailAndPassword(auth, e, p);
+    } catch (loginError) {
+        // যদি ইউজার না পাওয়া যায়, তবেই নতুন অ্যাকাউন্ট খুলবে
+        if (loginError.code === 'auth/user-not-found') {
+            try {
+                await createUserWithEmailAndPassword(auth, e, p);
+            } catch (signupError) {
+                alert("ভুল ইমেইল অথবা পাসওয়ার্ড (পাসওয়ার্ড অন্তত ৬ অক্ষর)");
+            }
+        } else if (loginError.code === 'auth/wrong-password') {
+            alert("ভুল পাসওয়ার্ড দিয়েছেন দাদু!");
+        } else {
+            alert("লগইন সমস্যা: " + loginError.message);
+        }
+    }
 });
 
-// কপি রেফারাল লিংক ফাংশন
 window.copyReferLink = () => {
     const copyText = document.getElementById("refer-url");
     copyText.select();
-    copyText.setSelectionRange(0, 99999);
     navigator.clipboard.writeText(copyText.value);
     alert("Refer Link Copied!");
 };
