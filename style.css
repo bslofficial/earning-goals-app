@@ -1,57 +1,58 @@
 :root {
-    --bg-color: #f8fafc;
-    --primary-blue: #2563eb;
-    --soft-red: #ef4444;
-    --text-main: #1e293b;
-    --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+    --bg: #fdfdfe;
+    --primary: #2563eb;
+    --card-bg: #ffffff;
+    --text: #1e293b;
+    --red-soft: #ef4444;
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
 }
 
-body { background: var(--bg-color); font-family: 'Inter', sans-serif; color: var(--text-main); }
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, sans-serif; }
 
-/* হেডার ডিজাইন */
-.minimal-header {
-    background: white; padding: 25px 20px;
-    border-bottom-left-radius: 30px; border-bottom-right-radius: 30px;
+body { background: var(--bg); color: var(--text); }
+
+/* হেডার */
+.top-header-min {
+    background: #ffffff; padding: 30px 20px;
+    border-bottom-left-radius: 35px; border-bottom-right-radius: 35px;
     box-shadow: var(--shadow);
 }
-.header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
-.brand-text { font-weight: 800; letter-spacing: 1px; color: var(--primary-blue); }
-.balance-card { text-align: center; }
-.balance-card p { font-size: 14px; opacity: 0.7; }
-.balance-card h1 { font-size: 32px; font-weight: 800; color: var(--primary-blue); }
+.nav-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+.brand-text { font-weight: 800; color: var(--primary); letter-spacing: 1px; }
+.balance-container { text-align: center; }
+.balance-container p { font-size: 13px; opacity: 0.6; }
+.balance-container h1 { font-size: 36px; font-weight: 800; color: var(--primary); }
 
-/* কার্ড ডিজাইন */
-.soft-card {
-    background: white; padding: 15px; border-radius: 18px;
-    display: flex; align-items: center; gap: 15px;
+/* টাস্ক আইটেম */
+.task-list { margin-top: 15px; }
+.task-item {
+    background: var(--card-bg); padding: 16px; border-radius: 20px;
+    display: flex; align-items: center; gap: 15px; margin-bottom: 12px;
     box-shadow: var(--shadow); border: 1px solid rgba(0,0,0,0.02);
-    margin-bottom: 12px; transition: 0.3s;
+    transition: 0.2s;
 }
-.soft-card:active { transform: scale(0.98); }
-.icon-circle {
+.task-item:active { transform: scale(0.97); }
+.task-icon-min {
     width: 45px; height: 45px; border-radius: 12px;
     display: flex; align-items: center; justify-content: center;
 }
-.red-tint { background: #fee2e2; color: var(--soft-red); }
+.red-icon { background: #fee2e2; color: var(--red-soft); }
+.task-name { flex: 1; }
+.task-name span { display: block; font-weight: 600; }
+.task-name small { color: #64748b; font-size: 12px; }
 
 /* বাটনস */
-.bottom-actions { display: flex; gap: 10px; margin-top: 20px; }
-.bonus-min, .withdraw-min {
-    flex: 1; padding: 15px; border-radius: 15px; border: none;
-    font-weight: 600; cursor: pointer;
-}
-.bonus-min { background: #fef3c7; color: #d97706; }
-.withdraw-min { background: #dcfce7; color: #166534; }
+.action-footer { display: flex; gap: 12px; margin-top: 25px; }
+.btn-daily-min { flex: 1; padding: 15px; border-radius: 15px; border: none; background: #fef3c7; color: #92400e; font-weight: 700; }
+.btn-withdraw-min { flex: 1; padding: 15px; border-radius: 15px; border: none; background: #dcfce7; color: #166534; font-weight: 700; }
+
+/* লগইন */
+.auth-wrapper { display: flex; justify-content: center; align-items: center; height: 100vh; padding: 20px; }
+.auth-card { background: white; padding: 40px 30px; border-radius: 30px; width: 100%; max-width: 380px; box-shadow: var(--shadow); text-align: center; }
+.input-field { background: #f8fafc; padding: 12px; border-radius: 12px; display: flex; align-items: center; margin-bottom: 15px; }
+.input-field input { border: none; background: transparent; outline: none; padding-left: 10px; width: 100%; }
+.main-btn-min { width: 100%; padding: 16px; border-radius: 12px; border: none; background: var(--primary); color: white; font-weight: 600; }
 
 /* সাইডবার */
-.sidebar {
-    position: fixed; left: -280px; width: 260px; height: 100%;
-    background: white; z-index: 1000; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    padding: 30px 20px;
-}
-.sidebar.active { left: 0; box-shadow: 20px 0 50px rgba(0,0,0,0.05); }
-.menu-list li a { 
-    text-decoration: none; color: #64748b; padding: 12px;
-    display: flex; align-items: center; gap: 15px; border-radius: 10px;
-}
-.menu-list li a:hover { background: var(--bg-color); color: var(--primary-blue); }
+.sidebar { position: fixed; left: -280px; width: 260px; height: 100%; background: white; z-index: 1000; transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1); padding: 30px 20px; }
+.sidebar.active { left: 0; box-shadow: 20px 0 60px rgba(0,0,0,0.05); }
