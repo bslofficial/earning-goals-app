@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ProEarn Rewards</title>
-    <link rel="stylesheet" href="style.css?v=1.2">
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
@@ -17,9 +17,9 @@
         </div>
         <ul class="menu-list">
             <li><a href="#" onclick="showSection('dashboard')"><i class="fas fa-home"></i> Dashboard</a></li>
-            <li><a href="#" onclick="loadLeaderboard()"><i class="fas fa-trophy"></i> Leaderboard</a></li>
-            <li><a href="#" onclick="loadReferTeam()"><i class="fas fa-users-cog"></i> Refer Team</a></li>
-            <li><a href="#"><i class="fas fa-history"></i> Payment History</a></li>
+            <li><a href="#" onclick="showSection('leaderboard')"><i class="fas fa-trophy"></i> Leaderboard</a></li>
+            <li><a href="#" onclick="showSection('refer-team')"><i class="fas fa-users-cog"></i> Refer Team</a></li>
+            <li><a href="#" onclick="showSection('history')"><i class="fas fa-history"></i> Payment History</a></li>
             <li><a href="https://t.me/incomeworld01" target="_blank"><i class="fas fa-headset"></i> Admin Support</a></li>
             <hr style="border: 0.5px solid #eee; margin: 10px 0;">
             <li><a href="#" onclick="handleLogout()"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
@@ -36,11 +36,12 @@
 
     <div id="auth-screen" class="auth-wrapper" style="display: none;">
         <div class="auth-card">
-            <div class="logo" style="background: #2563eb;">$</div>
+            <div class="logo">$</div>
             <h2>ProEarn Rewards</h2>
             <div class="input-field"><i class="fas fa-envelope"></i><input type="email" id="email" placeholder="Email Address"></div>
             <div class="input-field"><i class="fas fa-lock"></i><input type="password" id="password" placeholder="Password"></div>
-            <button id="login-btn" class="main-btn" style="background: #2563eb;">Login / Sign Up</button>
+            <button id="login-btn" class="main-btn">Login / Sign Up</button>
+            <p style="font-size: 10px; color: #94a3b8; margin-top: 10px;">নতুন হলে ইমেইল ও পাসওয়ার্ড দিয়ে বাটনে চাপ দিন।</p>
         </div>
     </div>
 
@@ -54,43 +55,75 @@
             
             <div class="user-row">
                 <div class="profile-info">
-                    <div class="profile-box"><img src="https://cdn-icons-png.flaticon.com/512/149/149071.png"></div>
-                    <div class="user-meta"><span id="display-name">User</span><small>Status: Active</small></div>
+                    <div class="profile-box">
+                        <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="User">
+                    </div>
+                    <div class="user-meta">
+                        <span id="display-name">User</span>
+                        <small>Status: Active</small>
+                    </div>
                 </div>
-                <div class="balance-box"><small>Balance</small><h2>Tk.<span id="balance">0.00</span></h2></div>
+                <div class="balance-box">
+                    <small>Balance</small>
+                    <h2>Tk.<span id="balance">0.00</span></h2>
+                </div>
             </div>
         </div>
 
-        <div id="dashboard-content" class="main-content">
+        <div id="dashboard-section" class="main-content">
             <div class="action-buttons">
-                <button onclick="claimDailyBonus()" id="bonus-btn" class="btn-bonus"><i class="fas fa-gift"></i> <span id="bonus-text">Daily Bonus</span></button>
-                <button onclick="openWithdraw()" class="btn-withdraw"><i class="fas fa-wallet"></i> Withdraw</button>
+                <button onclick="claimDailyBonus()" id="bonus-btn" class="btn-bonus">
+                    <i class="fas fa-gift"></i> <span id="bonus-text">Daily Bonus</span>
+                </button>
+                <button onclick="openWithdraw()" class="btn-withdraw">
+                    <i class="fas fa-wallet"></i> Withdraw
+                </button>
             </div>
 
             <div class="refer-info">
-                <p>Refer & Earn <b>Tk.30.00</b></p>
+                <p><i class="fas fa-user-plus"></i> Refer & Earn <b>Tk.30.00</b></p>
                 <div class="refer-link-box">
                     <input type="text" id="refer-url" readonly value="Generating...">
-                    <button onclick="copyReferLink()" class="share-btn" style="background: #2563eb;">Copy</button>
+                    <button onclick="copyReferLink()" class="share-btn">Copy</button>
                 </div>
             </div>
 
             <div class="grid-container stats">
-                <div class="custom-card"><i class="fas fa-users" style="color: #2563eb;"></i><p>Total Refer</p><h3 id="refer-count">0</h3></div>
-                <div class="custom-card"><i class="fas fa-check-circle" style="color: #2563eb;"></i><p>Tasks Done</p><h3 id="tasks-done">0</h3></div>
+                <div class="custom-card">
+                    <i class="fas fa-users"></i>
+                    <p>Total Refer</p>
+                    <h3 id="refer-count">0</h3>
+                </div>
+                <div class="custom-card">
+                    <i class="fas fa-check-circle"></i>
+                    <p>Tasks Done</p>
+                    <h3 id="tasks-done">0</h3>
+                </div>
             </div>
 
             <div class="grid-container tasks">
-                <div class="custom-card task-card" id="card-1" onclick="startVideoTask(1)"><i class="fas fa-play" style="color: #2563eb;"></i><p>Task 01</p><h3 id="timer-1">Tk.10.00</h3></div>
-                <div class="custom-card task-card" id="card-2" onclick="startVideoTask(2)"><i class="fas fa-play" style="color: #2563eb;"></i><p>Task 02</p><h3 id="timer-2">Tk.10.00</h3></div>
-                <div class="custom-card task-card" id="card-3" onclick="startVideoTask(3)"><i class="fas fa-play" style="color: #2563eb;"></i><p>Task 03</p><h3 id="timer-3">Tk.10.00</h3></div>
-                <div class="custom-card task-card" id="card-4" onclick="startVideoTask(4)"><i class="fas fa-play" style="color: #2563eb;"></i><p>Task 04</p><h3 id="timer-4">Tk.10.00</h3></div>
+                <div class="custom-card task-card red-task" id="card-1" onclick="startVideoTask(1)">
+                    <i class="fas fa-play"></i><p>Task 01</p><h3 id="timer-1">Tk.10.00</h3>
+                </div>
+                <div class="custom-card task-card red-task" id="card-2" onclick="startVideoTask(2)">
+                    <i class="fas fa-play"></i><p>Task 02</p><h3 id="timer-2">Tk.10.00</h3>
+                </div>
+                <div class="custom-card task-card red-task" id="card-3" onclick="startVideoTask(3)">
+                    <i class="fas fa-play"></i><p>Task 03</p><h3 id="timer-3">Tk.10.00</h3>
+                </div>
+                <div class="custom-card task-card red-task" id="card-4" onclick="startVideoTask(4)">
+                    <i class="fas fa-play"></i><p>Task 04</p><h3 id="timer-4">Tk.10.00</h3>
+                </div>
             </div>
         </div>
 
-        <div id="list-section" class="main-content" style="display: none;">
-            <div class="list-nav"><i class="fas fa-arrow-left" onclick="showSection('dashboard')"></i><h2 id="list-title">Leaderboard</h2></div>
-            <div id="data-list" class="data-list-wrapper"></div>
+        <div id="other-section" class="main-content" style="display: none;">
+            <div class="section-header">
+                <button onclick="showSection('dashboard')" class="back-btn"><i class="fas fa-arrow-left"></i> Back</button>
+                <h2 id="section-title">Details</h2>
+            </div>
+            <div id="section-details" class="details-box">
+                </div>
         </div>
     </div>
 
@@ -100,7 +133,7 @@
             <select id="method"><option value="Bkash">Bkash</option><option value="Nagad">Nagad</option></select>
             <input type="text" id="accountNo" placeholder="Account Number">
             <input type="number" id="withdrawAmount" placeholder="Min Tk.500">
-            <button class="submit-btn" style="background: #2563eb;" onclick="sendWithdrawRequest()">Confirm Withdraw</button>
+            <button class="submit-btn" onclick="sendWithdrawRequest()">Confirm Withdraw</button>
             <p onclick="closeWithdraw()" class="close-txt">Close</p>
         </div>
     </div>
