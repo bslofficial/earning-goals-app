@@ -1,64 +1,33 @@
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
-body { background-color: #ffc0cb; color: #333; overflow-x: hidden; }
+body { background-color: #ffc0cb; color: #333; }
 
-/* সাইডবার: হোয়াইট ব্যাকগ্রাউন্ড আপডেট */
-.sidebar { position: fixed; top: 0; left: -280px; width: 260px; height: 100%; background: #ffffff; z-index: 100000; transition: 0.4s ease; box-shadow: 10px 0 30px rgba(0,0,0,0.1); padding: 20px; border-right: 3px solid #ff4d6d; }
+/* সাইডবার সাদা ব্যাকগ্রাউন্ড */
+.sidebar { position: fixed; top: 0; left: -280px; width: 260px; height: 100%; background: #ffffff; z-index: 100000; transition: 0.4s ease; padding: 20px; border-right: 3px solid #1e40af; }
 .sidebar.active { left: 0; }
-.sidebar-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 30px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
-.sidebar-logo { font-size: 30px; color: #ff4d6d; font-weight: 900; }
-.menu-list { list-style: none; }
-.menu-list li a { text-decoration: none; color: #444; font-size: 16px; display: flex; align-items: center; padding: 12px; border-radius: 10px; font-weight: 500; }
-.menu-list li a i { margin-right: 15px; color: #ff4d6d; width: 20px; }
-.menu-list li a:hover { background: #fff1f3; color: #ff4d6d; }
-.close-btn { font-size: 24px; color: #ff4d6d; cursor: pointer; }
-.sidebar-footer { position: absolute; bottom: 20px; font-size: 10px; color: #bbb; }
+.menu-list li a { text-decoration: none; color: #444; display: flex; align-items: center; padding: 12px; border-radius: 10px; font-weight: 500; }
+.menu-list li a i { margin-right: 15px; color: #1e40af; }
 
-/* অ্যাপ কন্টেইনার ও হেডার */
-.app-container { width: 100%; max-width: 450px; margin: 0 auto; min-height: 100vh; }
-.top-nav-pink { background: #ff4d6d; padding: 25px 15px; border-bottom-left-radius: 30px; border-bottom-right-radius: 30px; color: white; }
-.nav-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; }
-.user-row { display: flex; align-items: center; justify-content: space-between; }
-.profile-info { display: flex; align-items: center; gap: 10px; }
+/* নীল হেডার ও টাইটেল সেন্টার */
+.top-nav-blue { background: #1e40af; padding: 25px 15px; border-bottom-left-radius: 30px; border-bottom-right-radius: 30px; color: white; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+.nav-header { display: flex; align-items: center; justify-content: space-between; position: relative; }
+.app-title-header { font-size: 18px; font-weight: 800; letter-spacing: 1px; text-align: center; flex: 1; }
+
+.user-row { display: flex; align-items: center; justify-content: space-between; margin-top: 20px; }
 .profile-box { width: 45px; height: 45px; border-radius: 50%; border: 2px solid white; overflow: hidden; background: white; }
 .profile-box img { width: 100%; height: 100%; object-fit: cover; }
-.user-meta span { display: block; font-weight: bold; font-size: 14px; }
-.user-meta small { background: #22c55e; padding: 1px 6px; border-radius: 10px; font-size: 9px; }
-.balance-box { text-align: right; }
-.balance-box h2 { font-size: 20px; font-weight: 900; }
 
-/* মেইন কন্টেন্ট */
+/* বাকি ডিজাইন */
 .main-content { padding: 20px 15px; }
 .grid-container { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
-.custom-card { background: white; padding: 15px 10px; border-radius: 18px; text-align: center; box-shadow: 0 4px 8px rgba(0,0,0,0.05); }
-.custom-card i { color: #ff4d6d; font-size: 24px; margin-bottom: 8px; }
-.task-card { cursor: pointer; border: 1px solid #ffc0cb; }
-.task-disabled { opacity: 0.6; filter: grayscale(1); pointer-events: none; }
+.custom-card { background: white; padding: 15px; border-radius: 18px; text-align: center; box-shadow: 0 4px 8px rgba(0,0,0,0.05); }
+.custom-card i { color: #1e40af; font-size: 24px; margin-bottom: 8px; }
+.btn-bonus { background: #f59e0b; border: none; color: white; padding: 12px; border-radius: 10px; font-weight: bold; }
+.btn-withdraw { background: #10b981; border: none; color: white; padding: 12px; border-radius: 10px; font-weight: bold; }
 
-/* বাটনস */
-.action-buttons { display: flex; gap: 10px; margin-bottom: 20px; }
-.btn-bonus, .btn-withdraw { flex: 1; padding: 12px; border-radius: 12px; border: none; color: white; font-weight: bold; cursor: pointer; }
-.btn-bonus { background: #f59e0b; }
-.btn-withdraw { background: #10b981; }
+.data-list-wrapper { background: white; border-radius: 20px; padding: 10px; }
+.data-row { display: flex; justify-content: space-between; padding: 12px; border-bottom: 1px solid #f0f0f0; }
+.rank-badge { width: 25px; height: 25px; background: #1e40af; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; margin-right: 10px; }
 
-.refer-info { background: white; padding: 15px; border-radius: 15px; border: 2px dashed #ff4d6d; text-align: center; margin-bottom: 20px; }
-.refer-link-box { display: flex; background: #fff1f3; border-radius: 8px; padding: 5px; margin-top: 10px; border: 1px solid #ffc0cb; }
-.refer-link-box input { flex: 1; background: transparent; border: none; color: #ff4d6d; padding: 8px; font-size: 11px; outline: none; }
-.share-btn { background: #ff4d6d; color: white; padding: 6px 15px; border-radius: 6px; font-weight: bold; border: none; }
-
-/* নতুন লিস্ট সেকশন (Leaderboard/Refer Team) */
-.list-nav { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
-.list-nav i { font-size: 20px; color: #ff4d6d; cursor: pointer; }
-.data-list-wrapper { background: white; border-radius: 20px; padding: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
-.data-row { display: flex; justify-content: space-between; align-items: center; padding: 12px; border-bottom: 1px solid #fff1f3; }
-.data-row:last-child { border-bottom: none; }
-.rank-badge { width: 25px; height: 25px; background: #ff4d6d; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: bold; margin-right: 10px; }
-
-/* পপআপ ও লোডার */
-.modal-backdrop { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 9999; justify-content: center; align-items: center; }
-.modal-box { background: white; width: 85%; max-width: 320px; padding: 25px; border-radius: 25px; border: 3px solid #ff4d6d; text-align: center; }
-.modal-box input, .modal-box select { width: 100%; padding: 12px; margin-bottom: 12px; border-radius: 10px; border: 1px solid #ffc0cb; }
-.submit-btn { width: 100%; padding: 12px; background: #ff4d6d; color: white; font-weight: bold; border: none; border-radius: 10px; }
-.close-txt { margin-top: 15px; color: #999; cursor: pointer; font-size: 13px; }
 #loading-screen { position: fixed; inset: 0; background: #ffc0cb; z-index: 99999; display: flex; justify-content: center; align-items: center; }
-.spinner { width: 40px; height: 40px; border: 4px solid #ff4d6d; border-top-color: transparent; border-radius: 50%; animation: spin 1s linear infinite; }
+.spinner { width: 40px; height: 40px; border: 4px solid #1e40af; border-top-color: transparent; border-radius: 50%; animation: spin 1s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
