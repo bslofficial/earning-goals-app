@@ -3,16 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ProEarn Rewards</title>
+    <title>ProEarn - Dashboard</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-
-    <div id="loading-screen">
-        <div class="spinner"></div>
-        <p>ProEarn Loading...</p>
-    </div>
+    <div id="loading-screen"><div class="spinner"></div><p>Loading ProEarn...</p></div>
 
     <div id="side-menu" class="sidebar">
         <div class="sidebar-header">
@@ -21,10 +17,11 @@
             <i class="fas fa-times close-btn" onclick="toggleMenu()"></i>
         </div>
         <ul class="menu-list">
-            <li><a href="#" onclick="showSection('dashboard')"><i class="fas fa-home"></i> Dashboard</a></li>
-            <li><a href="#" onclick="showSection('leaderboard')"><i class="fas fa-trophy"></i> Leaderboard</a></li>
-            <li><a href="#" onclick="showSection('history')"><i class="fas fa-history"></i> History</a></li>
-            <li><a href="https://t.me/incomeworld01" target="_blank"><i class="fas fa-headset"></i> Support</a></li>
+            <li><a href="index.html"><i class="fas fa-home"></i> Dashboard</a></li>
+            <li><a href="leaderboard.html"><i class="fas fa-trophy"></i> Leaderboard</a></li>
+            <li><a href="history.html"><i class="fas fa-history"></i> History</a></li>
+            <li><a href="refer.html"><i class="fas fa-users"></i> Refer & Earn</a></li>
+            <li><a href="about.html"><i class="fas fa-info-circle"></i> About Us</a></li>
             <hr>
             <li><a href="#" onclick="handleLogout()"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
         </ul>
@@ -33,16 +30,9 @@
     <div id="auth-screen" class="auth-wrapper" style="display: none;">
         <div class="auth-card">
             <div class="app-logo">P</div>
-            <h2>Welcome Back</h2>
-            <p>Enter your details to continue</p>
-            <div class="input-field">
-                <i class="fas fa-envelope"></i>
-                <input type="email" id="email" placeholder="Email Address">
-            </div>
-            <div class="input-field">
-                <i class="fas fa-lock"></i>
-                <input type="password" id="password" placeholder="Password">
-            </div>
+            <h2>Welcome</h2>
+            <div class="input-field"><i class="fas fa-envelope"></i><input type="email" id="email" placeholder="Email"></div>
+            <div class="input-field"><i class="fas fa-lock"></i><input type="password" id="password" placeholder="Password"></div>
             <button id="login-btn" class="main-btn-min">Continue</button>
         </div>
     </div>
@@ -60,42 +50,22 @@
             </div>
         </header>
 
-        <main class="main-content" id="dashboard-section">
+        <main class="main-content">
             <div class="stats-grid">
-                <div class="stat-box">
-                    <small>Total Refer</small>
-                    <b id="refer-count">0</b>
-                </div>
-                <div class="stat-box">
-                    <small>Tasks Done</small>
-                    <b id="tasks-done">0</b>
-                </div>
-            </div>
-
-            <div class="refer-section">
-                <p>Refer & Earn <b>Tk.30.00</b></p>
-                <div class="copy-box">
-                    <input type="text" id="refer-url" readonly>
-                    <button onclick="copyReferLink()">Copy</button>
-                </div>
+                <div class="stat-box"><small>Total Refer</small><br><b id="refer-count">0</b></div>
+                <div class="stat-box"><small>Tasks Done</small><br><b id="tasks-done">0</b></div>
             </div>
 
             <h3 class="section-title">Active Tasks</h3>
             <div class="task-list">
                 <div class="task-item" onclick="startVideoTask(1)">
                     <div class="task-icon red-tint"><i class="fas fa-play"></i></div>
-                    <div class="task-info">
-                        <span>Task 01</span>
-                        <small>Tk.10.00 Reward</small>
-                    </div>
+                    <div class="task-info"><span>Task 01</span><small>Tk.10.00 Reward</small></div>
                     <i class="fas fa-chevron-right"></i>
                 </div>
                 <div class="task-item" onclick="startVideoTask(2)">
                     <div class="task-icon red-tint"><i class="fas fa-play"></i></div>
-                    <div class="task-info">
-                        <span>Task 02</span>
-                        <small>Tk.10.00 Reward</small>
-                    </div>
+                    <div class="task-info"><span>Task 02</span><small>Tk.10.00 Reward</small></div>
                     <i class="fas fa-chevron-right"></i>
                 </div>
             </div>
@@ -105,11 +75,6 @@
                 <button onclick="openWithdraw()" class="btn-withdraw">Withdraw</button>
             </div>
         </main>
-
-        <div id="other-section" class="main-content" style="display: none;">
-            <button onclick="showSection('dashboard')" class="back-btn"><i class="fas fa-arrow-left"></i> Back</button>
-            <div id="section-details" class="details-card"></div>
-        </div>
     </div>
 
     <div id="withdrawModal" class="modal-backdrop">
@@ -122,7 +87,6 @@
             <p onclick="closeWithdraw()" class="close-btn-txt">Close</p>
         </div>
     </div>
-
     <script type="module" src="script.js"></script>
 </body>
 </html>
