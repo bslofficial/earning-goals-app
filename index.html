@@ -8,7 +8,26 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
+<div id="auth-screen" class="auth-wrapper" style="display: none;">
+    <div class="auth-card">
+        <h2 class="auth-title">Welcome</h2>
+        <p>Login to start earning</p>
+        <div class="input-field">
+            <i class="fas fa-envelope"></i>
+            <input type="email" id="email" placeholder="Email Address">
+        </div>
+        <div class="input-field">
+            <i class="fas fa-lock"></i>
+            <input type="password" id="password" placeholder="Password">
+        </div>
+        <button id="login-btn" class="main-btn-min">Continue</button>
+    </div>
+</div>
 
+<div id="main-app" class="app-container" style="display: none;">
+    </div>
+
+    
     <div id="side-menu" class="sidebar">
         <div class="sidebar-user">
             <div class="mini-avatar">$</div>
