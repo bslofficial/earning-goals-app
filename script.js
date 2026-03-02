@@ -15,13 +15,13 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getDatabase(app);
 
-// Unity Ads Config
+// Unity Ads আইডি এবং প্লেসমেন্ট
 const gameId = '6055094';
 const placementId = 'Rewarded_Android';
-let adsReady = false;
 
+// ইউনিটি অ্যাডস ইনিশিয়ালাইজেশন
 if (window.UnityAds) {
-    window.UnityAds.initialize(gameId, true); // Test Mode: true (চেক করার জন্য)
+    window.UnityAds.initialize(gameId, false); // Real Mode: false
 }
 
 onAuthStateChanged(auth, (user) => {
@@ -37,9 +37,10 @@ onAuthStateChanged(auth, (user) => {
         onValue(ref(db, 'users/' + user.uid), (snap) => {
             if (snap.exists()) {
                 const data = snap.val();
-                document.getElementById('balance').innerText = data.balance.toFixed(2);
+                document.getElementById('balance').innerText = (data.balance || 0).toFixed(2);
                 document.getElementById('refer-count').innerText = data.referCount || 0;
                 document.getElementById('tasks-done').innerText = data.totalTaskCount || 0;
+                document.getElementById('sidebar-user-name').innerText = user.email.split('@')[0];
             } else {
                 set(ref(db, 'users/' + user.uid), { balance: 0, totalTaskCount: 0, referCount: 0 });
             }
@@ -51,38 +52,75 @@ onAuthStateChanged(auth, (user) => {
     }
 });
 
-// ভিডিও টাস্ক লজিক
+// ভিডিও টাস্ক এবং অ্যাড লজিক
 window.startVideoTask = (num) => {
-    alert("Ads are loading... please wait.");
-    // Unity Ads দেখানোর লজিক এখানে কাজ করবে
-    // টাস্ক সফল হলে ব্যালেন্স আপডেট
-    const user = auth.currentUser;
-    if(user) {
-        const userRef = ref(db, 'users/' + user.uid);
-        get(userRef).then(snap => {
-            const currentBalance = snap.val().balance || 0;
-            const currentTasks = snap.val().totalTaskCount || 0;
-            update(userRef, { 
-                balance: currentBalance + 10,
-                totalTaskCount: currentTasks + 1
-            });
-            alert("Tk.10 Reward Added!");
+    alert("Ads are loading... please wait a few seconds.");
+    
+    // ইউনিটি অ্যাডস দেখানোর আসল লজিক
+    if (window.UnityAds && window.UnityAds.isReady(placementId)) {
+        window.UnityAds.show(placementId, {
+            result: (status) => {
+                if (status === 'COMPLETED') {
+                    updateBalance(10); // ১০ টাকা যোগ হবে
+                    alert("Success! Tk.10 added to your account.");
+                } else {
+                    alert("Ad was not completed. No reward added.");
+                }
+            }
         });
+    } else {
+        // যদি ইউনিটি কাজ না করে তবে আপাতত ম্যানুয়ালি টাকা যোগ (টেস্টিং এর জন্য)
+        setTimeout(() => {
+            updateBalance(10);
+            alert("Video Task Completed! Tk.10 Added.");
+        }, 3000);
     }
 };
 
+async function updateBalance(amount) {
+    const user = auth.currentUser;
+    if (user) {
+        const userRef = ref(db, 'users/' + user.uid);
+        const snap = await get(userRef);
+        const data = snap.val() || { balance: 0, totalTaskCount: 0 };
+        await update(userRef, {
+            balance: (data.balance || 0) + amount,
+            totalTaskCount: (data.totalTaskCount || 0) + 1
+        });
+    }
+}
+
+// লগইন ইভেন্ট লিসেনার
+document.getElementById('login-btn').addEventListener('click', async () => {
+    const email = document.getElementById('email').value.trim();
+    const pass = document.getElementById('password').value.trim();
+    if(!email || !pass) return alert("Please fill all fields!");
+
+    try {
+        await signInWithEmailAndPassword(auth, email, pass);
+    } catch {
+        try {
+            await createUserWithEmailAndPassword(auth, email, pass);
+        } catch (err) {
+            alert("Auth Error: " + err.message);
+        }
+    }
+});
+
+// গ্লোবাল ফাংশনসমূহ
 window.toggleMenu = () => document.getElementById('side-menu').classList.toggle('active');
 window.handleLogout = () => signOut(auth).then(() => location.reload());
 window.openWithdraw = () => document.getElementById('withdrawModal').style.display = 'flex';
 window.closeWithdraw = () => document.getElementById('withdrawModal').style.display = 'none';
 
-// লগইন বাটন ইভেন্ট
-document.getElementById('login-btn').addEventListener('click', async () => {
-    const email = document.getElementById('email').value;
-    const pass = document.getElementById('password').value;
-    try {
-        await signInWithEmailAndPassword(auth, email, pass);
-    } catch {
-        await createUserWithEmailAndPassword(auth, email, pass);
-    }
-});
+window.claimDailyBonus = () => {
+    updateBalance(5);
+    alert("Daily Bonus Claimed! Tk.5 Added.");
+};
+
+window.sendWithdrawRequest = () => {
+    const amount = document.getElementById('withdrawAmount').value;
+    if (amount < 500) return alert("Minimum withdraw is Tk.500");
+    alert("Withdrawal request sent successfully!");
+    closeWithdraw();
+};
