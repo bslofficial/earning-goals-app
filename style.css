@@ -15,6 +15,97 @@ body { background: var(--bg); color: var(--text); overflow-x: hidden; }
 .brand-name { font-weight: 800; color: var(--primary); letter-spacing: 1px; }
 .balance-card small { opacity: 0.6; font-size: 12px; }
 .balance-card h1 { font-size: 34px; color: var(--primary); font-weight: 800; }
+/* পুরো বডির জন্য গ্লোবাল স্টাইল */
+body {
+    background-color: #f8fafc;
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    color: #1e293b;
+}
+
+/* মেইন কন্টেইনার */
+.app-container {
+    max-width: 500px;
+    margin: 0 auto;
+    min-height: 100vh;
+    background: #f8fafc;
+}
+
+/* হেডার কার্ড */
+.minimal-header {
+    background: #ffffff;
+    padding: 25px 20px;
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    text-align: center;
+}
+
+/* টাস্ক লিস্ট আইটেম */
+.task-item {
+    background: #ffffff;
+    padding: 18px;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+    border: 1px solid #f1f5f9;
+}
+
+/* সাইডবার সুন্দর করা */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: -280px;
+    width: 260px;
+    height: 100%;
+    background: #ffffff;
+    z-index: 1001;
+    transition: all 0.3s ease;
+    padding: 25px;
+    box-shadow: 10px 0 30px rgba(0,0,0,0.05);
+}
+
+.sidebar.active {
+    left: 0;
+}
+
+.menu-list {
+    list-style: none;
+    padding: 0;
+    margin-top: 30px;
+}
+
+.menu-list li {
+    margin-bottom: 15px;
+}
+
+.menu-list a {
+    text-decoration: none;
+    color: #475569;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.menu-list a:hover {
+    background: #f1f5f9;
+    color: #2563eb;
+}
+
+/* উইথড্র বক্স সুন্দর করা */
+.modal-box input, .modal-box select {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+    outline: none;
+}
 
 /* টাস্ক ও কার্ড */
 .main-content { padding: 20px; }
