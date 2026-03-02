@@ -1,9 +1,23 @@
-// আপনার Firebase Config এবং Auth অংশ ঠিক থাকবে...
-// শুধু নিচের ফাংশনগুলো আপডেট বা যোগ করুন
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
+import { getDatabase, ref, get, update, onValue } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyDuLLapNwRk2Fl5rN6F0ezZb9KsMBKhvqA",
+    authDomain: "earning-goals-app.firebaseapp.com",
+    projectId: "earning-goals-app",
+    storageBucket: "earning-goals-app.firebasestorage.app",
+    messagingSenderId: "999611133128",
+    appId: "1:999611133128:web:f8bd2cb60ac5a07b1249fd"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getDatabase(app);
 
 window.toggleMenu = () => document.getElementById('side-menu').classList.toggle('active');
 
-// সেকশন পরিবর্তন ও সাইডবার লিঙ্ক কাজ করার লজিক
+// সেকশন পরিবর্তন করার ফাংশন
 window.showSection = (name) => {
     const dash = document.getElementById('dashboard-content');
     const listSec = document.getElementById('list-section');
@@ -20,13 +34,11 @@ window.showSection = (name) => {
 // লিডারবোর্ড লোড করা
 window.loadLeaderboard = async () => {
     document.getElementById('list-title').innerText = "Leaderboard";
-    document.getElementById('list-title').style.color = "#1e40af";
     const dataWrapper = document.getElementById('data-list');
-    dataWrapper.innerHTML = "<p style='text-align:center;'>Loading...</p>";
+    dataWrapper.innerHTML = "<p style='text-align:center; padding:20px;'>Loading...</p>";
     showSection('list');
 
-    const usersRef = ref(db, 'users');
-    const snapshot = await get(usersRef);
+    const snapshot = await get(ref(db, 'users'));
     if(snapshot.exists()){
         let users = [];
         snapshot.forEach(child => {
@@ -35,11 +47,10 @@ window.loadLeaderboard = async () => {
         users.sort((a,b) => b.balance - a.balance);
         dataWrapper.innerHTML = "";
         users.forEach((u, i) => {
-            dataWrapper.innerHTML += `
-                <div class="data-row">
-                    <div style="display:flex; align-items:center;"><div class="rank-badge">${i+1}</div>User_${u.name}</div>
-                    <b style="color:#1e40af;">Tk.${u.balance.toFixed(2)}</b>
-                </div>`;
+            dataWrapper.innerHTML += `<div class="data-row">
+                <div style="display:flex; align-items:center;"><div class="rank-badge">${i+1}</div>User_${u.name}</div>
+                <b style="color:#3b82f6;">Tk.${u.balance.toFixed(2)}</b>
+            </div>`;
         });
     }
 };
@@ -47,13 +58,11 @@ window.loadLeaderboard = async () => {
 // রেফার টিম লোড করা
 window.loadReferTeam = async () => {
     document.getElementById('list-title').innerText = "Refer Team";
-    document.getElementById('list-title').style.color = "#10b981";
     const dataWrapper = document.getElementById('data-list');
-    dataWrapper.innerHTML = "<p style='text-align:center;'>Loading...</p>";
+    dataWrapper.innerHTML = "<p style='text-align:center; padding:20px;'>Loading...</p>";
     showSection('list');
 
-    const usersRef = ref(db, 'users');
-    const snapshot = await get(usersRef);
+    const snapshot = await get(ref(db, 'users'));
     if(snapshot.exists()){
         let team = [];
         snapshot.forEach(child => {
@@ -62,13 +71,14 @@ window.loadReferTeam = async () => {
         team.sort((a,b) => b.count - a.count);
         dataWrapper.innerHTML = "";
         team.forEach((t, i) => {
-            dataWrapper.innerHTML += `
-                <div class="data-row">
-                    <div style="display:flex; align-items:center;"><div class="rank-badge" style="background:#10b981;">${i+1}</div>User_${t.name}</div>
-                    <b style="color:#10b981;">${t.count} Refers</b>
-                </div>`;
+            dataWrapper.innerHTML += `<div class="data-row">
+                <div style="display:flex; align-items:center;"><div class="rank-badge" style="background:#10b981;">${i+1}</div>User_${t.name}</div>
+                <b style="color:#10b981;">${t.count} Refers</b>
+            </div>`;
         });
     }
 };
 
-// বাকি Firebase লজিক (Auth, Tasks, Bonus) আগের মতোই থাকবে।
+// বাকি ফাংশনগুলো (আগের মতো)
+window.handleLogout = () => signOut(auth).then(() => location.reload());
+// ... (আপনার আগের টাস্ক এবং বোনাস লজিক এখানে থাকবে)
