@@ -47,7 +47,7 @@ onAuthStateChanged(auth, (user) => {
 window.startVideoTask = (num) => {
     alert("Task " + num + " Processing...");
     
-    // কোনো অ্যাড লোড হওয়ার অপেক্ষা নেই, সরাসরি টাকা যোগ হবে
+    // কোনো ইউনিটি চেক নেই, সরাসরি টাকা যোগ হবে
     setTimeout(() => {
         handleReward(10);
         alert("Success! Tk.10 added to your account.");
@@ -71,11 +71,13 @@ async function handleReward(amount) {
 document.getElementById('login-btn').addEventListener('click', async () => {
     const email = document.getElementById('email').value.trim();
     const pass = document.getElementById('password').value.trim();
+    if(!email || !pass) return alert("Please fill all fields!");
+    
     try {
         await signInWithEmailAndPassword(auth, email, pass);
     } catch {
         try { await createUserWithEmailAndPassword(auth, email, pass); } 
-        catch (err) { alert("Error: " + err.message); }
+        catch (err) { alert("Auth Error: " + err.message); }
     }
 });
 
