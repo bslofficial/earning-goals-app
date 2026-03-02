@@ -15,10 +15,9 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getDatabase(app);
 
-// --- Adsterra Direct Link এখানে আপনার লিংকটি বসান ---
-const adsterraLink = "https://www.highrevenuenetwork.com/your_direct_link_here"; 
+// --- দাদুর Adsterra ডাইরেক্ট লিংক ---
+const adsterraLink = "https://glamourpicklessteward.com/mur0zqw1i?key=1357f8fdd3f1c4497af9b8581d8ad6cb"; 
 
-// Sidebar Function
 window.toggleMenu = () => {
     document.getElementById('side-menu').classList.toggle('active');
 };
@@ -34,7 +33,6 @@ onAuthStateChanged(auth, async (user) => {
     if (user) {
         userRef = ref(db, 'users/' + user.uid);
         
-        // রিয়েলটাইম ডাটা আপডেট
         onValue(userRef, (snap) => {
             if (snap.exists()) {
                 currentData = snap.val();
@@ -59,19 +57,6 @@ onAuthStateChanged(auth, async (user) => {
 });
 
 async function setupNewUser(userId) {
-    const urlParams = new URLSearchParams(window.location.search);
-    const referrerId = urlParams.get('ref');
-    if (referrerId) {
-        const refUserRef = ref(db, 'users/' + referrerId);
-        const refSnap = await get(refUserRef);
-        if (refSnap.exists()) {
-            const rData = refSnap.val();
-            await update(refUserRef, {
-                balance: (parseFloat(rData.balance) || 0) + 30,
-                referCount: (parseInt(rData.referCount) || 0) + 1
-            });
-        }
-    }
     await set(ref(db, 'users/' + userId), currentData);
 }
 
@@ -85,12 +70,15 @@ function startTimers() {
     setInterval(() => {
         const now = new Date().getTime();
         
-        // টাস্ক লিমিট টাইমার
+        // টাস্ক লিমিট চেক (১৫ মিনিট)
+        const limitBox = document.getElementById('limit-box');
+        const timerDisp = document.getElementById('timer-display');
+        
         if (currentData.lastLimit && now < currentData.lastLimit) {
-            document.getElementById('limit-box').style.display = 'block';
-            document.getElementById('timer-display').innerText = formatTime(currentData.lastLimit - now);
+            if(limitBox) limitBox.style.display = 'block';
+            if(timerDisp) timerDisp.innerText = formatTime(currentData.lastLimit - now);
         } else {
-            document.getElementById('limit-box').style.display = 'none';
+            if(limitBox) limitBox.style.display = 'none';
         }
 
         // ডেইলি বোনাস টাইমার
@@ -110,14 +98,14 @@ function formatTime(ms) {
     const h = Math.floor(ms / (1000 * 60 * 60));
     const m = Math.floor((ms % (1000 * 60 * 60)) / (1000 * 60));
     const s = Math.floor((ms % (1000 * 60)) / 1000);
-    return `${h}h ${m}m ${s}s`;
+    return `${h > 0 ? h.toString().padStart(2,'0') + 'h ' : ''}${m.toString().padStart(2,'0')}m ${s.toString().padStart(2,'0')}s`;
 }
 
 window.claimDailyBonus = async () => {
     const now = new Date().getTime();
     if (currentData.lastBonus && now < currentData.lastBonus) return;
     
-    window.open(adsterraLink, '_blank'); // বোনাসেও অ্যাডস্টেরা লিংক দিয়ে দিলাম
+    window.open(adsterraLink, '_blank');
     
     await update(userRef, {
         balance: (parseFloat(currentData.balance) || 0) + 10,
@@ -126,7 +114,6 @@ window.claimDailyBonus = async () => {
     alert("Tk.10 Bonus Claimed!");
 };
 
-// --- Adsterra Task System ---
 window.startVideoTask = async () => {
     const now = new Date().getTime();
     if (currentData.lastLimit && now < currentData.lastLimit) {
@@ -134,31 +121,28 @@ window.startVideoTask = async () => {
         return;
     }
 
-    // অ্যাডস্টেরা ডাইরেক্ট লিংক ওপেন হবে
     window.open(adsterraLink, '_blank');
 
-    // অ্যাড দেখে ফিরে আসলে টাকা যোগ হবে
-    setTimeout(async () => {
-        let newBalance = (parseFloat(currentData.balance) || 0) + 10;
-        let newDoneToday = (parseInt(currentData.doneToday) || 0) + 1;
-        let newTotalTask = (parseInt(currentData.totalTaskCount) || 0) + 1;
-        let newLimit = currentData.lastLimit || 0;
+    let newBalance = (parseFloat(currentData.balance) || 0) + 10;
+    let newDoneToday = (parseInt(currentData.doneToday) || 0) + 1;
+    let newTotalTask = (parseInt(currentData.totalTaskCount) || 0) + 1;
+    let newLimit = currentData.lastLimit || 0;
 
-        if (newDoneToday >= 4) {
-            newLimit = new Date().getTime() + (24 * 60 * 60 * 1000); 
-            newDoneToday = 0;
-            alert("Daily limit reached! Next tasks in 24 hours.");
-        } else {
-            alert("Task Completed! Tk.10 Added.");
-        }
+    // ৪টি টাস্ক হলে ১৫ মিনিটের বিরতি
+    if (newDoneToday >= 4) {
+        newLimit = new Date().getTime() + (15 * 60 * 1000); // ১৫ মিনিট
+        newDoneToday = 0;
+        alert("Task Completed! Please wait 15 minutes for the next set.");
+    } else {
+        alert("Task Completed! Tk.10 Added.");
+    }
 
-        await update(userRef, {
-            balance: newBalance,
-            doneToday: newDoneToday,
-            totalTaskCount: newTotalTask,
-            lastLimit: newLimit
-        });
-    }, 2000); // ২ সেকেন্ড পর ডাটা আপডেট হবে
+    await update(userRef, {
+        balance: newBalance,
+        doneToday: newDoneToday,
+        totalTaskCount: newTotalTask,
+        lastLimit: newLimit
+    });
 };
 
 window.sendWithdrawRequest = async () => {
@@ -181,10 +165,6 @@ document.getElementById('login-btn').addEventListener('click', async () => {
     if(!e || !p) return alert("Fill all fields");
     try { await signInWithEmailAndPassword(auth, e, p); } 
     catch { 
-        try { 
-            await createUserWithEmailAndPassword(auth, e, p); 
-        } catch (err) { 
-            alert(err.message); 
-        } 
+        try { await createUserWithEmailAndPassword(auth, e, p); } catch (err) { alert(err.message); } 
     }
 });
