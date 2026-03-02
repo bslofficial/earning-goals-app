@@ -28,20 +28,17 @@
     </div>
 
     <div id="loading-screen">
-        <div class="loader-content">
-            <div class="spinner"></div>
-            <p>Loading ProEarn...</p>
-        </div>
+        <div class="spinner"></div>
+        <p>Loading ProEarn...</p>
     </div>
 
     <div id="auth-screen" class="auth-wrapper" style="display: none;">
         <div class="auth-card">
-            <div class="logo">$</div>
+            <div class="logo" style="background: #2563eb;">$</div>
             <h2>ProEarn Rewards</h2>
             <div class="input-field"><i class="fas fa-envelope"></i><input type="email" id="email" placeholder="Email Address"></div>
             <div class="input-field"><i class="fas fa-lock"></i><input type="password" id="password" placeholder="Password"></div>
-            <button id="login-btn" class="main-btn">Login / Sign Up</button>
-            <p style="font-size: 10px; color: #94a3b8; margin-top: 10px;">নতুন হলে ইমেইল ও পাসওয়ার্ড দিয়ে বাটনে চাপ দিন।</p>
+            <button id="login-btn" class="main-btn" style="background: #2563eb;">Login / Sign Up</button>
         </div>
     </div>
 
@@ -55,9 +52,7 @@
             
             <div class="user-row">
                 <div class="profile-info">
-                    <div class="profile-box">
-                        <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="User">
-                    </div>
+                    <div class="profile-box"><img src="https://cdn-icons-png.flaticon.com/512/149/149071.png"></div>
                     <div class="user-meta">
                         <span id="display-name">User</span>
                         <small>Status: Active</small>
@@ -72,32 +67,15 @@
 
         <div id="dashboard-section" class="main-content">
             <div class="action-buttons">
-                <button onclick="claimDailyBonus()" id="bonus-btn" class="btn-bonus">
-                    <i class="fas fa-gift"></i> <span id="bonus-text">Daily Bonus</span>
-                </button>
-                <button onclick="openWithdraw()" class="btn-withdraw">
-                    <i class="fas fa-wallet"></i> Withdraw
-                </button>
+                <button onclick="claimDailyBonus()" id="bonus-btn" class="btn-bonus">Daily Bonus</button>
+                <button onclick="openWithdraw()" class="btn-withdraw">Withdraw</button>
             </div>
 
             <div class="refer-info">
-                <p><i class="fas fa-user-plus"></i> Refer & Earn <b>Tk.30.00</b></p>
+                <p>Refer & Earn <b>Tk.30.00</b></p>
                 <div class="refer-link-box">
-                    <input type="text" id="refer-url" readonly value="Generating...">
-                    <button onclick="copyReferLink()" class="share-btn">Copy</button>
-                </div>
-            </div>
-
-            <div class="grid-container stats">
-                <div class="custom-card">
-                    <i class="fas fa-users"></i>
-                    <p>Total Refer</p>
-                    <h3 id="refer-count">0</h3>
-                </div>
-                <div class="custom-card">
-                    <i class="fas fa-check-circle"></i>
-                    <p>Tasks Done</p>
-                    <h3 id="tasks-done">0</h3>
+                    <input type="text" id="refer-url" readonly>
+                    <button onclick="copyReferLink()" class="share-btn" style="background: #2563eb;">Copy</button>
                 </div>
             </div>
 
@@ -118,12 +96,11 @@
         </div>
 
         <div id="other-section" class="main-content" style="display: none;">
-            <div class="section-header">
+            <div class="section-card">
                 <button onclick="showSection('dashboard')" class="back-btn"><i class="fas fa-arrow-left"></i> Back</button>
-                <h2 id="section-title">Details</h2>
+                <h2 id="section-title" style="margin-bottom: 15px; color: #2563eb;">Details</h2>
+                <div id="section-details"></div>
             </div>
-            <div id="section-details" class="details-box">
-                </div>
         </div>
     </div>
 
@@ -133,7 +110,7 @@
             <select id="method"><option value="Bkash">Bkash</option><option value="Nagad">Nagad</option></select>
             <input type="text" id="accountNo" placeholder="Account Number">
             <input type="number" id="withdrawAmount" placeholder="Min Tk.500">
-            <button class="submit-btn" onclick="sendWithdrawRequest()">Confirm Withdraw</button>
+            <button class="submit-btn" style="background: #2563eb;" onclick="sendWithdrawRequest()">Confirm Withdraw</button>
             <p onclick="closeWithdraw()" class="close-txt">Close</p>
         </div>
     </div>
