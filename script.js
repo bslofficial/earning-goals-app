@@ -15,6 +15,15 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getDatabase(app);
 
+// Unity Ads Config
+const gameId = '6055094';
+const placementId = 'Rewarded_Android';
+let adsReady = false;
+
+if (window.UnityAds) {
+    window.UnityAds.initialize(gameId, true); // Test Mode: true (চেক করার জন্য)
+}
+
 onAuthStateChanged(auth, (user) => {
     const loader = document.getElementById('loading-screen');
     const authScr = document.getElementById('auth-screen');
@@ -28,10 +37,11 @@ onAuthStateChanged(auth, (user) => {
         onValue(ref(db, 'users/' + user.uid), (snap) => {
             if (snap.exists()) {
                 const data = snap.val();
-                if(document.getElementById('balance')) document.getElementById('balance').innerText = data.balance.toFixed(2);
-                if(document.getElementById('refer-count')) document.getElementById('refer-count').innerText = data.referCount || 0;
-                if(document.getElementById('tasks-done')) document.getElementById('tasks-done').innerText = data.totalTaskCount || 0;
-                if(document.getElementById('refer-url')) document.getElementById('refer-url').value = `${window.location.origin}/refer.html?ref=${user.uid}`;
+                document.getElementById('balance').innerText = data.balance.toFixed(2);
+                document.getElementById('refer-count').innerText = data.referCount || 0;
+                document.getElementById('tasks-done').innerText = data.totalTaskCount || 0;
+            } else {
+                set(ref(db, 'users/' + user.uid), { balance: 0, totalTaskCount: 0, referCount: 0 });
             }
         });
     } else {
@@ -41,28 +51,38 @@ onAuthStateChanged(auth, (user) => {
     }
 });
 
-// কমন ফাংশনসমূহ
-window.toggleMenu = () => document.getElementById('side-menu').classList.toggle('active');
-window.handleLogout = () => signOut(auth).then(() => location.href = 'index.html');
-window.openWithdraw = () => document.getElementById('withdrawModal').style.display = 'flex';
-window.closeWithdraw = () => document.getElementById('withdrawModal').style.display = 'none';
-window.copyReferLink = () => {
-    const el = document.getElementById('refer-url');
-    el.select();
-    navigator.clipboard.writeText(el.value);
-    alert("Copied!");
+// ভিডিও টাস্ক লজিক
+window.startVideoTask = (num) => {
+    alert("Ads are loading... please wait.");
+    // Unity Ads দেখানোর লজিক এখানে কাজ করবে
+    // টাস্ক সফল হলে ব্যালেন্স আপডেট
+    const user = auth.currentUser;
+    if(user) {
+        const userRef = ref(db, 'users/' + user.uid);
+        get(userRef).then(snap => {
+            const currentBalance = snap.val().balance || 0;
+            const currentTasks = snap.val().totalTaskCount || 0;
+            update(userRef, { 
+                balance: currentBalance + 10,
+                totalTaskCount: currentTasks + 1
+            });
+            alert("Tk.10 Reward Added!");
+        });
+    }
 };
 
-// লগইন লজিক
-const logBtn = document.getElementById('login-btn');
-if(logBtn) {
-    logBtn.addEventListener('click', async () => {
-        const email = document.getElementById('email').value;
-        const pass = document.getElementById('password').value;
-        try {
-            await signInWithEmailAndPassword(auth, email, pass);
-        } catch {
-            await createUserWithEmailAndPassword(auth, email, pass);
-        }
-    });
-}
+window.toggleMenu = () => document.getElementById('side-menu').classList.toggle('active');
+window.handleLogout = () => signOut(auth).then(() => location.reload());
+window.openWithdraw = () => document.getElementById('withdrawModal').style.display = 'flex';
+window.closeWithdraw = () => document.getElementById('withdrawModal').style.display = 'none';
+
+// লগইন বাটন ইভেন্ট
+document.getElementById('login-btn').addEventListener('click', async () => {
+    const email = document.getElementById('email').value;
+    const pass = document.getElementById('password').value;
+    try {
+        await signInWithEmailAndPassword(auth, email, pass);
+    } catch {
+        await createUserWithEmailAndPassword(auth, email, pass);
+    }
+});
