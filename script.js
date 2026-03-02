@@ -15,15 +15,6 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getDatabase(app);
 
-// Unity Ads Config
-const gameId = '6055094';
-const placementId = 'Rewarded_Android';
-const testMode = true; // টেস্ট মোড চালু করা হলো
-
-if (window.UnityAds) {
-    window.UnityAds.initialize(gameId, testMode);
-}
-
 onAuthStateChanged(auth, (user) => {
     const loader = document.getElementById('loading-screen');
     const authScr = document.getElementById('auth-screen');
@@ -52,24 +43,15 @@ onAuthStateChanged(auth, (user) => {
     }
 });
 
-// Video Task Logic
+// সরাসরি রিওয়ার্ড দেওয়ার লজিক (অ্যাড ছাড়াই)
 window.startVideoTask = (num) => {
-    if (window.UnityAds && window.UnityAds.isReady(placementId)) {
-        window.UnityAds.show(placementId, {
-            result: (status) => {
-                if (status === 'COMPLETED') {
-                    handleReward(10);
-                    alert("Test Ad Completed! Tk.10 added.");
-                } else {
-                    alert("Ad skipped or failed.");
-                }
-            }
-        });
-    } else {
-        alert("Unity Ads is not ready. In Test Mode, ensure you're using a supported browser or VPN.");
-        // Manual reward for testing if Ads SDK fails to load
+    alert("Task " + num + " Processing...");
+    
+    // কোনো অ্যাড লোড হওয়ার অপেক্ষা নেই, সরাসরি টাকা যোগ হবে
+    setTimeout(() => {
         handleReward(10);
-    }
+        alert("Success! Tk.10 added to your account.");
+    }, 1000); 
 };
 
 async function handleReward(amount) {
@@ -85,7 +67,7 @@ async function handleReward(amount) {
     }
 }
 
-// Button Events
+// অন্যান্য ফাংশনসমূহ
 document.getElementById('login-btn').addEventListener('click', async () => {
     const email = document.getElementById('email').value.trim();
     const pass = document.getElementById('password').value.trim();
@@ -93,7 +75,7 @@ document.getElementById('login-btn').addEventListener('click', async () => {
         await signInWithEmailAndPassword(auth, email, pass);
     } catch {
         try { await createUserWithEmailAndPassword(auth, email, pass); } 
-        catch (err) { alert(err.message); }
+        catch (err) { alert("Error: " + err.message); }
     }
 });
 
@@ -101,4 +83,4 @@ window.toggleMenu = () => document.getElementById('side-menu').classList.toggle(
 window.handleLogout = () => signOut(auth).then(() => location.reload());
 window.openWithdraw = () => document.getElementById('withdrawModal').style.display = 'flex';
 window.closeWithdraw = () => document.getElementById('withdrawModal').style.display = 'none';
-window.claimDailyBonus = () => { handleReward(5); alert("Bonus Claimed!"); };
+window.claimDailyBonus = () => { handleReward(5); alert("Daily Bonus Claimed! Tk.5 Added."); };
