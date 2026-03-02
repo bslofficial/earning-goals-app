@@ -21,7 +21,7 @@
             <li><a href="#"><i class="fas fa-history"></i> Payment History</a></li>
             <li><a href="about.html"><i class="fas fa-info-circle"></i> About Us</a></li>
             <li><a href="https://t.me/incomeworld01" target="_blank"><i class="fas fa-headset"></i> Admin Support</a></li>
-            <hr style="border: 0.5px solid #2d3748; margin: 10px 0;">
+            <hr style="border: 0.5px solid #ff85a2; margin: 10px 0;">
             <li><a href="#" onclick="handleLogout()"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
         </ul>
         <div class="sidebar-footer">Version 1.0.2</div>
@@ -46,7 +46,7 @@
     </div>
 
     <div id="main-app" class="app-container" style="display: none;">
-        <div class="top-nav-blue">
+        <div class="top-nav-pink">
             <div class="nav-header">
                 <i class="fas fa-bars menu-trigger" onclick="toggleMenu()"></i>
                 <h1 class="app-title-header">PROEARN REWARDS</h1>
@@ -54,12 +54,14 @@
             </div>
             
             <div class="user-row">
-                <div class="profile-box">
-                    <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="User">
-                </div>
-                <div class="user-meta">
-                    <span id="display-name">User</span>
-                    <small style="display:block; opacity: 0.7; font-size: 10px;">Status: Active</small>
+                <div class="profile-info">
+                    <div class="profile-box">
+                        <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="User">
+                    </div>
+                    <div class="user-meta">
+                        <span id="display-name">User</span>
+                        <small>Status: Active</small>
+                    </div>
                 </div>
                 <div class="balance-box">
                     <small>Balance</small>
@@ -82,11 +84,11 @@
                 <p><i class="fas fa-user-plus"></i> Refer & Earn <b>Tk.30.00</b></p>
                 <div class="refer-link-box">
                     <input type="text" id="refer-url" readonly value="Generating...">
-                    <button onclick="copyReferLink()" class="share-btn"><i class="fas fa-copy"></i> Copy</button>
+                    <button onclick="copyReferLink()" class="share-btn">Copy</button>
                 </div>
             </div>
 
-            <div class="grid-container">
+            <div class="grid-container stats">
                 <div class="custom-card">
                     <i class="fas fa-users"></i>
                     <p>Total Refer</p>
@@ -99,26 +101,18 @@
                 </div>
             </div>
 
-            <div class="grid-container">
+            <div class="grid-container tasks">
                 <div class="custom-card task-card" id="card-1" onclick="startVideoTask(1)">
-                    <i class="fas fa-play"></i>
-                    <p>Task 01</p>
-                    <h3 id="timer-1">Tk.10.00</h3>
+                    <i class="fas fa-play"></i><p>Task 01</p><h3 id="timer-1">Tk.10.00</h3>
                 </div>
                 <div class="custom-card task-card" id="card-2" onclick="startVideoTask(2)">
-                    <i class="fas fa-play"></i>
-                    <p>Task 02</p>
-                    <h3 id="timer-2">Tk.10.00</h3>
+                    <i class="fas fa-play"></i><p>Task 02</p><h3 id="timer-2">Tk.10.00</h3>
                 </div>
                 <div class="custom-card task-card" id="card-3" onclick="startVideoTask(3)">
-                    <i class="fas fa-play"></i>
-                    <p>Task 03</p>
-                    <h3 id="timer-3">Tk.10.00</h3>
+                    <i class="fas fa-play"></i><p>Task 03</p><h3 id="timer-3">Tk.10.00</h3>
                 </div>
                 <div class="custom-card task-card" id="card-4" onclick="startVideoTask(4)">
-                    <i class="fas fa-play"></i>
-                    <p>Task 04</p>
-                    <h3 id="timer-4">Tk.10.00</h3>
+                    <i class="fas fa-play"></i><p>Task 04</p><h3 id="timer-4">Tk.10.00</h3>
                 </div>
             </div>
         </div>
@@ -131,7 +125,7 @@
             <input type="text" id="accountNo" placeholder="Account Number">
             <input type="number" id="withdrawAmount" placeholder="Min Tk.500">
             <button class="submit-btn" onclick="sendWithdrawRequest()">Confirm Withdraw</button>
-            <p onclick="closeWithdraw()" style="margin-top:15px; cursor:pointer; color:#999; text-align: center;">Close</p>
+            <p onclick="closeWithdraw()" class="close-txt">Close</p>
         </div>
     </div>
 
