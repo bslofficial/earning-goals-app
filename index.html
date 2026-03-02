@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ProEarn - Earn Rewards</title>
+    <title>ProEarn - Test Mode</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdn.unityads.unity3d.com/sdk/3.4/js/unityads.js"></script>
@@ -12,7 +12,7 @@
 
     <div id="loading-screen">
         <div class="spinner"></div>
-        <p>ProEarn Loading...</p>
+        <p>Loading Test Environment...</p>
     </div>
 
     <div id="side-menu" class="sidebar">
@@ -25,7 +25,6 @@
             <li><a href="index.html"><i class="fas fa-home"></i> Dashboard</a></li>
             <li><a href="leaderboard.html"><i class="fas fa-trophy"></i> Leaderboard</a></li>
             <li><a href="refer.html"><i class="fas fa-users"></i> Refer & Earn</a></li>
-            <li><a href="history.html"><i class="fas fa-history"></i> History</a></li>
             <hr>
             <li><a href="#" onclick="handleLogout()"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
         </ul>
@@ -34,16 +33,10 @@
     <div id="auth-screen" class="auth-wrapper" style="display: none;">
         <div class="auth-card">
             <div class="app-logo">P</div>
-            <h2>Welcome</h2>
-            <div class="input-field">
-                <i class="fas fa-envelope"></i>
-                <input type="email" id="email" placeholder="Email Address">
-            </div>
-            <div class="input-field">
-                <i class="fas fa-lock"></i>
-                <input type="password" id="password" placeholder="Password">
-            </div>
-            <button id="login-btn" class="main-btn-min">Continue</button>
+            <h2>Test Login</h2>
+            <div class="input-field"><i class="fas fa-envelope"></i><input type="email" id="email" placeholder="Email"></div>
+            <div class="input-field"><i class="fas fa-lock"></i><input type="password" id="password" placeholder="Password"></div>
+            <button id="login-btn" class="main-btn-min">Login / Sign Up</button>
         </div>
     </div>
 
@@ -51,32 +44,30 @@
         <header class="minimal-header">
             <div class="header-top">
                 <i class="fas fa-bars" onclick="toggleMenu()" style="cursor:pointer;"></i>
-                <span class="brand-name">PROEARN</span>
+                <span class="brand-name">PROEARN TEST</span>
                 <i class="far fa-bell"></i>
             </div>
             <div class="balance-card">
-                <small>Available Balance</small>
+                <small>Current Balance</small>
                 <h1>Tk. <span id="balance">0.00</span></h1>
             </div>
         </header>
 
         <main class="main-content">
             <div class="stats-grid">
-                <div class="stat-box"><small>Total Refer</small><br><b id="refer-count">0</b></div>
-                <div class="stat-box"><small>Tasks Done</small><br><b id="tasks-done">0</b></div>
+                <div class="stat-box"><small>Refers</small><br><b id="refer-count">0</b></div>
+                <div class="stat-box"><small>Tasks</small><br><b id="tasks-done">0</b></div>
             </div>
 
-            <h3 class="section-title">Active Tasks</h3>
+            <h3 class="section-title">Video Tasks (Test Mode)</h3>
             <div class="task-list">
                 <div class="task-item" onclick="startVideoTask(1)">
                     <div class="task-icon"><i class="fas fa-play"></i></div>
-                    <div class="task-info"><span>Task 01</span><small>Tk.10.00 Reward</small></div>
-                    <i class="fas fa-chevron-right"></i>
+                    <div class="task-info"><span>Watch Ad 01</span><small>Reward: Tk.10</small></div>
                 </div>
                 <div class="task-item" onclick="startVideoTask(2)">
                     <div class="task-icon"><i class="fas fa-play"></i></div>
-                    <div class="task-info"><span>Task 02</span><small>Tk.10.00 Reward</small></div>
-                    <i class="fas fa-chevron-right"></i>
+                    <div class="task-info"><span>Watch Ad 02</span><small>Reward: Tk.10</small></div>
                 </div>
             </div>
 
@@ -89,12 +80,10 @@
 
     <div id="withdrawModal" class="modal-backdrop">
         <div class="modal-box">
-            <h3>Withdraw</h3>
-            <select id="method"><option>Bkash</option><option>Nagad</option></select>
-            <input type="text" id="accountNo" placeholder="Account Number">
+            <h3>Withdraw Test</h3>
             <input type="number" id="withdrawAmount" placeholder="Amount (Min 500)">
-            <button onclick="sendWithdrawRequest()" class="submit-btn">Confirm</button>
-            <p onclick="closeWithdraw()" style="margin-top:15px; cursor:pointer; color:red;">Close</p>
+            <button onclick="sendWithdrawRequest()" class="submit-btn">Request</button>
+            <p onclick="closeWithdraw()" style="color:red; cursor:pointer; margin-top:10px;">Close</p>
         </div>
     </div>
 
