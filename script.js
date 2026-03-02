@@ -15,7 +15,6 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getDatabase(app);
 
-// আপনার Adsterra ডাইরেক্ট লিংক
 const adsterraLink = "https://glamourpicklessteward.com/mur0zqw1i?key=1357f8fdd3f1c4497af9b8581d8ad6cb";
 
 window.toggleMenu = () => {
@@ -32,7 +31,6 @@ onAuthStateChanged(auth, async (user) => {
 
     if (user) {
         userRef = ref(db, 'users/' + user.uid);
-        
         onValue(userRef, (snap) => {
             if (snap.exists()) {
                 currentData = snap.val();
@@ -41,10 +39,8 @@ onAuthStateChanged(auth, async (user) => {
                 setupNewUser(user.uid);
             }
         });
-
         document.getElementById('display-name').innerText = user.email.split('@')[0];
         document.getElementById('refer-url').value = `${window.location.origin}${window.location.pathname}?ref=${user.uid}`;
-        
         startTimers();
         loadingScreen.style.display = 'none';
         authScreen.style.display = 'none';
@@ -59,16 +55,7 @@ onAuthStateChanged(auth, async (user) => {
 async function setupNewUser(userId) {
     const urlParams = new URLSearchParams(window.location.search);
     const referrerId = urlParams.get('ref');
-    
-    // নতুন ইউজারের ডিফল্ট ডাটা
-    const newData = {
-        balance: 0,
-        lastBonus: 0,
-        referCount: 0,
-        totalTaskCount: 0,
-        createdAt: new Date().getTime()
-    };
-
+    const newData = { balance: 0, lastBonus: 0, referCount: 0, totalTaskCount: 0 };
     if (referrerId) {
         const refUserRef = ref(db, 'users/' + referrerId);
         const refSnap = await get(refUserRef);
@@ -96,7 +83,6 @@ function startTimers() {
             const taskLimit = currentData[`task_${i}_limit`] || 0;
             const card = document.getElementById(`card-${i}`);
             const timerText = document.getElementById(`timer-${i}`);
-            
             if (taskLimit && now < taskLimit) {
                 if(card) card.classList.add('task-disabled');
                 if(timerText) timerText.innerText = formatTime(taskLimit - now);
@@ -105,22 +91,12 @@ function startTimers() {
                 if(timerText) timerText.innerText = "Tk.10.00";
             }
         }
-
-        const bBtn = document.getElementById('bonus-btn');
-        const bTxt = document.getElementById('bonus-text');
-        if (currentData.lastBonus && now < currentData.lastBonus) {
-            if(bBtn) bBtn.disabled = true;
-            if(bTxt) bTxt.innerText = formatTime(currentData.lastBonus - now);
-        } else {
-            if(bBtn) bBtn.disabled = false;
-            if(bTxt) bTxt.innerText = "Daily Bonus";
-        }
     }, 1000);
 }
 
 function formatTime(ms) {
-    const m = Math.floor((ms % (1000 * 60 * 60)) / (1000 * 60));
-    const s = Math.floor((ms % (1000 * 60)) / 1000);
+    const m = Math.floor((ms % 3600000) / 60000);
+    const s = Math.floor((ms % 60000) / 1000);
     return `${m.toString().padStart(2,'0')}m ${s.toString().padStart(2,'0')}s`;
 }
 
@@ -128,72 +104,50 @@ window.claimDailyBonus = async () => {
     const now = new Date().getTime();
     if (currentData.lastBonus && now < currentData.lastBonus) return;
     window.open(adsterraLink, '_blank');
-    await update(userRef, {
-        balance: (parseFloat(currentData.balance) || 0) + 10,
-        lastBonus: now + (3 * 60 * 60 * 1000)
-    });
+    await update(userRef, { balance: (currentData.balance + 10), lastBonus: now + (3 * 60 * 60 * 1000) });
 };
 
 window.startVideoTask = async (taskNum) => {
     const now = new Date().getTime();
     const taskLimitKey = `task_${taskNum}_limit`;
-    
-    if (currentData[taskLimitKey] && now < currentData[taskLimitKey]) {
-        alert("Please wait for the timer!");
-        return;
-    }
-
+    if (currentData[taskLimitKey] && now < currentData[taskLimitKey]) return;
     window.open(adsterraLink, '_blank');
-
     const updates = {};
-    updates['balance'] = (parseFloat(currentData.balance) || 0) + 10;
-    updates['totalTaskCount'] = (parseInt(currentData.totalTaskCount) || 0) + 1;
-    updates[taskLimitKey] = now + (15 * 60 * 1000); 
-
+    updates['balance'] = currentData.balance + 10;
+    updates['totalTaskCount'] = currentData.totalTaskCount + 1;
+    updates[taskLimitKey] = now + (15 * 60 * 1000);
     await update(userRef, updates);
 };
 
-window.sendWithdrawRequest = async () => {
-    const amount = parseFloat(document.getElementById('withdrawAmount').value);
-    if (amount < 500) return alert("Min Tk.500");
-    if (currentData.balance < amount) return alert("Insufficient Balance");
-    await update(userRef, { balance: currentData.balance - amount });
-    alert("Request Sent!");
-    closeWithdraw();
-};
-
-window.openWithdraw = () => document.getElementById('withdrawModal').style.display = 'flex';
-window.closeWithdraw = () => document.getElementById('withdrawModal').style.display = 'none';
-window.handleLogout = () => signOut(auth).then(() => location.reload());
-
-// --- দাদুর স্মার্ট লগইন লজিক আপডেট ---
+// --- নতুন স্মার্ট লগইন লজিক ---
 document.getElementById('login-btn').addEventListener('click', async () => {
     const e = document.getElementById('email').value.trim();
     const p = document.getElementById('password').value.trim();
-    if(!e || !p) return alert("সব ঘর পূরণ করুন!");
+
+    if(!e || !p) return alert("ইমেইল এবং পাসওয়ার্ড দিন!");
 
     try {
-        // প্রথমে লগইন করার চেষ্টা
+        // প্রথমে লগইন করার চেষ্টা করবে
         await signInWithEmailAndPassword(auth, e, p);
-    } catch (loginError) {
-        // যদি ইউজার না পাওয়া যায়, তবেই নতুন অ্যাকাউন্ট খুলবে
-        if (loginError.code === 'auth/user-not-found') {
-            try {
-                await createUserWithEmailAndPassword(auth, e, p);
-            } catch (signupError) {
-                alert("ভুল ইমেইল অথবা পাসওয়ার্ড (পাসওয়ার্ড অন্তত ৬ অক্ষর)");
+    } catch (error) {
+        // যদি ইউজার খুঁজে না পায়, তবেই নতুন অ্যাকাউন্ট খুলবে
+        if (error.code === 'auth/user-not-found' || error.code === 'auth/invalid-credential') {
+            // ভুল পাসওয়ার্ডের কারণে 'invalid-credential' হতে পারে, তাই সাবধান
+            if(confirm("অ্যাকাউন্ট পাওয়া যায়নি। আপনি কি নতুন অ্যাকাউন্ট খুলতে চান?")){
+                try {
+                    await createUserWithEmailAndPassword(auth, e, p);
+                } catch (signUpError) {
+                    alert("সাইনআপ সমস্যা: " + signUpError.message);
+                }
+            } else {
+                alert("সঠিক পাসওয়ার্ড দিয়ে পুনরায় চেষ্টা করুন।");
             }
-        } else if (loginError.code === 'auth/wrong-password') {
-            alert("ভুল পাসওয়ার্ড দিয়েছেন দাদু!");
         } else {
-            alert("লগইন সমস্যা: " + loginError.message);
+            alert("লগইন সমস্যা: " + error.message);
         }
     }
 });
 
-window.copyReferLink = () => {
-    const copyText = document.getElementById("refer-url");
-    copyText.select();
-    navigator.clipboard.writeText(copyText.value);
-    alert("Refer Link Copied!");
-};
+window.openWithdraw = () => document.getElementById('withdrawModal').style.display = 'flex';
+window.closeWithdraw = () => document.getElementById('withdrawModal').style.display = 'none';
+window.handleLogout = () => signOut(auth).then(() => location.reload());
