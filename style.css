@@ -1,58 +1,111 @@
-* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
+import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
+import { getDatabase, ref, get, update, set, onValue } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js";
 
-body { background-color: #ffc0cb; color: #333; overflow-x: hidden; }
+const firebaseConfig = {
+    apiKey: "AIzaSyDuLLapNwRk2Fl5rN6F0ezZb9KsMBKhvqA",
+    authDomain: "earning-goals-app.firebaseapp.com",
+    projectId: "earning-goals-app",
+    storageBucket: "earning-goals-app.firebasestorage.app",
+    messagingSenderId: "999611133128",
+    appId: "1:999611133128:web:f8bd2cb60ac5a07b1249fd"
+};
 
-/* সাইডবার */
-.sidebar { position: fixed; top: 0; left: -280px; width: 260px; height: 100%; background: #ffffff; z-index: 100000; transition: 0.4s ease; box-shadow: 10px 0 30px rgba(0,0,0,0.1); padding: 20px; border-right: 3px solid #2563eb; }
-.sidebar.active { left: 0; }
-.sidebar-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 30px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
-.sidebar-logo { font-size: 30px; color: #2563eb; font-weight: 900; }
-.menu-list { list-style: none; }
-.menu-list li a { text-decoration: none; color: #444; font-size: 16px; display: flex; align-items: center; padding: 12px; border-radius: 10px; font-weight: 500; cursor: pointer; }
-.menu-list li a i { margin-right: 15px; color: #2563eb; width: 20px; }
-.menu-list li a:hover { background: #eff6ff; color: #2563eb; }
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getDatabase(app);
 
-/* হেডার নীল ও সেন্টার */
-.app-container { width: 100%; max-width: 450px; margin: 0 auto; min-height: 100vh; background: #ffc0cb; }
-.top-nav-blue { background: #2563eb; padding: 25px 15px; border-bottom-left-radius: 30px; border-bottom-right-radius: 30px; color: white; }
-.nav-header { display: flex; align-items: center; justify-content: space-between; }
-.app-title-header { font-size: 18px; font-weight: 800; text-align: center; flex: 1; }
-.menu-trigger { font-size: 22px; cursor: pointer; }
+const adsterraLink = "https://glamourpicklessteward.com/mur0zqw1i?key=1357f8fdd3f1c4497af9b8581d8ad6cb";
+let userRef;
+let currentData = { balance: 0, lastBonus: 0, referCount: 0, totalTaskCount: 0 };
 
-/* প্রোফাইল */
-.user-row { display: flex; align-items: center; justify-content: space-between; margin-top: 15px; }
-.profile-info { display: flex; align-items: center; gap: 10px; }
-.profile-box { width: 45px; height: 45px; border-radius: 50%; border: 2px solid white; overflow: hidden; background: white; }
-.profile-box img { width: 100%; height: 100%; object-fit: cover; }
-.user-meta span { display: block; font-weight: bold; font-size: 14px; }
-.user-meta small { background: #22c55e; padding: 1px 6px; border-radius: 10px; font-size: 9px; }
+// ১. অটো লগইন ও স্ক্রিন কন্ট্রোল
+onAuthStateChanged(auth, async (user) => {
+    const loader = document.getElementById('loading-screen');
+    const authScr = document.getElementById('auth-screen');
+    const mainApp = document.getElementById('main-app');
 
-/* কন্টেন্ট কার্ডস */
-.main-content { padding: 20px 15px; }
-.grid-container { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
-.custom-card { background: white; padding: 15px 10px; border-radius: 18px; text-align: center; box-shadow: 0 4px 8px rgba(0,0,0,0.05); }
-.task-card { cursor: pointer; border: 1px solid #dbeafe; }
+    if (user) {
+        userRef = ref(db, 'users/' + user.uid);
+        onValue(userRef, (snap) => {
+            if (snap.exists()) {
+                currentData = snap.val();
+                updateUI();
+                loader.style.display = 'none';
+                authScr.style.display = 'none';
+                mainApp.style.display = 'block';
+            }
+        });
+        document.getElementById('display-name').innerText = user.email.split('@')[0];
+    } else {
+        loader.style.display = 'none';
+        authScr.style.display = 'flex';
+        mainApp.style.display = 'none';
+    }
+});
 
-/* বাটনস */
-.action-buttons { display: flex; gap: 10px; margin-bottom: 20px; }
-.btn-bonus, .btn-withdraw { flex: 1; padding: 12px; border-radius: 12px; border: none; color: white; font-weight: bold; }
-.btn-bonus { background: #f59e0b; }
-.btn-withdraw { background: #10b981; }
+// ২. বাটন ফাংশন (Global Scope-এ রাখা হয়েছে যাতে HTML থেকে কাজ করে)
+window.toggleMenu = () => {
+    document.getElementById('side-menu').classList.toggle('active');
+};
 
-.refer-info { background: white; padding: 15px; border-radius: 15px; border: 2px dashed #2563eb; text-align: center; margin-bottom: 20px; }
-.refer-link-box { display: flex; background: #f8fafc; border-radius: 8px; padding: 5px; margin-top: 10px; border: 1px solid #e2e8f0; }
-.refer-link-box input { flex: 1; background: transparent; border: none; color: #2563eb; padding: 8px; font-size: 11px; outline: none; }
-.share-btn { border: none; color: white; padding: 6px 15px; border-radius: 6px; font-weight: bold; }
+window.showSection = (name) => {
+    document.getElementById('dashboard-content').style.display = name === 'dashboard' ? 'block' : 'none';
+    document.getElementById('list-section').style.display = name === 'list' ? 'block' : 'none';
+    window.toggleMenu();
+};
 
-/* লগইন স্ক্রিন */
-.auth-wrapper { height: 100vh; display: flex; align-items: center; justify-content: center; background: #ffc0cb; }
-.auth-card { background: white; padding: 30px; border-radius: 30px; width: 90%; max-width: 350px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
-.logo { width: 60px; height: 60px; border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; font-size: 30px; margin: 0 auto 20px; }
-.input-field { background: #f1f5f9; padding: 12px; border-radius: 12px; display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
-.input-field input { border: none; background: transparent; outline: none; width: 100%; }
-.main-btn { width: 100%; padding: 14px; border: none; border-radius: 12px; color: white; font-weight: bold; font-size: 16px; margin-top: 10px; }
+window.claimDailyBonus = async () => {
+    const now = Date.now();
+    const last = currentData.lastBonus || 0;
+    if (now - last < 24 * 60 * 60 * 1000) return alert("দাদু, ২৪ ঘণ্টা পর আবার ট্রাই করুন!");
+    
+    const newBal = (currentData.balance || 0) + 5; // ৫ টাকা বোনাস
+    await update(userRef, { balance: newBal, lastBonus: now });
+    alert("অভিনন্দন! ৫ টাকা বোনাস পেয়েছেন।");
+};
 
-/* লোডার */
-#loading-screen { position: fixed; inset: 0; background: #ffc0cb; z-index: 99999; display: flex; justify-content: center; align-items: center; }
-.spinner { width: 40px; height: 40px; border: 4px solid #2563eb; border-top-color: transparent; border-radius: 50%; animation: spin 1s linear infinite; }
-@keyframes spin { to { transform: rotate(360deg); } }
+window.startVideoTask = (taskNum) => {
+    alert("ভিডিও টাস্ক লোড হচ্ছে... অ্যাড শেষ হওয়া পর্যন্ত অপেক্ষা করুন।");
+    window.open(adsterraLink, '_blank');
+    
+    // টাস্ক কমপ্লিট লজিক (৩০ সেকেন্ড পর টাকা যোগ হবে)
+    setTimeout(async () => {
+        const newBal = (currentData.balance || 0) + 10;
+        const newTaskCount = (currentData.totalTaskCount || 0) + 1;
+        await update(userRef, { balance: newBal, totalTaskCount: newTaskCount });
+        alert(`টাস্ক ${taskNum} সফল হয়েছে! ১০ টাকা যোগ হয়েছে।`);
+    }, 5000); // আপাতত ৫ সেকেন্ড টেস্টের জন্য
+};
+
+window.openWithdraw = () => {
+    alert("উইথড্র অপশনটি শীঘ্রই চালু হচ্ছে!");
+};
+
+window.copyReferLink = () => {
+    const link = document.getElementById('refer-url');
+    link.select();
+    document.execCommand('copy');
+    alert("রেফার লিঙ্ক কপি হয়েছে!");
+};
+
+function updateUI() {
+    document.getElementById('balance').innerText = (currentData.balance || 0).toFixed(2);
+    document.getElementById('refer-count').innerText = currentData.referCount || 0;
+    document.getElementById('tasks-done').innerText = currentData.totalTaskCount || 0;
+}
+
+// লগইন/সাইনআপ ইভেন্ট
+document.getElementById('login-btn').addEventListener('click', async () => {
+    const e = document.getElementById('email').value.trim();
+    const p = document.getElementById('password').value.trim();
+    if(!e || !p) return alert("ইমেইল ও পাসওয়ার্ড দিন!");
+    
+    try {
+        await signInWithEmailAndPassword(auth, e, p);
+    } catch (err) {
+        if (err.code === 'auth/invalid-credential' || err.code === 'auth/user-not-found') {
+            try { await createUserWithEmailAndPassword(auth, e, p); } catch(sE) { alert("ভুল তথ্য দিয়েছেন!"); }
+        } else { alert("সমস্যা হয়েছে: " + err.message); }
+    }
+});
