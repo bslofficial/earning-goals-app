@@ -1,56 +1,29 @@
-* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+// সাইডবার টগল করার ফাংশন
+window.toggleMenu = () => {
+    document.getElementById('side-menu').classList.toggle('active');
+};
 
-/* বডি ব্যাকগ্রাউন্ড গোলাপী */
-body { background: #ffc0cb; color: #333; overflow-x: hidden; }
+// ডেইলি বোনাস লজিক (Adsterra Direct Link সহ)
+const adsterraLink = "https://glamourpicklessteward.com/mur0zqw1i?key=1357f8fdd3f1c4497af9b8581d8ad6cb";
 
-/* সাইডবার মেনু */
-.sidebar { position: fixed; top: 0; left: -280px; width: 260px; height: 100%; background: #fff1f3; z-index: 1000; transition: 0.3s; padding: 20px; border-right: 3px solid #ff85a2; }
-.sidebar.active { left: 0; }
-.sidebar-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #ffc0cb; padding-bottom: 10px; }
-.sidebar-logo { font-size: 28px; color: #ff4d6d; font-weight: bold; }
-.menu-list { list-style: none; margin-top: 20px; }
-.menu-list li a { text-decoration: none; color: #ff4d6d; padding: 12px; display: block; border-radius: 8px; font-weight: 500; }
-.menu-list li a i { margin-right: 10px; }
+window.claimDailyBonus = async () => {
+    const now = new Date().getTime();
+    if (currentData.lastBonus && now < currentData.lastBonus) {
+        alert("আপনি আজ বোনাস নিয়েছেন! কাল আবার চেষ্টা করুন।");
+        return;
+    }
+    
+    // লিঙ্ক ওপেন হবে
+    window.open(adsterraLink, '_blank');
+    
+    // ব্যালেন্স আপডেট
+    const updates = {};
+    updates['balance'] = (currentData.balance || 0) + 10;
+    updates['lastBonus'] = now + (24 * 60 * 60 * 1000); // ২৪ ঘণ্টা লক
+    await update(userRef, updates);
+    alert("অভিনন্দন! ১০ টাকা বোনাস যোগ হয়েছে।");
+};
 
-/* হেডার সেকশন */
-.top-header { background: #ff4d6d; padding: 15px; border-radius: 0 0 25px 25px; color: white; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-.header-row { display: flex; justify-content: space-between; align-items: center; }
-.balance-pill { background: rgba(255,255,255,0.2); padding: 5px 15px; border-radius: 15px; text-align: center; }
-.balance-pill p { font-weight: bold; font-size: 18px; }
-
-/* প্রোফাইল ফিক্স */
-.profile-strip { display: flex; justify-content: space-between; align-items: center; margin-top: 15px; background: rgba(255,255,255,0.1); padding: 10px; border-radius: 15px; }
-.user-meta { display: flex; align-items: center; gap: 10px; }
-.avatar-small { width: 45px; height: 45px; border-radius: 50%; overflow: hidden; border: 2px solid white; }
-.avatar-small img { width: 100%; height: 100%; object-fit: cover; }
-.user-name { display: block; font-weight: bold; font-size: 14px; }
-.status-badge { font-size: 10px; background: #22c55e; padding: 2px 6px; border-radius: 10px; }
-.withdraw-nav-btn { background: white; color: #ff4d6d; border: none; padding: 5px 12px; border-radius: 8px; font-weight: bold; font-size: 12px; cursor: pointer; }
-
-/* ডেইলি বোনাস */
-.daily-bonus-btn { width: 100%; background: #ff758f; border: 2px solid white; color: white; padding: 12px; border-radius: 15px; margin-top: 15px; font-weight: bold; font-size: 16px; display: flex; justify-content: center; align-items: center; gap: 10px; box-shadow: 0 4px 15px rgba(255, 77, 109, 0.4); }
-
-/* টাস্ক গ্রিড */
-.content-body { padding: 15px; }
-.task-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px; }
-.task-card { background: white; padding: 20px; border-radius: 20px; text-align: center; border: 1px solid #ffc0cb; display: flex; flex-direction: column; align-items: center; gap: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-.task-card i { font-size: 30px; color: #ff4d6d; }
-.task-card b { color: #ff4d6d; font-size: 16px; }
-
-/* রেফার সেকশন */
-.refer-card { background: white; padding: 15px; border-radius: 15px; border: 2px dashed #ff4d6d; text-align: center; }
-.refer-input-group { display: flex; background: #fff1f3; padding: 5px; border-radius: 10px; margin-top: 10px; border: 1px solid #ffc0cb; }
-.refer-input-group input { background: transparent; border: none; color: #ff4d6d; flex: 1; padding: 8px; font-size: 12px; outline: none; }
-.refer-input-group button { background: #ff4d6d; color: white; border: none; padding: 0 15px; border-radius: 8px; font-weight: bold; }
-
-/* উইথড্র পপআপ ফিক্স */
-.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(255, 192, 203, 0.85); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
-.modal-content { background: white; width: 90%; max-width: 340px; padding: 25px; border-radius: 25px; border: 3px solid #ff4d6d; text-align: center; }
-.modal-inputs input, .modal-inputs select { width: 100%; padding: 12px; margin-bottom: 12px; border-radius: 10px; background: #fff1f3; border: 1px solid #ffc0cb; outline: none; color: #ff4d6d; }
-.confirm-btn { width: 100%; padding: 12px; background: #ff4d6d; color: white; border: none; border-radius: 10px; font-weight: bold; }
-.close-modal { margin-top: 15px; color: #ff758f; cursor: pointer; text-decoration: underline; }
-
-/* লোডার */
-#loading-screen { position: fixed; inset: 0; background: #ffc0cb; z-index: 9999; display: flex; justify-content: center; align-items: center; }
-.spinner { width: 40px; height: 40px; border: 4px solid #ff4d6d; border-top-color: transparent; border-radius: 50%; animation: spin 0.8s linear infinite; }
-@keyframes spin { to { transform: rotate(360deg); } }
+// উইথড্র পপআপ ওপেন ও ক্লোজ
+window.openWithdraw = () => document.getElementById('withdrawModal').style.display = 'flex';
+window.closeWithdraw = () => document.getElementById('withdrawModal').style.display = 'none';
