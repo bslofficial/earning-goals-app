@@ -3,87 +3,125 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ProEarn - Test Mode</title>
+    <title>ProEarn Rewards</title>
+    <script src="https://glamourpicklessteward.com/d9/5d/f9/d95df992e8b65f099364936749fae933.js"></script>
+    <script src="https://glamourpicklessteward.com/6d/b2/36/6db2366de43d3dfa9ae8be0cd1702de6.js"></script>
+    
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <script src="https://cdn.unityads.unity3d.com/sdk/3.4/js/unityads.js"></script>
 </head>
 <body>
 
-    <div id="loading-screen">
-        <div class="spinner"></div>
-        <p>Loading Test Environment...</p>
-    </div>
-
     <div id="side-menu" class="sidebar">
         <div class="sidebar-header">
-            <div class="mini-logo">$</div>
-            <h3 id="sidebar-user-name">User</h3>
-            <i class="fas fa-times" onclick="toggleMenu()" style="cursor:pointer;"></i>
+            <div class="sidebar-logo">$</div>
+            <h3>ProEarn Menu</h3>
+            <i class="fas fa-times close-btn" onclick="toggleMenu()"></i>
         </div>
         <ul class="menu-list">
             <li><a href="index.html"><i class="fas fa-home"></i> Dashboard</a></li>
             <li><a href="leaderboard.html"><i class="fas fa-trophy"></i> Leaderboard</a></li>
-            <li><a href="refer.html"><i class="fas fa-users"></i> Refer & Earn</a></li>
-            <hr>
+            <li><a href="https://t.me/incomeworld01" target="_blank"><i class="fas fa-headset"></i> Admin Support</a></li>
+            <hr style="border: 0.5px solid #2d3748; margin: 10px 0;">
             <li><a href="#" onclick="handleLogout()"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
         </ul>
     </div>
 
+    <div id="loading-screen">
+        <div class="loader-content">
+            <div class="spinner"></div>
+            <p>Loading ProEarn...</p>
+        </div>
+    </div>
+
     <div id="auth-screen" class="auth-wrapper" style="display: none;">
         <div class="auth-card">
-            <div class="app-logo">P</div>
-            <h2>Test Login</h2>
-            <div class="input-field"><i class="fas fa-envelope"></i><input type="email" id="email" placeholder="Email"></div>
+            <div class="logo">$</div>
+            <h2>ProEarn Rewards</h2>
+            <div class="input-field"><i class="fas fa-envelope"></i><input type="email" id="email" placeholder="Email Address"></div>
             <div class="input-field"><i class="fas fa-lock"></i><input type="password" id="password" placeholder="Password"></div>
-            <button id="login-btn" class="main-btn-min">Login / Sign Up</button>
+            <button id="login-btn" class="main-btn">Login / Sign Up</button>
         </div>
     </div>
 
     <div id="main-app" class="app-container" style="display: none;">
-        <header class="minimal-header">
-            <div class="header-top">
-                <i class="fas fa-bars" onclick="toggleMenu()" style="cursor:pointer;"></i>
-                <span class="brand-name">PROEARN TEST</span>
-                <i class="far fa-bell"></i>
+        <div class="top-nav-blue">
+            <div class="nav-header">
+                <i class="fas fa-bars menu-trigger" onclick="toggleMenu()"></i>
+                <h1 class="app-title-header">PROEARN REWARDS</h1>
+                <div style="width: 25px;"></div> 
             </div>
-            <div class="balance-card">
-                <small>Current Balance</small>
-                <h1>Tk. <span id="balance">0.00</span></h1>
-            </div>
-        </header>
-
-        <main class="main-content">
-            <div class="stats-grid">
-                <div class="stat-box"><small>Refers</small><br><b id="refer-count">0</b></div>
-                <div class="stat-box"><small>Tasks</small><br><b id="tasks-done">0</b></div>
-            </div>
-
-            <h3 class="section-title">Video Tasks (Test Mode)</h3>
-            <div class="task-list">
-                <div class="task-item" onclick="startVideoTask(1)">
-                    <div class="task-icon"><i class="fas fa-play"></i></div>
-                    <div class="task-info"><span>Watch Ad 01</span><small>Reward: Tk.10</small></div>
+            
+            <div class="user-row">
+                <div class="profile-box">
+                    <img id="profile-img" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="User">
                 </div>
-                <div class="task-item" onclick="startVideoTask(2)">
-                    <div class="task-icon"><i class="fas fa-play"></i></div>
-                    <div class="task-info"><span>Watch Ad 02</span><small>Reward: Tk.10</small></div>
+                <div class="user-meta">
+                    <span id="display-name">User</span>
+                </div>
+                <div class="balance-box">
+                    <small>Balance</small>
+                    <h2>Tk.<span id="balance">0.00</span></h2>
                 </div>
             </div>
+        </div>
 
-            <div class="action-footer">
-                <button onclick="claimDailyBonus()" id="bonus-btn" class="btn-bonus">Daily Bonus</button>
-                <button onclick="openWithdraw()" class="btn-withdraw">Withdraw</button>
+        <div class="main-content">
+            <div class="ad-slot" style="margin-bottom: 15px; text-align: center;">
+                <script>
+                    atOptions = { 'key' : '61a6dd9464e05093404bdc74b6f80ff1', 'format' : 'iframe', 'height' : 60, 'width' : 468, 'params' : {} };
+                </script>
+                <script src="https://glamourpicklessteward.com/61a6dd9464e05093404bdc74b6f80ff1/invoke.js"></script>
             </div>
-        </main>
+
+            <div class="action-buttons">
+                <button onclick="claimDailyBonus()" id="bonus-btn" class="btn-bonus">
+                    <i class="fas fa-gift"></i> <span id="bonus-text">Daily Bonus</span>
+                </button>
+                <button onclick="openWithdraw()" class="btn-withdraw">
+                    <i class="fas fa-wallet"></i> Withdraw
+                </button>
+            </div>
+
+            <div class="grid-container">
+                <div class="custom-card task-card" id="card-1" onclick="startVideoTask(1)">
+                    <i class="fas fa-play"></i>
+                    <p>Task 01</p>
+                    <h3 id="timer-1">Tk.05.00</h3>
+                </div>
+                <div class="custom-card task-card" id="card-2" onclick="startVideoTask(2)">
+                    <i class="fas fa-play"></i>
+                    <p>Task 02</p>
+                    <h3 id="timer-2">Tk.05.00</h3>
+                </div>
+                <div class="custom-card task-card" id="card-3" onclick="startVideoTask(3)">
+                    <i class="fas fa-play"></i>
+                    <p>Task 03</p>
+                    <h3 id="timer-3">Tk.05.00</h3>
+                </div>
+                <div class="custom-card task-card" id="card-4" onclick="startVideoTask(4)">
+                    <i class="fas fa-play"></i>
+                    <p>Task 04</p>
+                    <h3 id="timer-4">Tk.05.00</h3>
+                </div>
+            </div>
+
+            <div class="ad-slot" style="margin-top: 15px; text-align: center;">
+                <script>
+                    atOptions = { 'key' : '61a6dd9464e05093404bdc74b6f80ff1', 'format' : 'iframe', 'height' : 60, 'width' : 468, 'params' : {} };
+                </script>
+                <script src="https://glamourpicklessteward.com/61a6dd9464e05093404bdc74b6f80ff1/invoke.js"></script>
+            </div>
+        </div>
     </div>
 
     <div id="withdrawModal" class="modal-backdrop">
         <div class="modal-box">
-            <h3>Withdraw Test</h3>
-            <input type="number" id="withdrawAmount" placeholder="Amount (Min 500)">
-            <button onclick="sendWithdrawRequest()" class="submit-btn">Request</button>
-            <p onclick="closeWithdraw()" style="color:red; cursor:pointer; margin-top:10px;">Close</p>
+            <h3>Withdraw Funds</h3>
+            <input type="text" id="accountNo" placeholder="Account Number">
+            <input type="number" id="withdrawAmount" placeholder="Min Tk.1000">
+            <button class="submit-btn" onclick="sendWithdrawRequest()">Confirm</button>
+            <p onclick="closeWithdraw()" style="margin-top:15px; cursor:pointer;">Close</p>
         </div>
     </div>
 
