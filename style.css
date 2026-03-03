@@ -1,29 +1,35 @@
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
 
-/* Body background set to Pink */
+/* Body Background Set to Pink as requested */
 body { background: #FFC0CB; color: #333; overflow-x: hidden; }
 
-.sidebar {
-    position: fixed; top: 0; left: -280px; width: 260px; height: 100%;
-    background: #1a1f2e; z-index: 100000; transition: 0.4s ease;
-    padding: 20px; border-right: 1px solid #3b82f6;
+.app-container { min-height: 100vh; }
+
+.top-nav-blue { 
+    background: linear-gradient(135deg, #3b82f6, #1e40af); 
+    padding: 20px; 
+    border-bottom-left-radius: 20px; 
+    border-bottom-right-radius: 20px; 
+    color: white; 
 }
-.sidebar.active { left: 0; }
 
-.top-nav-blue { background: linear-gradient(135deg, #1e40af, #3b82f6); padding: 25px 15px; border-bottom-left-radius: 30px; border-bottom-right-radius: 30px; color: white; }
+.main-content { padding: 15px; }
 
-.main-content { padding: 20px 15px; }
-.grid-container { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.grid-container { 
+    display: grid; 
+    grid-template-columns: 1fr 1fr; 
+    gap: 15px; 
+    margin-top: 20px; 
+}
 
-.custom-card { background: white; padding: 20px 10px; border-radius: 18px; text-align: center; border: 1px solid rgba(0,0,0,0.1); }
-.task-card { cursor: pointer; transition: 0.3s; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-.task-disabled { opacity: 0.6; pointer-events: none; filter: grayscale(1); }
+.custom-card { 
+    background: white; 
+    padding: 20px; 
+    border-radius: 15px; 
+    text-align: center; 
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
+}
 
-.action-buttons { display: flex; gap: 10px; margin-bottom: 20px; }
-.btn-bonus { background: #f59e0b; flex: 1; padding: 12px; border-radius: 12px; border: none; color: white; font-weight: bold; }
-.btn-withdraw { background: #10b981; flex: 1; padding: 12px; border-radius: 12px; border: none; color: white; font-weight: bold; }
-
-.auth-wrapper { position: fixed; inset: 0; background: #FFC0CB; display: flex; justify-content: center; align-items: center; z-index: 10000; }
-.auth-card { background: white; padding: 30px; border-radius: 20px; width: 90%; max-width: 400px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
-
-#loading-screen { position: fixed; inset: 0; background: #FFC0CB; z-index: 99999; display: flex; justify-content: center; align-items: center; }
+.btn-bonus { background: #f59e0b; color: white; border: none; padding: 12px; border-radius: 10px; flex: 1; font-weight: bold; cursor: pointer; }
+.btn-withdraw { background: #10b981; color: white; border: none; padding: 12px; border-radius: 10px; flex: 1; font-weight: bold; cursor: pointer; }
+.action-buttons { display: flex; gap: 10px; margin-top: 15px; }
