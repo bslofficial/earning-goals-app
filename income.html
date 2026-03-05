@@ -6,15 +6,15 @@
     <title>Task Processing</title>
     <style>
         body { background: #FFC0CB; display: flex; justify-content: center; align-items: center; height: 100vh; text-align: center; }
-        .box { background: white; padding: 30px; border-radius: 20px; width: 85%; }
-        #timer { font-size: 24px; font-weight: bold; margin: 20px 0; display: none; }
-        .btn { padding: 15px 30px; background: #3b82f6; color: white; border-radius: 50px; border: none; cursor: pointer; }
+        .box { background: white; padding: 40px 20px; border-radius: 25px; width: 85%; max-width: 400px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        #timer { font-size: 26px; font-weight: bold; color: #1e40af; margin: 25px 0; display: none; }
+        .btn { padding: 18px 35px; background: #3b82f6; color: white; border-radius: 50px; border: none; font-weight: bold; cursor: pointer; font-size: 18px; }
     </style>
 </head>
 <body>
     <div class="box">
         <h2>টাস্ক রুলস</h2>
-        <p>নিচের বাটনে ক্লিক করে ১৯ সেকেন্ড অপেক্ষা করুন।</p>
+        <p style="margin: 15px 0;">নিচের বাটনে ক্লিক করে ১৯ সেকেন্ড অপেক্ষা করুন।</p>
         <button id="start-btn" class="btn" onclick="runTask()">টাস্ক শুরু করুন</button>
         <div id="timer">19 সেকেন্ড অপেক্ষা করুন</div>
     </div>
@@ -53,9 +53,9 @@
                     const userRef = ref(db, 'users/' + user.uid);
                     const snap = await get(userRef);
                     // এখানে ৫০ পয়সা (0.50) যোগ করা হয়েছে
-                    const bal = (parseFloat(snap.val().balance) || 0) + 0.50;
-                    await update(userRef, { balance: bal });
-                    alert("Tk.0.50 Added!");
+                    const newBal = (parseFloat(snap.val().balance) || 0) + 0.50;
+                    await update(userRef, { balance: newBal });
+                    alert("Tk.0.50 Added Successfully!");
                     window.location.href = "index.html"; 
                 }
             }, 1000);
