@@ -1,14 +1,24 @@
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
 body { background: #FFC0CB; color: #333; }
-.top-nav-blue { background: #1e40af; color: white; padding: 20px; border-radius: 0 0 20px 20px; text-align: center; }
+
+.top-nav-blue { background: #1e40af; color: white; padding: 20px; border-radius: 0 0 20px 20px; }
+
+/* আইকন বামে রাখার লজিক */
+.nav-header { 
+    display: flex; 
+    align-items: center; 
+    justify-content: flex-start; 
+    gap: 15px; 
+}
+
+.app-title-header { font-size: 20px; text-transform: uppercase; }
+
 .main-content { padding: 15px; }
 .action-buttons { display: flex; gap: 10px; margin-bottom: 20px; }
-.btn-bonus, .btn-withdraw { flex: 1; padding: 15px; border-radius: 10px; border: none; color: white; font-weight: bold; cursor: pointer; }
-.btn-bonus { background: #f59e0b; }
-.btn-withdraw { background: #10b981; }
+.btn-bonus { background: #f59e0b; flex: 1; padding: 15px; border-radius: 10px; border: none; color: white; cursor: pointer; }
+.btn-withdraw { background: #10b981; flex: 1; padding: 15px; border-radius: 10px; border: none; color: white; cursor: pointer; }
+
 .grid-container { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-.custom-card { background: white; padding: 20px; border-radius: 15px; text-align: center; }
-.task-card { cursor: pointer; }
-.modal-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: flex; justify-content: center; align-items: center; }
-.modal-box { background: white; padding: 20px; border-radius: 10px; }
+.custom-card { background: white; padding: 20px; border-radius: 15px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+
 #loading-screen { position: fixed; inset: 0; background: white; display: flex; justify-content: center; align-items: center; z-index: 999; }
