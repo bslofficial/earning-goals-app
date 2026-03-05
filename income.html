@@ -1,39 +1,27 @@
-<!DOCTYPE html>
-<html>
-<head><title>Task</title><link rel="stylesheet" href="style.css"></head>
-<body>
-    <div class="container" style="text-align:center; padding-top:100px;">
-        <div class="task-card">
-            <h2>Task Processing</h2>
-            <h1 id="timer" style="font-size: 60px; color: #1e40af;">19</h1>
-            <p>Wait for the timer to finish...</p>
-        </div>
-    </div>
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { getDatabase, ref, get, update } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+// এই কোডটি income.html এর script ট্যাবে দিন
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import { getAuth } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import { getDatabase, ref, get, update } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-        const firebaseConfig = { /* Copy from script.js */ };
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getDatabase(app);
+const firebaseConfig = { /* script.js থেকে একই কনফিগ কপি করুন */ };
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getDatabase(app);
 
-        let sec = 19;
-        const countdown = setInterval(async () => {
-            sec--;
-            document.getElementById('timer').innerText = sec;
-            if (sec <= 0) {
-                clearInterval(countdown);
-                const user = auth.currentUser;
-                const userRef = ref(db, 'users/' + user.uid);
-                const snap = await get(userRef);
-                const newBal = (snap.val().balance || 0) + 0.50;
-                await update(userRef, { balance: newBal });
-                alert("Tk. 0.50 Earned!");
-                location.href = 'index.html';
-            }
-        }, 1000);
-    </script>
-</body>
-</html>
+let sec = 19;
+const countdown = setInterval(async () => {
+    sec--;
+    document.getElementById('timer').innerText = sec;
+    if (sec <= 0) {
+        clearInterval(countdown);
+        const user = auth.currentUser;
+        if (user) {
+            const userRef = ref(db, 'users/' + user.uid);
+            const snap = await get(userRef);
+            const newBal = (snap.val() ? (snap.val().balance || 0) : 0) + 0.50;
+            await update(userRef, { balance: newBal });
+            alert("Success! Tk. 0.50 rewarded.");
+            location.href = 'index.html';
+        }
+    }
+}, 1000);
