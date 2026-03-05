@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ProEarn Rewards</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pro Rewards</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -11,20 +11,11 @@
 
     <div id="loading-screen">Loading...</div>
 
-    <div id="auth-screen" style="display:none;" class="auth-wrapper">
-        <div class="auth-card">
-            <h2>Login / Sign Up</h2>
-            <input type="email" id="email" placeholder="Email">
-            <input type="password" id="password" placeholder="Password">
-            <button id="login-btn">Submit</button>
-        </div>
-    </div>
-
     <div id="main-app" class="app-container" style="display:none;">
         <div class="top-nav-blue">
             <div class="nav-header">
-                <i class="fas fa-bars menu-trigger"></i>
-                <h1 class="app-title-header">PROEARN REWARDS</h1>
+                <i class="fas fa-bars menu-trigger" style="cursor:pointer;"></i>
+                <h1 class="app-title-header">PRO REWARDS</h1>
             </div>
             <div class="user-row">
                 <div class="balance-box">
@@ -48,32 +39,24 @@
                 <div class="custom-card task-card" onclick="goToIncomePage(1)">
                     <i class="fas fa-play"></i>
                     <p>Task 01</p>
-                    <h3 id="timer-1">Tk.05.00</h3>
+                    <h3>Tk.0.50</h3>
                 </div>
                 <div class="custom-card task-card" onclick="goToIncomePage(2)">
                     <i class="fas fa-play"></i>
                     <p>Task 02</p>
-                    <h3 id="timer-2">Tk.05.00</h3>
+                    <h3>Tk.0.50</h3>
                 </div>
                 <div class="custom-card task-card" onclick="goToIncomePage(3)">
                     <i class="fas fa-play"></i>
                     <p>Task 03</p>
-                    <h3 id="timer-3">Tk.05.00</h3>
+                    <h3>Tk.0.50</h3>
                 </div>
                 <div class="custom-card task-card" onclick="goToIncomePage(4)">
                     <i class="fas fa-play"></i>
                     <p>Task 04</p>
-                    <h3 id="timer-4">Tk.05.00</h3>
+                    <h3>Tk.0.50</h3>
                 </div>
             </div>
-        </div>
-    </div>
-
-    <div id="withdrawModal" class="modal-backdrop" style="display:none;">
-        <div class="modal-box">
-            <h3>Withdraw</h3>
-            <input type="text" placeholder="Account Number">
-            <button onclick="closeWithdraw()">Close</button>
         </div>
     </div>
 
