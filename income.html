@@ -6,9 +6,9 @@
     <title>Task Processing</title>
     <style>
         body { background: #FFC0CB; display: flex; justify-content: center; align-items: center; height: 100vh; text-align: center; }
-        .box { background: white; padding: 30px; border-radius: 20px; width: 80%; }
+        .box { background: white; padding: 30px; border-radius: 20px; width: 85%; }
         #timer { font-size: 24px; font-weight: bold; margin: 20px 0; display: none; }
-        .btn { padding: 15px 30px; background: #3b82f6; color: white; border-radius: 50px; border: none; font-weight: bold; cursor: pointer; }
+        .btn { padding: 15px 30px; background: #3b82f6; color: white; border-radius: 50px; border: none; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -29,8 +29,6 @@
             authDomain: "earning-goals-app.firebaseapp.com",
             projectId: "earning-goals-app",
             databaseURL: "https://earning-goals-app-default-rtdb.firebaseio.com",
-            storageBucket: "earning-goals-app.firebasestorage.app",
-            messagingSenderId: "999611133128",
             appId: "1:999611133128:web:f8bd2cb60ac5a07b1249fd"
         };
 
@@ -39,7 +37,7 @@
         const db = getDatabase(app);
 
         let user = null;
-        onAuthStateChanged(auth, (u) => { user = u; if(!u) window.location.href="index.html"; });
+        onAuthStateChanged(auth, (u) => { user = u; });
 
         window.runTask = () => {
             window.open("https://glamourpicklessteward.com/mur0zqw1i?key=1357f8fdd3f1c4497af9b8581d8ad6cb", "_blank");
@@ -54,10 +52,11 @@
                     clearInterval(itv);
                     const userRef = ref(db, 'users/' + user.uid);
                     const snap = await get(userRef);
-                    const bal = (snap.val().balance || 0) + 5;
+                    // এখানে ৫০ পয়সা (0.50) যোগ করা হয়েছে
+                    const bal = (parseFloat(snap.val().balance) || 0) + 0.50;
                     await update(userRef, { balance: bal });
-                    alert("Tk.5 Added!");
-                    window.location.href = "index.html";
+                    alert("Tk.0.50 Added!");
+                    window.location.href = "index.html"; 
                 }
             }, 1000);
         };
