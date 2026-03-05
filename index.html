@@ -8,60 +8,54 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
+    <div id="loading-screen" class="loader-overlay"><div class="spinner"></div></div>
 
-    <div id="loading-screen" class="loader-overlay">
-        <div class="spinner"></div>
-        <p>Loading...</p>
+    <div id="side-menu" class="sidebar">
+        <div class="sidebar-header"><h3>MENU</h3><i class="fas fa-times" onclick="toggleSidebar()"></i></div>
+        <ul>
+            <li onclick="location.href='index.html'"><i class="fas fa-home"></i> Home</li>
+            <li onclick="location.href='profile.html'"><i class="fas fa-user"></i> Profile</li>
+            <li onclick="location.href='refer.html'"><i class="fas fa-users"></i> Refer & Earn</li>
+            <li onclick="location.href='leaderboard.html'"><i class="fas fa-trophy"></i> Leaderboard</li>
+            <li onclick="location.href='history.html'"><i class="fas fa-history"></i> History</li>
+            <li onclick="location.href='privacy.html'"><i class="fas fa-shield-alt"></i> Privacy</li>
+        </ul>
     </div>
 
-    <div id="main-app" class="app-container" style="display:none;">
-        <div class="top-nav-blue">
+    <div id="main-app" style="display:none;">
+        <div class="top-nav">
             <div class="nav-header">
-                <i class="fas fa-bars menu-trigger"></i> <h1 class="app-title-header">PRO REWARDS</h1>
+                <i class="fas fa-bars" onclick="toggleSidebar()"></i>
+                <h1>PRO REWARDS</h1>
             </div>
-            <div class="user-row">
-                <div class="balance-box">
-                    <small>Balance</small>
-                    <h2>Tk.<span id="balance">0.00</span></h2>
-                </div>
+            <div class="balance-card">
+                <p>Current Balance</p>
+                <h2>Tk. <span id="balance">0.00</span></h2>
             </div>
         </div>
 
-        <div class="main-content">
-            <div class="action-buttons">
-                <button onclick="claimDailyBonus()" id="bonus-btn" class="btn-bonus">
-                    <i class="fas fa-gift"></i> <span id="bonus-text">Daily Bonus</span>
-                </button>
-                <button onclick="window.location.href='withdraw.html'" class="btn-withdraw">
-                    <i class="fas fa-wallet"></i> Withdraw
-                </button>
+        <div class="container">
+            <div class="action-row">
+                <button class="btn-bonus" onclick="claimDailyBonus()"><i class="fas fa-gift"></i> Daily Bonus</button>
+                <button class="btn-withdraw" onclick="location.href='withdraw.html'"><i class="fas fa-wallet"></i> Withdraw</button>
             </div>
 
-            <div class="grid-container">
-                <div class="custom-card" onclick="goToIncomePage(1)">
-                    <div class="icon-circle"><i class="fas fa-play"></i></div>
-                    <p>Task 01</p>
-                    <h3>Tk.0.50</h3>
+            <div class="task-grid">
+                <div class="task-card" onclick="startTask(1)">
+                    <i class="fas fa-play-circle"></i><p>Task 01</p><span>Tk. 0.50</span>
                 </div>
-                <div class="custom-card" onclick="goToIncomePage(2)">
-                    <div class="icon-circle"><i class="fas fa-play"></i></div>
-                    <p>Task 02</p>
-                    <h3>Tk.0.50</h3>
+                <div class="task-card" onclick="startTask(2)">
+                    <i class="fas fa-play-circle"></i><p>Task 02</p><span>Tk. 0.50</span>
                 </div>
-                <div class="custom-card" onclick="goToIncomePage(3)">
-                    <div class="icon-circle"><i class="fas fa-play"></i></div>
-                    <p>Task 03</p>
-                    <h3>Tk.0.50</h3>
+                <div class="task-card" onclick="startTask(3)">
+                    <i class="fas fa-play-circle"></i><p>Task 03</p><span>Tk. 0.50</span>
                 </div>
-                <div class="custom-card" onclick="goToIncomePage(4)">
-                    <div class="icon-circle"><i class="fas fa-play"></i></div>
-                    <p>Task 04</p>
-                    <h3>Tk.0.50</h3>
+                <div class="task-card" onclick="startTask(4)">
+                    <i class="fas fa-play-circle"></i><p>Task 04</p><span>Tk. 0.50</span>
                 </div>
             </div>
         </div>
     </div>
-
     <script type="module" src="script.js"></script>
 </body>
 </html>
