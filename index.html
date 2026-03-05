@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pro Rewards</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=1.2">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <div id="loading-screen" class="loader-overlay"><div class="spinner"></div></div>
+    <div id="loading-screen" class="loader-overlay"><div class="spinner"></div><p>Loading...</p></div>
 
     <div id="side-menu" class="sidebar">
         <div class="sidebar-header"><h3>MENU</h3><i class="fas fa-times" onclick="toggleSidebar()"></i></div>
@@ -29,8 +29,8 @@
                 <h1>PRO REWARDS</h1>
             </div>
             <div class="balance-card">
-                <p>Current Balance</p>
-                <h2>Tk. <span id="balance">0.00</span></h2>
+                <p>Balance</p>
+                <h2>Tk.<span id="balance">0.00</span></h2>
             </div>
         </div>
 
@@ -42,20 +42,24 @@
 
             <div class="task-grid">
                 <div class="task-card" onclick="startTask(1)">
-                    <i class="fas fa-play-circle"></i><p>Task 01</p><span>Tk. 0.50</span>
+                    <div class="icon-bg"><i class="fas fa-play"></i></div>
+                    <p>Task 01</p><h3>Tk.0.50</h3>
                 </div>
                 <div class="task-card" onclick="startTask(2)">
-                    <i class="fas fa-play-circle"></i><p>Task 02</p><span>Tk. 0.50</span>
+                    <div class="icon-bg"><i class="fas fa-play"></i></div>
+                    <p>Task 02</p><h3>Tk.0.50</h3>
                 </div>
                 <div class="task-card" onclick="startTask(3)">
-                    <i class="fas fa-play-circle"></i><p>Task 03</p><span>Tk. 0.50</span>
+                    <div class="icon-bg"><i class="fas fa-play"></i></div>
+                    <p>Task 03</p><h3>Tk.0.50</h3>
                 </div>
                 <div class="task-card" onclick="startTask(4)">
-                    <i class="fas fa-play-circle"></i><p>Task 04</p><span>Tk. 0.50</span>
+                    <div class="icon-bg"><i class="fas fa-play"></i></div>
+                    <p>Task 04</p><h3>Tk.0.50</h3>
                 </div>
             </div>
         </div>
     </div>
-    <script type="module" src="script.js"></script>
+    <script type="module" src="script.js?v=1.2"></script>
 </body>
 </html>
