@@ -1,6 +1,7 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
-import { getAuth, onAuthStateChanged, signInAnonymously } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
-import { getDatabase, ref, onValue, update } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js";
+// CDN লিঙ্ক ব্যবহার করা হয়েছে গিটহাব পেজের জন্য
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import { getAuth, onAuthStateChanged, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDuLLapNwRk2Fl5rN6F0ezZb9KsMBKhvqA",
@@ -16,23 +17,25 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getDatabase(app);
 
-signInAnonymously(auth);
-
-onAuthStateChanged(auth, (user) => {
-    if (user) {
-        const userRef = ref(db, 'users/' + user.uid);
-        onValue(userRef, (snap) => {
-            const data = snap.val() || { balance: 0 };
-            document.getElementById('balance').innerText = (parseFloat(data.balance) || 0).toFixed(2);
-            document.getElementById('loading-screen').style.display = 'none';
-            document.getElementById('main-app').style.display = 'block';
-        });
-    }
+// লোডিং সমস্যা সমাধানের জন্য অটো-লগইন
+signInAnonymously(auth).then(() => {
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            const userRef = ref(db, 'users/' + user.uid);
+            onValue(userRef, (snap) => {
+                const data = snap.val() || { balance: 0 };
+                // ব্যালেন্স আপডেট
+                document.getElementById('balance').innerText = (parseFloat(data.balance) || 0).toFixed(2);
+                
+                // ডাটা লোড হলে স্ক্রিন সরাবে
+                document.getElementById('loading-screen').style.display = 'none';
+                document.getElementById('main-app').style.display = 'block';
+            });
+        }
+    });
+}).catch((error) => {
+    console.error("Firebase Error:", error);
+    // এরর হলেও অন্তত লোডিং স্ক্রিন সরিয়ে অ্যাপটি দেখাবে
+    document.getElementById('loading-screen').style.display = 'none';
+    document.getElementById('main-app').style.display = 'block';
 });
-
-window.goToIncomePage = (num) => { window.location.href = `income.html?task=${num}`; };
-
-window.claimDailyBonus = () => {
-    window.open("https://glamourpicklessteward.com/mur0zqw1i?key=1357f8fdd3f1c4497af9b8581d8ad6cb", "_blank");
-    // বোনাস টাইমার লজিক এখানে থাকবে...
-};
