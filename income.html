@@ -1,20 +1,40 @@
-// এই অংশটি income.html এর স্ক্রিপ্টে বসাবেন
-window.runTask = () => {
-    window.open("AD_LINK_HERE", "_blank");
-    document.getElementById('start-btn').style.display = 'none';
-    let sec = 19;
-    const timer = setInterval(async () => {
-        sec--;
-        document.getElementById('timer').innerText = sec + " সেকেন্ড অপেক্ষা করুন";
-        if(sec <= 0) {
-            clearInterval(timer);
-            const userRef = ref(db, 'users/' + user.uid);
-            const snap = await get(userRef);
-            // ৫০ পয়সা যোগ করা
-            const newBal = (parseFloat(snap.val().balance) || 0) + 0.50;
-            await update(userRef, { balance: newBal });
-            alert("Tk.0.50 যোগ হয়েছে!");
-            window.location.href = "index.html";
-        }
-    }, 1000);
-};
+<!DOCTYPE html>
+<html>
+<head><title>Processing Task</title><link rel="stylesheet" href="style.css"></head>
+<body>
+    <div class="container" style="text-align:center; margin-top:100px;">
+        <div class="task-card">
+            <h2>Task Processing...</h2>
+            <h1 id="timer" style="font-size: 50px; color:#1e40af; margin: 20px 0;">19</h1>
+            <p>Please wait while the timer finishes.</p>
+        </div>
+    </div>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getDatabase, ref, get, update } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+        const firebaseConfig = { /* ...same as script.js... */ };
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getDatabase(app);
+
+        let timeLeft = 19;
+        const timer = setInterval(async () => {
+            timeLeft--;
+            document.getElementById('timer').innerText = timeLeft;
+            if (timeLeft <= 0) {
+                clearInterval(timer);
+                onAuthStateChanged(auth, async (user) => {
+                    const userRef = ref(db, 'users/' + user.uid);
+                    const snap = await get(userRef);
+                    const newBal = (snap.val().balance || 0) + 0.50;
+                    await update(userRef, { balance: newBal });
+                    alert("Tk. 0.50 Added!");
+                    location.href = 'index.html';
+                });
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
