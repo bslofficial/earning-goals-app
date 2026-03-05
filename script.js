@@ -40,7 +40,7 @@ window.claimDailyBonus = async () => {
     const snap = await get(userRef);
     const currentBal = snap.val() ? snap.val().balance : 0;
     await update(userRef, { balance: currentBal + 5.00 });
-    alert("Tk. 5.00 Daily Bonus Added!");
+    alert("Tk. 5.00 Added!");
 };
 
 window.startTask = (id) => { location.href = `income.html?id=${id}`; };
