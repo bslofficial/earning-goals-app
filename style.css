@@ -1,24 +1,25 @@
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
 body { background: #FFC0CB; color: #333; }
 
-.top-nav-blue { background: #1e40af; color: white; padding: 20px; border-radius: 0 0 20px 20px; }
+.top-nav-blue { background: #1e40af; color: white; padding: 25px 20px; border-radius: 0 0 25px 25px; }
 
-/* আইকন বামে রাখার লজিক */
+/* স্লাইডবার আইকন বামে রাখার জন্য */
 .nav-header { 
     display: flex; 
     align-items: center; 
     justify-content: flex-start; 
     gap: 15px; 
+    margin-bottom: 10px;
 }
 
-.app-title-header { font-size: 20px; text-transform: uppercase; }
+.app-title-header { font-size: 22px; font-weight: bold; text-transform: uppercase; }
 
-.main-content { padding: 15px; }
-.action-buttons { display: flex; gap: 10px; margin-bottom: 20px; }
-.btn-bonus { background: #f59e0b; flex: 1; padding: 15px; border-radius: 10px; border: none; color: white; cursor: pointer; }
-.btn-withdraw { background: #10b981; flex: 1; padding: 15px; border-radius: 10px; border: none; color: white; cursor: pointer; }
+.main-content { padding: 20px; }
+.action-buttons { display: flex; gap: 12px; margin-bottom: 25px; }
+.btn-bonus { background: #f59e0b; flex: 1; padding: 15px; border-radius: 12px; border: none; color: white; font-weight: bold; cursor: pointer; }
+.btn-withdraw { background: #10b981; flex: 1; padding: 15px; border-radius: 12px; border: none; color: white; font-weight: bold; cursor: pointer; }
 
 .grid-container { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-.custom-card { background: white; padding: 20px; border-radius: 15px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+.custom-card { background: white; padding: 25px 15px; border-radius: 18px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.08); cursor: pointer; }
 
-#loading-screen { position: fixed; inset: 0; background: white; display: flex; justify-content: center; align-items: center; z-index: 999; }
+#loading-screen { position: fixed; inset: 0; background: white; display: flex; justify-content: center; align-items: center; z-index: 1000; }
