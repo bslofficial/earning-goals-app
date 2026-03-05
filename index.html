@@ -9,13 +9,15 @@
 </head>
 <body>
 
-    <div id="loading-screen">Loading...</div>
+    <div id="loading-screen" style="position: fixed; inset: 0; background: white; display: flex; justify-content: center; align-items: center; z-index: 1000;">
+        <p>Loading...</p>
+    </div>
 
     <div id="main-app" class="app-container" style="display:none;">
         <div class="top-nav-blue">
             <div class="nav-header">
                 <i class="fas fa-bars menu-trigger"></i>
-                <h1 class="app-title-header">PROEARN REWARDS</h1>
+                <h1 class="app-title-header">PRO REWARDS</h1>
             </div>
             <div class="user-row">
                 <div class="balance-box">
@@ -30,7 +32,7 @@
                 <button onclick="claimDailyBonus()" id="bonus-btn" class="btn-bonus">
                     <i class="fas fa-gift"></i> <span id="bonus-text">Daily Bonus</span>
                 </button>
-                <button onclick="openWithdraw()" class="btn-withdraw">
+                <button onclick="window.location.href='withdraw.html'" class="btn-withdraw">
                     <i class="fas fa-wallet"></i> Withdraw
                 </button>
             </div>
@@ -41,22 +43,7 @@
                     <p>Task 01</p>
                     <h3>Tk.0.50</h3>
                 </div>
-                <div class="custom-card" onclick="goToIncomePage(2)">
-                    <i class="fas fa-play"></i>
-                    <p>Task 02</p>
-                    <h3>Tk.0.50</h3>
                 </div>
-                <div class="custom-card" onclick="goToIncomePage(3)">
-                    <i class="fas fa-play"></i>
-                    <p>Task 03</p>
-                    <h3>Tk.0.50</h3>
-                </div>
-                <div class="custom-card" onclick="goToIncomePage(4)">
-                    <i class="fas fa-play"></i>
-                    <p>Task 04</p>
-                    <h3>Tk.0.50</h3>
-                </div>
-            </div>
         </div>
     </div>
 
