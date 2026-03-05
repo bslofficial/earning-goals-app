@@ -1,65 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Task Processing</title>
-    <style>
-        body { background: #FFC0CB; display: flex; justify-content: center; align-items: center; height: 100vh; text-align: center; }
-        .box { background: white; padding: 40px 20px; border-radius: 25px; width: 85%; max-width: 400px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-        #timer { font-size: 26px; font-weight: bold; color: #1e40af; margin: 25px 0; display: none; }
-        .btn { padding: 18px 35px; background: #3b82f6; color: white; border-radius: 50px; border: none; font-weight: bold; cursor: pointer; font-size: 18px; }
-    </style>
-</head>
-<body>
-    <div class="box">
-        <h2>টাস্ক রুলস</h2>
-        <p style="margin: 15px 0;">নিচের বাটনে ক্লিক করে ১৯ সেকেন্ড অপেক্ষা করুন।</p>
-        <button id="start-btn" class="btn" onclick="runTask()">টাস্ক শুরু করুন</button>
-        <div id="timer">19 সেকেন্ড অপেক্ষা করুন</div>
-    </div>
-
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
-        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
-        import { getDatabase, ref, get, update } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyDuLLapNwRk2Fl5rN6F0ezZb9KsMBKhvqA",
-            authDomain: "earning-goals-app.firebaseapp.com",
-            projectId: "earning-goals-app",
-            databaseURL: "https://earning-goals-app-default-rtdb.firebaseio.com",
-            appId: "1:999611133128:web:f8bd2cb60ac5a07b1249fd"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getDatabase(app);
-
-        let user = null;
-        onAuthStateChanged(auth, (u) => { user = u; });
-
-        window.runTask = () => {
-            window.open("https://glamourpicklessteward.com/mur0zqw1i?key=1357f8fdd3f1c4497af9b8581d8ad6cb", "_blank");
-            document.getElementById('start-btn').style.display = 'none';
-            const tDiv = document.getElementById('timer');
-            tDiv.style.display = 'block';
-            let sec = 19;
-            const itv = setInterval(async () => {
-                sec--;
-                tDiv.innerText = sec + " সেকেন্ড অপেক্ষা করুন";
-                if(sec <= 0) {
-                    clearInterval(itv);
-                    const userRef = ref(db, 'users/' + user.uid);
-                    const snap = await get(userRef);
-                    // এখানে ৫০ পয়সা (0.50) যোগ করা হয়েছে
-                    const newBal = (parseFloat(snap.val().balance) || 0) + 0.50;
-                    await update(userRef, { balance: newBal });
-                    alert("Tk.0.50 Added Successfully!");
-                    window.location.href = "index.html"; 
-                }
-            }, 1000);
-        };
-    </script>
-</body>
-</html>
+// এই অংশটি income.html এর স্ক্রিপ্টে বসাবেন
+window.runTask = () => {
+    window.open("AD_LINK_HERE", "_blank");
+    document.getElementById('start-btn').style.display = 'none';
+    let sec = 19;
+    const timer = setInterval(async () => {
+        sec--;
+        document.getElementById('timer').innerText = sec + " সেকেন্ড অপেক্ষা করুন";
+        if(sec <= 0) {
+            clearInterval(timer);
+            const userRef = ref(db, 'users/' + user.uid);
+            const snap = await get(userRef);
+            // ৫০ পয়সা যোগ করা
+            const newBal = (parseFloat(snap.val().balance) || 0) + 0.50;
+            await update(userRef, { balance: newBal });
+            alert("Tk.0.50 যোগ হয়েছে!");
+            window.location.href = "index.html";
+        }
+    }, 1000);
+};
