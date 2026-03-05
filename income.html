@@ -1,48 +1,102 @@
-// বিজ্ঞাপনে ক্লিক করার পর ইউজারকে হোম পেজে ফেরানোর লজিক
-let adClicked = false;
-let countdownFinished = false;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Processing</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body { background: #FFC0CB; display: flex; justify-content: center; align-items: center; height: 100vh; text-align: center; margin: 0; }
+        .task-container { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 90%; max-width: 400px; }
+        #timer-display { font-size: 24px; font-weight: bold; color: #1e40af; margin: 20px 0; display: none; }
+        .btn-start { display: inline-block; padding: 15px 30px; background: #3b82f6; color: white; text-decoration: none; border-radius: 50px; font-weight: bold; cursor: pointer; border: none; font-size: 16px; }
+    </style>
+</head>
+<body>
 
-// ১৯ সেকেন্ডের কাউন্টডাউন শুরু করা
-function startIncomeTimer() {
-    let timeLeft = 19;
-    const timerElement = document.getElementById('timer-text'); // আপনার HTML এর আইডি অনুযায়ী
-    const actionButton = document.getElementById('task-start-btn'); // আপনার বাটনের আইডি
+    <div class="task-container">
+        <h2>টাস্ক রুলস</h2>
+        <p>নিচের বাটনে ক্লিক করে ১৯ সেকেন্ড অপেক্ষা করুন।</p>
+        
+        <button onclick="startTaskProcess()" id="start-btn" class="btn-start">
+            টাস্ক শুরু করুন
+        </button>
 
-    const timer = setInterval(() => {
-        timeLeft -= 1;
-        if (timerElement) timerElement.innerText = timeLeft + " সেকেন্ড অপেক্ষা করুন";
+        <div id="timer-display">১৯ সেকেন্ড অপেক্ষা করুন</div>
+        
+        <p id="status-msg" style="color: green; font-weight: bold; margin-top: 10px;">
+            যেকোনো একটি বিজ্ঞাপনে ক্লিক করুন এবং ফিরে আসুন!
+        </p>
+    </div>
 
-        if (timeLeft <= 0) {
-            clearInterval(timer);
-            countdownFinished = true;
-            checkTaskCompletion();
-        }
-    }, 1000);
-}
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
+        import { getDatabase, ref, get, update } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js";
 
-// বিজ্ঞাপনে ক্লিকের ইভেন্ট ট্র্যাকিং (Adsterra Direct Link এর জন্য)
-window.addEventListener('blur', () => {
-    // ইউজার যখন বিজ্ঞাপনে ক্লিক করে অন্য ট্যাবে যায়, তখন এটি ট্রিগার হয়
-    adClicked = true;
-    checkTaskCompletion();
-});
-
-// টাস্ক সম্পন্ন হয়েছে কি না তা চেক করা
-async function checkTaskCompletion() {
-    const actionButton = document.getElementById('task-start-btn');
-
-    if (adClicked && countdownFinished) {
-        // বাটন টেক্সট পরিবর্তন করা যাতে ইউজার হোম পেজে ফিরতে পারে
-        actionButton.innerText = "টাস্ক সম্পন্ন করুন";
-        actionButton.style.backgroundColor = "#10b981"; // সবুজ রঙ
-        actionButton.disabled = false;
-
-        // বাটনে ক্লিক করলে হোম পেজে রিডাইরেক্ট হবে
-        actionButton.onclick = () => {
-            window.location.href = "index.html"; 
+        const firebaseConfig = {
+            apiKey: "AIzaSyDuLLapNwRk2Fl5rN6F0ezZb9KsMBKhvqA",
+            authDomain: "earning-goals-app.firebaseapp.com",
+            projectId: "earning-goals-app",
+            storageBucket: "earning-goals-app.firebasestorage.app",
+            messagingSenderId: "999611133128",
+            appId: "1:999611133128:web:f8bd2cb60ac5a07b1249fd"
         };
-    }
-}
 
-// পেজ লোড হলে টাইমার শুরু করা
-window.onload = startIncomeTimer;
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getDatabase(app);
+
+        let currentUser = null;
+        const ADSTERRA_LINK = "https://glamourpicklessteward.com/mur0zqw1i?key=1357f8fdd3f1c4497af9b8581d8ad6cb";
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) { currentUser = user; } 
+            else { window.location.href = "index.html"; }
+        });
+
+        window.startTaskProcess = function() {
+            // ১. বিজ্ঞাপন ওপেন করা
+            window.open(ADSTERRA_LINK, '_blank');
+
+            // ২. টাইমার শুরু করা
+            let timeLeft = 19;
+            document.getElementById('start-btn').style.display = 'none';
+            const display = document.getElementById('timer-display');
+            display.style.display = 'block';
+
+            const countdown = setInterval(async () => {
+                timeLeft--;
+                display.innerText = timeLeft + " সেকেন্ড অপেক্ষা করুন";
+
+                if (timeLeft <= 0) {
+                    clearInterval(countdown);
+                    display.innerText = "ব্যালেন্স আপডেট হচ্ছে...";
+                    await addReward();
+                }
+            }, 1000);
+        };
+
+        async function addReward() {
+            if (!currentUser) return;
+            const userRef = ref(db, 'users/' + currentUser.uid);
+            
+            try {
+                const snapshot = await get(userRef);
+                const data = snapshot.val() || { balance: 0 };
+                const newBalance = (parseFloat(data.balance) || 0) + 5;
+
+                // ব্যালেন্স আপডেট করা
+                await update(userRef, { balance: newBalance });
+                
+                alert("টাস্ক সফল! ৫ টাকা আপনার ব্যালেন্সে যোগ হয়েছে।");
+                window.location.href = "index.html"; // হোম পেজে ফেরত পাঠানো
+            } catch (error) {
+                console.error("Error updating balance:", error);
+                alert("Error! Please try again.");
+                window.location.href = "index.html";
+            }
+        }
+    </script>
+</body>
+</html>
