@@ -3,43 +3,36 @@ import { getAuth, onAuthStateChanged, signInAnonymously } from "https://www.gsta
 import { getDatabase, ref, onValue, update } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyDuLLapNwRk2Fl5rN6F0ezZb9KsMBKhvqA",
-    authDomain: "earning-goals-app.firebaseapp.com",
-    projectId: "earning-goals-app",
-    databaseURL: "https://earning-goals-app-default-rtdb.firebaseio.com",
-    appId: "1:999611133128:web:f8bd2cb60ac5a07b1249fd"
+  apiKey: "AIzaSyDuLLapNwRk2Fl5rN6F0ezZb9KsMBKhvqA",
+  authDomain: "earning-goals-app.firebaseapp.com",
+  databaseURL: "https://earning-goals-app-default-rtdb.firebaseio.com",
+  projectId: "earning-goals-app",
+  storageBucket: "earning-goals-app.firebasestorage.app",
+  messagingSenderId: "999611133128",
+  appId: "1:999611133128:web:f8bd2cb60ac5a07b1249fd"
 };
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getDatabase(app);
 
-// অটোমেটিক লগইন করার চেষ্টা (যাতে লোডিং এ আটকে না থাকে)
-signInAnonymously(auth).catch(err => console.error("Auth Error:", err));
+signInAnonymously(auth);
 
 onAuthStateChanged(auth, (user) => {
-    const loader = document.getElementById('loading-screen');
-    const mainApp = document.getElementById('main-app');
-
     if (user) {
         const userRef = ref(db, 'users/' + user.uid);
         onValue(userRef, (snap) => {
             const data = snap.val() || { balance: 0 };
             document.getElementById('balance').innerText = (parseFloat(data.balance) || 0).toFixed(2);
-            
-            // ডাটা লোড হলে স্ক্রিন দেখাবে
-            if(loader) loader.style.display = 'none';
-            if(mainApp) mainApp.style.display = 'block';
-        }, (error) => {
-            console.error("Database Error:", error);
-            if(loader) loader.style.display = 'none'; // এরর হলেও লোডার সরাবে
+            document.getElementById('loading-screen').style.display = 'none';
+            document.getElementById('main-app').style.display = 'block';
         });
-    } else {
-        // ইউজার না থাকলেও অন্তত লোডার সরিয়ে অ্যাপ দেখাবে
-        if(loader) loader.style.display = 'none';
-        if(mainApp) mainApp.style.display = 'block';
     }
 });
 
-// বাকি ফাংশনগুলো আগের মতোই থাকবে...
 window.goToIncomePage = (num) => { window.location.href = `income.html?task=${num}`; };
+
+window.claimDailyBonus = () => {
+    window.open("https://glamourpicklessteward.com/mur0zqw1i?key=1357f8fdd3f1c4497af9b8581d8ad6cb", "_blank");
+    // বোনাস টাইমার লজিক এখানে থাকবে...
+};
