@@ -7,8 +7,6 @@ const firebaseConfig = {
     authDomain: "earning-goals-app.firebaseapp.com",
     projectId: "earning-goals-app",
     databaseURL: "https://earning-goals-app-default-rtdb.firebaseio.com",
-    storageBucket: "earning-goals-app.firebasestorage.app",
-    messagingSenderId: "999611133128",
     appId: "1:999611133128:web:f8bd2cb60ac5a07b1249fd"
 };
 
@@ -39,9 +37,8 @@ window.claimDailyBonus = async () => {
         bTxt.innerText = timeLeft.toFixed(2) + "s";
         if (timeLeft <= 0) {
             clearInterval(timer);
-            // ১ টাকা বোনাস
-            await update(userRef, { balance: (currentData.balance || 0) + 1 });
-            alert("Bonus Added!");
+            await update(userRef, { balance: (parseFloat(currentData.balance) || 0) + 1 });
+            alert("Tk.1.00 Bonus Added!");
             bTxt.innerText = "Daily Bonus";
         }
     }, 100);
