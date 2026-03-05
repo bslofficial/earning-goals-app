@@ -1,148 +1,48 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>পেইজের কমপ্লিট টাস্ক রুলস</title>
-    
-    <script src="https://glamourpicklessteward.com/d9/5d/f9/d95df992e8b65f099364936749fae933.js"></script>
-    
-    <script src="https://glamourpicklessteward.com/6d/b2/36/6db2366de43d3dfa9ae8be0cd1702de6.js"></script>
+// বিজ্ঞাপনে ক্লিক করার পর ইউজারকে হোম পেজে ফেরানোর লজিক
+let adClicked = false;
+let countdownFinished = false;
 
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f7f6;
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-        }
-        .container {
-            max-width: 600px;
-            width: 100%;
-            background: white;
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-        h1 { color: #333; font-size: 24px; }
-        .ad-slot { margin: 20px 0; min-height: 60px; background: #eee; border-radius: 8px; overflow: hidden; }
-        
-        .task-button {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            font-size: 18px;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: 0.3s;
-            width: 80%;
-            margin: 10px 0;
-        }
-        .task-button:disabled { background-color: #ccc; cursor: not-allowed; }
-        
-        #timer-display {
-            font-size: 20px;
-            color: #ff4757;
-            font-weight: bold;
-            margin-top: 10px;
-            display: none;
-        }
-        
-        #instruction {
-            color: #2ed573;
-            font-weight: bold;
-            margin-top: 15px;
-            display: none;
-        }
-
-        #home-btn {
-            display: none;
-            margin-top: 20px;
-            background-color: #2ecc71;
-            text-decoration: none;
-            color: white;
-            padding: 10px 25px;
-            border-radius: 5px;
-        }
-    </style>
-</head>
-<body>
-
-<div class="container">
-    <h2>পেইজের কমপ্লিট টাস্ক রুলস</h2>
-
-    <div class="ad-slot">
-        <script>
-            atOptions = { 'key' : '61a6dd9464e05093404bdc74b6f80ff1', 'format' : 'iframe', 'height' : 60, 'width' : 468, 'params' : {} };
-        </script>
-        <script src="https://glamourpicklessteward.com/61a6dd9464e05093404bdc74b6f80ff1/invoke.js"></script>
-    </div>
-
-    <p>নিচের বাটনে ক্লিক করে ১৯ সেকেন্ড অপেক্ষা করুন।</p>
-    
-    <button class="task-button" id="start-task">টাস্ক শুরু করুন</button>
-    
-    <div id="timer-display">অপেক্ষা করুন: <span id="seconds">19</span> সেকেন্ড</div>
-    <div id="instruction">যেকোনো একটি বিজ্ঞাপনে ক্লিক করুন এবং ফিরে আসুন!</div>
-
-    <div class="ad-slot" id="target-ad-slot" onclick="adClicked()">
-        <script>
-            atOptions = { 'key' : '61a6dd9464e05093404bdc74b6f80ff1', 'format' : 'iframe', 'height' : 60, 'width' : 468, 'params' : {} };
-        </script>
-        <script src="https://glamourpicklessteward.com/61a6dd9464e05093404bdc74b6f80ff1/invoke.js"></script>
-    </div>
-
-    <a href="index.html" id="home-btn">হোমে ফিরে যান</a>
-</div>
-
-<script>
+// ১৯ সেকেন্ডের কাউন্টডাউন শুরু করা
+function startIncomeTimer() {
     let timeLeft = 19;
-    let timerId;
-    let isAdClicked = false;
-    const btn = document.getElementById('start-task');
-    const timerDisplay = document.getElementById('timer-display');
-    const secondsSpan = document.getElementById('seconds');
-    const instruction = document.getElementById('instruction');
-    const homeBtn = document.getElementById('home-btn');
+    const timerElement = document.getElementById('timer-text'); // আপনার HTML এর আইডি অনুযায়ী
+    const actionButton = document.getElementById('task-start-btn'); // আপনার বাটনের আইডি
 
-    btn.addEventListener('click', function() {
-        btn.disabled = true;
-        timerDisplay.style.display = 'block';
-        
-        timerId = setInterval(() => {
-            timeLeft--;
-            secondsSpan.innerText = timeLeft;
-            
-            if (timeLeft <= 0) {
-                clearInterval(timerId);
-                timerDisplay.style.display = 'none';
-                instruction.style.display = 'block';
-                checkStatus();
-            }
-        }, 1000);
-    });
+    const timer = setInterval(() => {
+        timeLeft -= 1;
+        if (timerElement) timerElement.innerText = timeLeft + " সেকেন্ড অপেক্ষা করুন";
 
-    // সিমুলেটেড অ্যাড ক্লিক ডিটেকশন (ইউজার যখন অ্যাড এরিয়াতে ক্লিক করবে)
-    function adClicked() {
         if (timeLeft <= 0) {
-            isAdClicked = true;
-            instruction.innerText = "ধন্যবাদ! এখন আপনি হোমে যেতে পারেন।";
-            homeBtn.style.display = 'inline-block';
+            clearInterval(timer);
+            countdownFinished = true;
+            checkTaskCompletion();
         }
+    }, 1000);
+}
+
+// বিজ্ঞাপনে ক্লিকের ইভেন্ট ট্র্যাকিং (Adsterra Direct Link এর জন্য)
+window.addEventListener('blur', () => {
+    // ইউজার যখন বিজ্ঞাপনে ক্লিক করে অন্য ট্যাবে যায়, তখন এটি ট্রিগার হয়
+    adClicked = true;
+    checkTaskCompletion();
+});
+
+// টাস্ক সম্পন্ন হয়েছে কি না তা চেক করা
+async function checkTaskCompletion() {
+    const actionButton = document.getElementById('task-start-btn');
+
+    if (adClicked && countdownFinished) {
+        // বাটন টেক্সট পরিবর্তন করা যাতে ইউজার হোম পেজে ফিরতে পারে
+        actionButton.innerText = "টাস্ক সম্পন্ন করুন";
+        actionButton.style.backgroundColor = "#10b981"; // সবুজ রঙ
+        actionButton.disabled = false;
+
+        // বাটনে ক্লিক করলে হোম পেজে রিডাইরেক্ট হবে
+        actionButton.onclick = () => {
+            window.location.href = "index.html"; 
+        };
     }
+}
 
-    // ব্রাউজারের ব্যাক বাটন আটকানোর চেষ্টা
-    window.onbeforeunload = function() {
-        if (!isAdClicked && timeLeft <= 0) {
-            return "অনুগ্রহ করে টাস্ক সম্পন্ন করুন!";
-        }
-    };
-</script>
-
-</body>
-</html>
+// পেজ লোড হলে টাইমার শুরু করা
+window.onload = startIncomeTimer;
