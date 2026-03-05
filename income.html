@@ -4,29 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Task Processing</title>
-    <link rel="stylesheet" href="style.css">
     <style>
-        body { background: #FFC0CB; display: flex; justify-content: center; align-items: center; height: 100vh; text-align: center; margin: 0; }
-        .task-container { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 90%; max-width: 400px; }
-        #timer-display { font-size: 24px; font-weight: bold; color: #1e40af; margin: 20px 0; display: none; }
-        .btn-start { display: inline-block; padding: 15px 30px; background: #3b82f6; color: white; text-decoration: none; border-radius: 50px; font-weight: bold; cursor: pointer; border: none; font-size: 16px; }
+        body { background: #FFC0CB; display: flex; justify-content: center; align-items: center; height: 100vh; text-align: center; }
+        .box { background: white; padding: 30px; border-radius: 20px; width: 80%; }
+        #timer { font-size: 24px; font-weight: bold; margin: 20px 0; display: none; }
+        .btn { padding: 15px 30px; background: #3b82f6; color: white; border-radius: 50px; border: none; font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body>
-
-    <div class="task-container">
+    <div class="box">
         <h2>টাস্ক রুলস</h2>
         <p>নিচের বাটনে ক্লিক করে ১৯ সেকেন্ড অপেক্ষা করুন।</p>
-        
-        <button onclick="startTaskProcess()" id="start-btn" class="btn-start">
-            টাস্ক শুরু করুন
-        </button>
-
-        <div id="timer-display">১৯ সেকেন্ড অপেক্ষা করুন</div>
-        
-        <p id="status-msg" style="color: green; font-weight: bold; margin-top: 10px;">
-            যেকোনো একটি বিজ্ঞাপনে ক্লিক করুন এবং ফিরে আসুন!
-        </p>
+        <button id="start-btn" class="btn" onclick="runTask()">টাস্ক শুরু করুন</button>
+        <div id="timer">19 সেকেন্ড অপেক্ষা করুন</div>
     </div>
 
     <script type="module">
@@ -38,6 +28,7 @@
             apiKey: "AIzaSyDuLLapNwRk2Fl5rN6F0ezZb9KsMBKhvqA",
             authDomain: "earning-goals-app.firebaseapp.com",
             projectId: "earning-goals-app",
+            databaseURL: "https://earning-goals-app-default-rtdb.firebaseio.com",
             storageBucket: "earning-goals-app.firebasestorage.app",
             messagingSenderId: "999611133128",
             appId: "1:999611133128:web:f8bd2cb60ac5a07b1249fd"
@@ -47,56 +38,29 @@
         const auth = getAuth(app);
         const db = getDatabase(app);
 
-        let currentUser = null;
-        const ADSTERRA_LINK = "https://glamourpicklessteward.com/mur0zqw1i?key=1357f8fdd3f1c4497af9b8581d8ad6cb";
+        let user = null;
+        onAuthStateChanged(auth, (u) => { user = u; if(!u) window.location.href="index.html"; });
 
-        onAuthStateChanged(auth, (user) => {
-            if (user) { currentUser = user; } 
-            else { window.location.href = "index.html"; }
-        });
-
-        window.startTaskProcess = function() {
-            // ১. বিজ্ঞাপন ওপেন করা
-            window.open(ADSTERRA_LINK, '_blank');
-
-            // ২. টাইমার শুরু করা
-            let timeLeft = 19;
+        window.runTask = () => {
+            window.open("https://glamourpicklessteward.com/mur0zqw1i?key=1357f8fdd3f1c4497af9b8581d8ad6cb", "_blank");
             document.getElementById('start-btn').style.display = 'none';
-            const display = document.getElementById('timer-display');
-            display.style.display = 'block';
-
-            const countdown = setInterval(async () => {
-                timeLeft--;
-                display.innerText = timeLeft + " সেকেন্ড অপেক্ষা করুন";
-
-                if (timeLeft <= 0) {
-                    clearInterval(countdown);
-                    display.innerText = "ব্যালেন্স আপডেট হচ্ছে...";
-                    await addReward();
+            const tDiv = document.getElementById('timer');
+            tDiv.style.display = 'block';
+            let sec = 19;
+            const itv = setInterval(async () => {
+                sec--;
+                tDiv.innerText = sec + " সেকেন্ড অপেক্ষা করুন";
+                if(sec <= 0) {
+                    clearInterval(itv);
+                    const userRef = ref(db, 'users/' + user.uid);
+                    const snap = await get(userRef);
+                    const bal = (snap.val().balance || 0) + 5;
+                    await update(userRef, { balance: bal });
+                    alert("Tk.5 Added!");
+                    window.location.href = "index.html";
                 }
             }, 1000);
         };
-
-        async function addReward() {
-            if (!currentUser) return;
-            const userRef = ref(db, 'users/' + currentUser.uid);
-            
-            try {
-                const snapshot = await get(userRef);
-                const data = snapshot.val() || { balance: 0 };
-                const newBalance = (parseFloat(data.balance) || 0) + 5;
-
-                // ব্যালেন্স আপডেট করা
-                await update(userRef, { balance: newBalance });
-                
-                alert("টাস্ক সফল! ৫ টাকা আপনার ব্যালেন্সে যোগ হয়েছে।");
-                window.location.href = "index.html"; // হোম পেজে ফেরত পাঠানো
-            } catch (error) {
-                console.error("Error updating balance:", error);
-                alert("Error! Please try again.");
-                window.location.href = "index.html";
-            }
-        }
     </script>
 </body>
 </html>
