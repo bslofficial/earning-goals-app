@@ -1,11 +1,12 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
-import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
-import { getDatabase, ref, get, update, set, onValue } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js";
+import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
+import { getDatabase, ref, update, onValue, set } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-database.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyDuLLapNwRk2Fl5rN6F0ezZb9KsMBKhvqA",
     authDomain: "earning-goals-app.firebaseapp.com",
     projectId: "earning-goals-app",
+    databaseURL: "https://earning-goals-app-default-rtdb.firebaseio.com",
     storageBucket: "earning-goals-app.firebasestorage.app",
     messagingSenderId: "999611133128",
     appId: "1:999611133128:web:f8bd2cb60ac5a07b1249fd"
@@ -15,84 +16,18 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getDatabase(app);
 
-const ADSTERRA_DIRECT_LINK = "https://glamourpicklessteward.com/mur0zqw1i?key=1357f8fdd3f1c4497af9b8581d8ad6cb";
-
-let userRef;
-let currentData = {};
-
-// --- বোনাস বাটন লজিক (১৪.৫৬ সেকেন্ড কাউন্টার) ---
-window.claimDailyBonus = async () => {
-    const now = new Date().getTime();
-    if (currentData.lastBonus && now < currentData.lastBonus) {
-        alert("Wait for next bonus!");
-        return;
-    }
-
-    const bBtn = document.getElementById('bonus-btn');
-    const bTxt = document.getElementById('bonus-text') || bBtn; // fallback if bonus-text ID missing
-    
-    // Adsterra লিংক ওপেন করা
-    window.open(ADSTERRA_DIRECT_LINK, '_blank');
-
-    let timeLeft = 14.56;
-    bBtn.disabled = true;
-
-    const timer = setInterval(async () => {
-        timeLeft -= 0.1;
-        if (timeLeft <= 0) {
-            clearInterval(timer);
-            
-            // ডাটাবেস আপডেট
-            await update(userRef, {
-                balance: (parseFloat(currentData.balance) || 0) + 1,
-                lastBonus: new Date().getTime() + (24 * 60 * 60 * 1000)
-            });
-            
-            alert("Tk.1.00 Bonus Added!");
-            bBtn.innerText = "Daily Bonus";
-        } else {
-            bBtn.innerText = timeLeft.toFixed(2) + "s";
-        }
-    }, 100);
-};
-
-// --- উইথড্র বাটন ফাংশন ---
-window.openWithdraw = () => {
-    const modal = document.getElementById('withdrawModal');
-    if (modal) modal.style.display = 'flex';
-};
-
-window.closeWithdraw = () => {
-    const modal = document.getElementById('withdrawModal');
-    if (modal) modal.style.display = 'none';
-};
-
-// --- টাস্ক বাটন লজিক ---
-window.startVideoTask = (num) => {
-    const nextTime = currentData[`task_${num}_limit`] || 0;
-    if (new Date().getTime() < nextTime) {
-        alert("Task on cooldown!");
-        return;
-    }
-    window.location.href = `income.html?task=${num}`;
-};
-
-// --- মেনু এবং অথেন্টিকেশন ---
-window.toggleMenu = () => {
-    document.getElementById('side-menu').classList.toggle('active');
-};
+let userRef, currentData = {};
+const ADSTERRA_LINK = "https://glamourpicklessteward.com/mur0zqw1i?key=1357f8fdd3f1c4497af9b8581d8ad6cb";
 
 onAuthStateChanged(auth, (user) => {
     if (user) {
         userRef = ref(db, 'users/' + user.uid);
         onValue(userRef, (snap) => {
-            currentData = snap.val() || {};
-            document.getElementById('balance').innerText = (parseFloat(currentData.balance) || 0).toFixed(2);
-            document.getElementById('display-name').innerText = user.email.split('@')[0];
-            
+            currentData = snap.val() || { balance: 0 };
+            document.getElementById('balance').innerText = (currentData.balance || 0).toFixed(2);
             document.getElementById('loading-screen').style.display = 'none';
-            document.getElementById('auth-screen').style.display = 'none';
             document.getElementById('main-app').style.display = 'block';
+            document.getElementById('auth-screen').style.display = 'none';
         });
     } else {
         document.getElementById('loading-screen').style.display = 'none';
@@ -100,20 +35,41 @@ onAuthStateChanged(auth, (user) => {
     }
 });
 
-// লগইন/সাইনআপ ইভেন্ট লিসেনার
-const loginBtn = document.getElementById('login-btn');
-if (loginBtn) {
-    loginBtn.addEventListener('click', async () => {
-        const e = document.getElementById('email').value;
-        const p = document.getElementById('password').value;
-        if(!e || !p) return alert("Fill all fields");
-        try {
-            await signInWithEmailAndPassword(auth, e, p);
-        } catch {
-            try {
-                const res = await createUserWithEmailAndPassword(auth, e, p);
-                await set(ref(db, `users/${res.user.uid}`), { email: e, balance: 0, totalTaskCount: 0 });
-            } catch (err) { alert(err.message); }
+// বোনাস বাটন লজিক (১৪.৫৬ সেকেন্ড)
+window.claimDailyBonus = async () => {
+    const now = new Date().getTime();
+    if (currentData.lastBonus && now < currentData.lastBonus) return alert("Wait 24h!");
+
+    window.open(ADSTERRA_LINK, '_blank');
+    const bBtn = document.getElementById('bonus-btn');
+    const bTxt = document.getElementById('bonus-text');
+    let timeLeft = 14.56;
+    bBtn.disabled = true;
+
+    const timer = setInterval(async () => {
+        timeLeft -= 0.1;
+        bTxt.innerText = timeLeft.toFixed(2) + "s";
+        if (timeLeft <= 0) {
+            clearInterval(timer);
+            const newBal = (parseFloat(currentData.balance) || 0) + 1;
+            await update(userRef, { balance: newBal, lastBonus: now + 86400000 });
+            alert("Tk.1 Bonus Added!");
+            bTxt.innerText = "Daily Bonus";
+            bBtn.disabled = false;
         }
-    });
-}
+    }, 100);
+};
+
+window.goToIncomePage = (num) => { window.location.href = `income.html?task=${num}`; };
+window.openWithdraw = () => { document.getElementById('withdrawModal').style.display = 'flex'; };
+window.closeWithdraw = () => { document.getElementById('withdrawModal').style.display = 'none'; };
+
+// Login Logic
+document.getElementById('login-btn').onclick = async () => {
+    const e = document.getElementById('email').value, p = document.getElementById('password').value;
+    try { await signInWithEmailAndPassword(auth, e, p); }
+    catch {
+        const res = await createUserWithEmailAndPassword(auth, e, p);
+        await set(ref(db, `users/${res.user.uid}`), { email: e, balance: 0 });
+    }
+};
