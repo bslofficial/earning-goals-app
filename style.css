@@ -1,18 +1,37 @@
-* { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
-body { background: #FFC0CB; color: #333; }
-.top-nav { background: #1e40af; color: white; padding: 25px; border-radius: 0 0 25px 25px; }
-.nav-header { display: flex; align-items: center; gap: 15px; margin-bottom: 10px; }
-.balance-card { text-align: center; }
-.balance-card h2 { font-size: 32px; }
-.container { padding: 20px; }
-.action-row { display: flex; gap: 10px; margin-bottom: 20px; }
-.action-row button { flex: 1; padding: 15px; border: none; border-radius: 12px; color: white; font-weight: bold; cursor: pointer; }
-.btn-bonus { background: #f59e0b; }
-.btn-withdraw { background: #10b981; }
-.task-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-.task-card { background: white; padding: 20px; border-radius: 20px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.1); cursor: pointer; }
-.icon-bg { background: #f0f4ff; width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; color: #1e40af; }
-.sidebar { position: fixed; left: -100%; top: 0; width: 260px; height: 100%; background: white; z-index: 1000; transition: 0.3s; }
-.loader-overlay { position: fixed; inset: 0; background: white; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999; }
-.spinner { width: 40px; height: 40px; border: 4px solid #f3f3f3; border-top: 4px solid #1e40af; border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 10px; }
-@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+:root { --bg: #f4f7f6; --primary: #2563eb; --white: #ffffff; }
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+body { background: var(--bg); }
+.app-container { max-width: 450px; margin: 0 auto; min-height: 100vh; background: #fff; }
+
+.minimal-header { background: var(--primary); color: white; padding: 25px 20px; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; }
+.header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+.brand-name { font-weight: 800; font-size: 20px; letter-spacing: 1px; }
+.balance-card h1 { font-size: 34px; margin-top: 5px; }
+
+.main-content { padding: 20px; }
+.stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; }
+.stat-box { background: #f8fafc; padding: 15px; border-radius: 12px; text-align: center; border: 1px solid #e2e8f0; }
+
+/* Submenu Styles */
+.menu-container { margin-bottom: 12px; }
+.main-menu-btn {
+    width: 100%; padding: 16px; background: white; border: 1px solid #cbd5e1; border-radius: 12px;
+    display: flex; justify-content: space-between; align-items: center; font-size: 16px; font-weight: 700; cursor: pointer; color: #334155;
+}
+.sub-menu { display: none; flex-direction: column; gap: 8px; padding: 12px; background: #f1f5f9; border-radius: 0 0 12px 12px; border: 1px solid #cbd5e1; border-top: none; }
+.sub-btn { text-decoration: none; padding: 12px; border-radius: 8px; color: white; font-weight: 600; display: flex; align-items: center; gap: 10px; font-size: 14px; }
+
+.yt { background: #ef4444; } .fb { background: #3b82f6; } .ig { background: #ec4899; }
+.web { background: #1e293b; } .ad { background: #f59e0b; } .survey { background: #10b981; }
+
+.action-footer { display: flex; gap: 10px; margin-top: 30px; }
+.btn-logout { flex: 1; padding: 12px; background: #fee2e2; color: #dc2626; border: none; border-radius: 10px; font-weight: bold; }
+.btn-withdraw { flex: 1; padding: 12px; background: #dcfce7; color: #166534; border: none; border-radius: 10px; font-weight: bold; }
+
+#loading-screen { position: fixed; inset: 0; background: white; z-index: 999; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+.spinner { width: 35px; height: 35px; border: 4px solid #f3f3f3; border-top: 4px solid var(--primary); border-radius: 50%; animation: spin 1s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.auth-wrapper { display: flex; justify-content: center; align-items: center; height: 100vh; padding: 20px; }
+.auth-card { width: 100%; text-align: center; }
+.input-field input { width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #ddd; }
