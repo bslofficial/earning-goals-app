@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ProEarn - Extra Earnings</title>
+    <title>ProEarn - Digital Rewards</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -11,14 +11,14 @@
 
     <div id="loading-screen">
         <div class="spinner"></div>
-        <p>Updating Dashboard...</p>
+        <p>Dashboard Updating...</p>
     </div>
 
-    <div id="main-app" class="app-container">
+    <div id="main-app" class="app-container" style="display: none;">
         <header class="minimal-header">
             <div class="header-top">
                 <span class="brand-name">PROEARN</span>
-                <span id="sidebar-user-name" style="font-size: 14px; opacity: 0.8;">User</span>
+                <span id="user-display-name">User</span>
             </div>
             <div class="balance-card">
                 <small>Available Balance</small>
@@ -28,8 +28,8 @@
 
         <main class="main-content">
             <div class="stats-grid">
-                <div class="stat-box"><small>Tasks Done</small><br><b id="tasks-done">0</b></div>
-                <div class="stat-box"><small>Bonus Point</small><br><b>50</b></div>
+                <div class="stat-box"><small>Total Task</small><br><b id="tasks-done">0</b></div>
+                <div class="stat-box"><small>Referral</small><br><b>0</b></div>
             </div>
 
             <div class="menu-container">
@@ -38,10 +38,9 @@
                     <i class="fas fa-chevron-down"></i>
                 </button>
                 <div id="social-links" class="sub-menu">
-                    <a href="https://youtube.com/@BSL_Official" target="_blank" class="sub-btn yt" onclick="handleReward(2)"><i class="fab fa-youtube"></i> YouTube Channel</a>
-                    <a href="https://facebook.com" target="_blank" class="sub-btn fb" onclick="handleReward(1)"><i class="fab fa-facebook"></i> Facebook Page</a>
+                    <a href="https://youtube.com/@bslgaimer5563?si=jcPd-re749w2V5a1" target="_blank" class="sub-btn yt" onclick="handleReward(2)"><i class="fab fa-youtube"></i> YouTube Channel</a>
+                    <a href="https://www.facebook.com/bsl.gaimer/" target="_blank" class="sub-btn fb" onclick="handleReward(1)"><i class="fab fa-facebook"></i> Facebook Page</a>
                     <a href="https://instagram.com" target="_blank" class="sub-btn ig" onclick="handleReward(1)"><i class="fab fa-instagram"></i> Instagram Follow</a>
-                    <a href="https://bslofficial.github.io" target="_blank" class="sub-btn web" onclick="handleReward(1)"><i class="fas fa-globe"></i> Our Website</a>
                 </div>
             </div>
 
@@ -51,25 +50,29 @@
                     <i class="fas fa-chevron-down"></i>
                 </button>
                 <div id="ad-tasks" class="sub-menu">
-                    <a href="YOUR_ADSTERRA_DIRECT_LINK_1" target="_blank" class="sub-btn ad" onclick="handleReward(5)"><i class="fas fa-ad"></i> Adsterra Direct Link 1</a>
-                    <a href="YOUR_ADSTERRA_DIRECT_LINK_2" target="_blank" class="sub-btn ad" onclick="handleReward(5)"><i class="fas fa-ad"></i> Adsterra Direct Link 2</a>
-                    <a href="YOUR_SURVEY_LINK" target="_blank" class="sub-btn survey" onclick="handleReward(10)"><i class="fas fa-poll-h"></i> Daily Survey</a>
+                    <a href="https://glamourpicklessteward.com/mur0zqw1i?key=1357f8fdd3f1c4497af9b8581d8ad6cb" target="_blank" class="sub-btn ad" onclick="handleReward(5)">
+                        <i class="fas fa-ad"></i> High Reward Ad 01
+                    </a>
+                    <a href="https://glamourpicklessteward.com/mur0zqw1i?key=1357f8fdd3f1c4497af9b8581d8ad6cb" target="_blank" class="sub-btn survey" onclick="handleReward(10)">
+                        <i class="fas fa-poll-h"></i> Daily Special Offer
+                    </a>
                 </div>
             </div>
 
             <div class="action-footer">
                 <button onclick="handleLogout()" class="btn-logout">Logout</button>
-                <button onclick="alert('Withdraw logic soon!')" class="btn-withdraw">Withdraw</button>
+                <button onclick="alert('Withdraw logic coming soon!')" class="btn-withdraw">Withdraw</button>
             </div>
         </main>
     </div>
 
     <div id="auth-screen" class="auth-wrapper" style="display: none;">
         <div class="auth-card">
-            <h2>Welcome Back</h2>
-            <div class="input-field"><input type="email" id="email" placeholder="Email"></div>
+            <div class="app-logo">P</div>
+            <h2>Login</h2>
+            <div class="input-field"><input type="email" id="email" placeholder="Email Address"></div>
             <div class="input-field"><input type="password" id="password" placeholder="Password"></div>
-            <button id="login-btn" class="main-btn-min">Login</button>
+            <button id="login-btn" class="main-btn-min">Continue</button>
         </div>
     </div>
 
